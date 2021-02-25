@@ -1,6 +1,3 @@
-
-{{< youtube U3PG8zf-fFc >}}
-
 ---
 title: Gene Expression & Clinical Differences in Neuroblastoma by Sex
 
@@ -25,5 +22,6 @@ tags: []
 
 ---
 
+{{< youtube U3PG8zf-fFc >}}
 
 
