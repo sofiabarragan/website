@@ -22,7 +22,7 @@ day_night = true
 #   Guide to font sets: https://wowchemy.com/docs/customization/#fonts
 #   Browse the latest built-in font sets at https://github.com/wowchemy/wowchemy-hugo-modules/tree/master/wowchemy/data/fonts
 #   Browse user installed font sets in `data/fonts/`
-font = "Classic"
+font = ""
 
 # Choose a font size.
 # Sizes: XS (extra small), S (small), M (medium), L (large - DEFAULT), XL (extra large)
@@ -114,8 +114,7 @@ appointment_url = ""
 contact_links = [
   {icon = "twitter", icon_pack = "fab", name = "Follow me on Twitter", link = "https://twitter.com/freddybarragan_"},
   {icon = "linkedin", icon_pack = "fab", name = "", link = "https://www.linkedin.com/in/freddybarragan"},
-  {icon = "github", icon_pack = "fab", name = "Chat on Keybase", link = "https://github.com/freddy-barragan"},
-  {icon = "comments", icon_pack = "fas", name = "Discuss on Forum", link = "https://discourse.gohugo.io"},
+  {icon = "github", icon_pack = "fab", name = "", link = "https://github.com/freddy-barragan"},
   # {icon = "telegram", icon_pack = "fab", name = "Telegram Me", link = "https://telegram.me/@Telegram"},
   ]
 
