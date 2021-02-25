@@ -16,7 +16,7 @@
 theme = "my_theme"
 
 # Enable users to switch between day and night mode?
-day_night = true
+day_night = false
 
 # Override the theme's font set (optional).
 #   Guide to font sets: https://wowchemy.com/docs/customization/#fonts
@@ -26,7 +26,7 @@ font = "Classic"
 
 # Choose a font size.
 # Sizes: XS (extra small), S (small), M (medium), L (large - DEFAULT), XL (extra large)
-font_size = "L"
+font_size = "M"
 
 ############################
 ## Basic Info
@@ -88,7 +88,7 @@ show_related = {book = true, page = false, post = true, project = true, publicat
 ############################
 
 # Enter contact details (optional). To hide a field, clear it to "".
-email = "fabarraga@gmail.com"
+email = ""
 phone = ""
 
 # Address
@@ -112,9 +112,9 @@ appointment_url = ""
 # Contact links
 #   Set to `[]` to disable, or comment out unwanted lines with a hash `#`.
 contact_links = [
-  {icon = "twitter", icon_pack = "fab", name = "Follow me on Twitter", link = "https://twitter.com/freddybarragan_"},
-  {icon = "linkedin", icon_pack = "fab", name = "", link = "https://www.linkedin.com/in/freddybarragan"},
-  {icon = "github", icon_pack = "fab", name = "", link = "https://github.com/freddy-barragan"}
+  {icon = "twitter", icon_pack = "fab", name = "Follow me!", link = "https://twitter.com/freddybarragan_"},
+  {icon = "linkedin", icon_pack = "fab", name = "Hire me!", link = "https://www.linkedin.com/in/freddybarragan"},
+  {icon = "github", icon_pack = "fab", name = "Read my code!", link = "https://github.com/freddy-barragan"}
   ]
 
 ############################
