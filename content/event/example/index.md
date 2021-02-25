@@ -1,11 +1,8 @@
+
+{{< youtube U3PG8zf-fFc >}}
+
 ---
 title: Gene Expression & Clinical Differences in Neuroblastoma by Sex
-
-# Schedule page publish date (NOT talk date).
-publishDate: "2020-11-06T00:00:00Z"
-
-authors: [Freddy Barragan]
-tags: []
 
 event: Electronic Undergraduate Statistics Research Conference 2020
 event_url: https://www.causeweb.org/usproc/eusrc/2020
@@ -19,10 +16,14 @@ links:
    name: Follow
    url: https://twitter.com/freddybarragan_
    url_video: "https://www.youtube.com/watch?time_continue=2&v=U3PG8zf-fFc&feature=emb_logo"
+   
+# Schedule page publish date (NOT talk date).
+publishDate: "2020-11-06T00:00:00Z"
+
+authors: [Freddy Barragan]
+tags: []
+
 ---
-
-
-{{< youtube U3PG8zf-fFc >}}
 
 
 
