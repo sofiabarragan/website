@@ -25,10 +25,5 @@ links:
 
 {{< youtube U3PG8zf-fFc >}}
 
-publishDate: "2020-11-06T00:00:00Z"
-
-authors: [Freddy Barragan]
-tags: []
-
 
 
