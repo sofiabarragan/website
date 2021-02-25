@@ -68,8 +68,8 @@ email: ""
 highlight_name: false
 ---
 
-Freddy is an junior Applied Math & Statistics major at Macalester College, studying survival disparities & epigenomic trends in pediatric cancers for the University of Minnesota's Division of Epidemiology and Clinical Research. 
+I'm a junior Applied Math & Statistics major & Community & Global Health concentrator at Macalester College. Currently, I'm studying survival disparities & epigenomic trends in pediatric cancers for the University of Minnesota's Division of Epidemiology and Clinical Research.
 
-Their overarching goal is to study health disparities in low-income, minoritized, LGBTQ+ communities using rigorous statistical methods. Outside of research, they love making digital art, drinking monster, and organizing.
+In the longterm, I want to study health disparities for low-income, minoritized, LGBTQ+ communities using rigorous statistical methods. Outside of research, I love making digital art, drinking monster, and making math-themed spotify playlists!
 
 {{< icon name="download" pack="fas" >}} Download my {{< staticref "media/demo_resume.pdf" "newtab" >}}resumé{{< /staticref >}}.
