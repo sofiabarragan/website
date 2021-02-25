@@ -71,5 +71,3 @@ highlight_name: false
 I'm a junior Applied Math & Statistics major & Community & Global Health concentrator at Macalester College. Currently, I'm studying survival disparities & epigenomic trends in pediatric cancers for the University of Minnesota's Division of Epidemiology and Clinical Research.
 
 In the longterm, I want to study health disparities for low-income, minoritized, LGBTQ+ communities using rigorous statistical methods. Outside of research, I love making digital art, drinking monster, and making spotify playlists!
-
-{{< icon name="download" pack="fas" >}} Download my {{< staticref "media/demo_resume.pdf" "newtab" >}}resumé{{< /staticref >}}.
