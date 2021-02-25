@@ -1,25 +1,13 @@
 ---
-title: Example Talk
+title: Gene Expression & Clinical Differences in Neuroblastoma by Sex
 
-event: Wowchemy Conference
-event_url: https://example.org
+event: Electronic Undergraduate Statistics Research Conference 2020
+event_url: https://www.causeweb.org/usproc/eusrc/2020
 
-location: Wowchemy HQ
-address:
-  street: 450 Serra Mall
-  city: Stanford
-  region: CA
-  postcode: '94305'
-  country: United States
 
-summary: An example talk using Wowchemy's Markdown slides feature.
-abstract: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis posuere tellusac convallis placerat. Proin tincidunt magna sed ex sollicitudin condimentum. Sed ac faucibus dolor, scelerisque sollicitudin nisi. Cras purus urna, suscipit quis sapien eu, pulvinar tempor diam."
+summary: A winning video poster on pediatric neuroblastoma and differential expression testing that I presented at eUSR 2020.  
+abstract: "Beyond heredity, there are no known risk factors of pediatric neuroblastoma, yet there are ostensible survival differences by sex. Our work was aimed at identifying and analyzing the genetic basis of these survival differences with methods from statistical genetics, bioinformatics, and epidemiology. Using genomic data from the NCI’s TARGET (Therapeutically Applicable Research to Generate Effective Treatments) database, we’ve identified 245 genes and 7 protein-coding genes which are differentially expressed between males and females with neuroblastoma. Identification utilized comparative logarithmic fold change (LFC) analysis, hierarchical clustering, and clinical statistics. This pipeline was then applied to 4 other pediatric cancers with the hopes of explaining or discovering genetic and clinical differences by sex. We consistently found differentially expressed protein and non-protein-coding genes in acute lymphoblastic leukemia, acute myeloid leukemia, osteosarcoma, and Wilms tumor."
 
-# Talk start and end times.
-#   End time can optionally be hidden by prefixing the line with `#`.
-date: "2030-06-01T13:00:00Z"
-date_end: "2030-06-01T15:00:00Z"
-all_day: false
 
 # Schedule page publish date (NOT talk date).
 publishDate: "2017-01-01T00:00:00Z"
@@ -38,11 +26,11 @@ links:
 - icon: twitter
   icon_pack: fab
   name: Follow
-  url: https://twitter.com/georgecushen
+  url: https://twitter.com/freddybarragan_
 url_code: ""
 url_pdf: ""
 url_slides: ""
-url_video: ""
+url_video: "https://www.youtube.com/watch?time_continue=2&v=U3PG8zf-fFc&feature=emb_logo"
 
 # Markdown Slides (optional).
 #   Associate this talk with Markdown slides.
