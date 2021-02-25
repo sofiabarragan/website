@@ -29,7 +29,7 @@ interests:
 education:
   courses:
   - course: BA in Applied Mathematics & Statistics
-    institution: Mathematical Statistics, Statistical Machine Learning, Probability, Environmental Public Health, International Public Health
+    institution: Mathematical Statistics, Statistical Machine Learning, Probability, Linear Algebra, Environmental Public Health, International Public Health
     year: 2022
 
 
