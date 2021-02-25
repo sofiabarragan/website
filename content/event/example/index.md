@@ -14,9 +14,21 @@ publishDate: "2020-11-06T00:00:00Z"
 authors: [Freddy Barragan]
 tags: []
 
+links:
+ - icon: twitter
+   icon_pack: fab
+   name: Follow
+   url: https://twitter.com/freddybarragan_
+ url_video: "https://www.youtube.com/watch?time_continue=2&v=U3PG8zf-fFc&feature=emb_logo"
 ---
 
 
 {{< youtube U3PG8zf-fFc >}}
+
+publishDate: "2020-11-06T00:00:00Z"
+
+authors: [Freddy Barragan]
+tags: []
+
 
 
