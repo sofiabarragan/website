@@ -49,17 +49,16 @@ slides: ""
 **Incomplete Mother:**
 
 
-![ ](/media/inc_mom)
+![ ](/media/inc_mom.png)
 
 
 **Nipple Play:**
 
-![ ](/media/nip)
+![ ](/media/nip.png)
 
 
 **Oso Leone:**
 
-![ ](/media/oso_leone)
-
+![ ](/media/oso_leone.png)
 
 
