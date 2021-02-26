@@ -26,7 +26,7 @@ Fake news has disastrous effects. In the U.S., it has resulted in dangerous [ant
 
 Leveraging sentiment analysis of real news articles & random forests for variable selection, I built a powerful, low-dimensional, fake news-classifier with KNN regression (K=5, 78\% 10-fold CV accuracy). Typically, KNN is difficult to interpret and even more difficult to implement when using data with a large number of potential predictors. However, the benefits of a random forest for variable selection have allowed us to create a very simple model which correctly accounts for the nonparametric relationship between validity and its predictors. Most importantly, this model allows to correctly flag and identify fake news articles with a very low false-negative rate, thus minimizing the spread of potentially dangerous information. Below are classification boundaries of our KNN-classifier, only using 2 predictors:
 
-![](media/fake_knnplot.png)
+![](/media/fake_knnplot.png)
 
 Though these methods are robust, using sentiment analysis and string counting to predict a news article's validity will not produce the perfect results without more details that were not at our disposal. In most cases, fake news circulates through social media channels (e.g. Twitter, Reddit, Facebook, etc.) and is primarily communicated in videos, photos, and in slang. By doing so, we are making a very particular assumption about English fluency with text analysis which fails when we consider the millions of people who speak a dialect of English or English as second language. How can this text analysis correctly classify the melding of dialects, languages, and slangs to produce equitable classifications of fake news on a broader scale?
 
