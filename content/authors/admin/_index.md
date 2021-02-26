@@ -43,10 +43,9 @@ social:
   link: "mailto:fabarraga@gmail.com"
 - display:
     header: true
-  icon: twitter
-  icon_pack: fab
-  label: Follow me on Twitter
-  link: https://twitter.com/freddybarragan_
+    icon: cv
+    icon_pack: ai
+    link: media/resume.pdf
 - icon: github
   icon_pack: fab
   link: https://github.com/freddy-barragan
