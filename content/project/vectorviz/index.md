@@ -47,6 +47,11 @@ url_video: ""
 slides: ""
 ---
 
-<iframe src="https://cdn.flipsnack.com/widget/v2/widget.html?hash=f13agm3pr" width="100%" height="300" seamless="seamless" scrolling="no" frameBorder="0" allowFullScreen></iframe>
+![The Official](/media/vectorviz1.png)
 
-I made a zine dedicated to understanding & reflecting on the COVID-19 pandemic and how it relates to disability, mental illness, & chronic illness! It's a very intimate look at how I, a chronically ill person, was navigating the drastic changes of quarantine & moving home.
+I made a [buzzfeed-style quiz](https://docs.google.com/forms/d/1BiegzgnQxC45FrufjcSpS9_FzFtgWOX1YtPGNAyqQc8/edit) that helps me build personalized vector fields! Originally, the visualizations were an effort to combine my artistic interests and computational skillset into a couple of gifts, but I decided to use them and make a cool Calc 3 project along the way :)
+
+![Sample Quiz Results 2](/media/vectorviz2.png)
+
+The origin of this code was found on [stack overflow](https://stackoverflow.com/questions/14936504/vector-field-visualisation-r/14939043) and written in base R, but I’ve edited its color output, fine-tuning parameters (to increase granularity/contrast/iterations), noise, and output size in the past. The github link to my repro & edits can be found [here](https://github.com/freddy-barragan/website/blob/master/content/project/vectorviz/vector_field_barragan.Rmd).
+
