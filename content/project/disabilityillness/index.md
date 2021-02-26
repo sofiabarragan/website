@@ -45,8 +45,11 @@ url_video: ""
 #   Otherwise, set `slides = ""`.
 slides: ""
 ---
+<iframe src="https://open.spotify.com/embed/album/1DFixLWuPkv3KT3TnV35m3" width="640" height="80" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
 
-<iframe src="https://cdn.flipsnack.com/widget/v2/widget.html?hash=f13agm3pr" width="100%" height="500" seamless="seamless" scrolling="no" frameBorder="0" allowFullScreen></iframe>
+
+<iframe src="https://cdn.flipsnack.com/widget/v2/widget.html?hash=f13agm3pr" width="100%" height="480" seamless="seamless" scrolling="no" frameBorder="0" allowFullScreen></iframe>
+
 
 
 I made a zine dedicated to understanding & reflecting on the COVID-19 pandemic and how it relates to disability, mental illness, & chronic illness! It's a very intimate look at how I, a chronically ill person, was navigating the drastic changes of quarantine & moving home.  
