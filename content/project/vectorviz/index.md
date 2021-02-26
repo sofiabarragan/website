@@ -48,10 +48,9 @@ slides: ""
 
 ![Sample Quiz Results 1](/media/vectorviz1.png)
 
-TI made a [buzzfeed-style quiz](https://docs.google.com/forms/d/1BiegzgnQxC45FrufjcSpS9_FzFtgWOX1YtPGNAyqQc8/edit) that helps me build personalized vector fields based on the answers! Originally, the visualizations were an effort to combine my artistic interests and computational skillset, but I decided to use them and make a cool Calc 3 project!
+I made a [buzzfeed-style quiz](https://docs.google.com/forms/d/1BiegzgnQxC45FrufjcSpS9_FzFtgWOX1YtPGNAyqQc8/edit) that helps me build personalized vector fields! Originally, the visualizations were an effort to combine my artistic interests and computational skillset into a couple of gifts, but I decided to use them and make a cool Calc 3 project along the way :)
 
 ![Sample Quiz Results 2](/media/vectorviz2.png)
 
-The origin of this code was found on [stack overflow](https://stackoverflow.com/questions/14936504/vector-field-visualisation-r/14939043) and written in base R, but I’ve edited its color output, fine-tuning parameters (to increase granularity/contrast/iterations), noise, and output size in the past. Most importantly this was a fun quiz to make :) 
-
+The origin of this code was found on [stack overflow](https://stackoverflow.com/questions/14936504/vector-field-visualisation-r/14939043) and written in base R, but I’ve edited its color output, fine-tuning parameters (to increase granularity/contrast/iterations), noise, and output size in the past. The link to the repro can be found [here]().
 

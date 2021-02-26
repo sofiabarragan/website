@@ -1,0 +1,424 @@
+---
+title: "Vector Field Art"
+author: "Freddy Barragan"
+date: "7/22/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(pracma)
+library(tidyverse)
+```
+
+# Function
+```{r}
+# BIG IDEA: deform noise
+# Inputs
+vector_field <- function(f,
+                         xmin=-10, xmax=10, ymin=-10, ymax=10,
+                         width=1000, height=1000,
+                         iterations=20,
+                         epsilon=.01,
+                         trace=TRUE) 
+  {
+  # Make a matrix with random deviations from standard distribution ("bar plot" with randomly differing heights; height as entry)
+  z <- matrix(runif(width*height), nr=height)
+  # minimum x + ith entry over the width and difference of bounds
+  i_to_x <- function(i) xmin + i / width  * (xmax - xmin)
+  j_to_y <- function(j) ymin + j / height * (ymax - ymin)
+  # get minima of (width/height, the maxima of difference in x and smallest x / distance and input bounds)
+  x_to_i <- function(x) pmin( width,  pmax( 1, floor( (x-xmin)/(xmax-xmin) * width  ) ) )
+  y_to_j <- function(y) pmin( height, pmax( 1, floor( (y-ymin)/(ymax-ymin) * height ) ) )
+  # make vector named i and j from columns / rows of z
+  i <- col(z)
+  j <- row(z)
+  # get minimum x + entry over the width and difference of bounds for every entry
+  x <- i_to_x(i)
+  y <- j_to_y(j)
+  
+  # u date z then save as res
+  res <- z
+  
+  # for loop initiation
+  for(k in 1:iterations) {
+    ##matrix of differences of field
+    v <- matrix( f(x, y), nc=2 )
+    # update entries
+    x <- x+.05*v[,1]
+    y <- y+.05*v[,2]
+    # update vectors and columns 
+    i <- x_to_i(x)
+    j <- y_to_j(y)
+    # combine added vector
+    res <- res + z[cbind(i,j)]
+    if(trace) {
+      cat(k, "/", iterations, "\n", sep="") #irrelevant
+      #start image process
+      dev.hold()
+      #define image
+      image(res > quantile(res,.6, na.rm = TRUE), col=0:1)
+      #"play image"
+      dev.flush()
+    }
+  }
+  
+  # get the last iteration and play it again.
+  if(trace) {
+    dev.hold()
+    image(res > quantile(res,.6, na.rm = TRUE), col=0:1)
+    dev.flush()
+  }
+  
+  res
+}
+```
+
+# Class Project
+
+```{r}
+library(tidyverse)
+```
+
+```{r, message=FALSE, warning = FALSE}
+entries <- read.csv("entries.csv") #quiz results csv
+
+# clean entry data into inputs
+entries <- entries %>%
+  select(-c(Timestamp, What.s.Your.Name., What.s.your.E.Mail.))
+
+colnames(entries) <- c(neg_input, mu_scalar, x_or_y_input, func_1, sub_in_parenth,dec_exp_on_func2)
+
+
+entries <- entries %>% 
+  mutate(neg_input = ifelse(neg_input=="Yes", "-", "+")) %>%
+  
+  mutate(mu_scalar = mu_scalar/10) %>%
+  
+  mutate(x_or_y_input = ifelse(x_or_y_input=="Night", "x", "y")) %>%
+  
+  mutate(func_1 = str_replace(func_1, "1", "x")) %>% 
+  mutate(func_1 = str_replace(func_1, "2", "x^2")) %>% 
+  mutate(func_1 = str_replace(func_1, "Peter Kraus", "x^3")) %>% 
+  mutate(func_1 = str_replace(func_1, "4", "x^4")) %>%
+  mutate(func_1 = str_replace(func_1, "5", "x^5")) %>% 
+  mutate(func_1 = str_replace(func_1, "6", "x^6")) %>% 
+  mutate(func_1 = str_replace(func_1, "7", "x^7")) %>% 
+  mutate(func_1 = str_eplace(func_1, "8", "x^8")) %>%
+  mutate(func_1 = str_replace(func_1, "9", "x^9")) %>%
+
+  mutate(sub_in_parenth = ifelse(sub_in_parenth=="Yes", "-", "+")) %>%
+
+  mutate(dec_exp_on_func2 = dec_exp_on_func2/10) %>%
+    
+  mutate(exp_on_func2 = exp_on_func2/10) %>%
+
+  mutate(func2_scalar = ifelse(endsWith(func2_scalar, "Curl"), 
+                               "1", 
+                               substring(func2_scalar, 1, 1))) 
+
+
+
+
+
+  
+entries$func2_inner_scalar <- ifelse(endsWith(entries$func2_inner_scalar, "Regions")==TRUE, 
+                               1, 
+                               as.numeric(substring(entries$func2_inner_scalar, 1, 1)))
+
+
+
+entries <- entries %>% 
+
+  mutate(func2_inner_scalar = ifelse(are_func2_scalars_deci =="Yes", (func2_inner_scalar/10),
+         func2_inner_scalar)) %>%
+    
+  mutate(add_sub_div_mult_func2 = str_replace(add_sub_div_mult_func2, "Earth", "+")) %>% 
+  mutate(add_sub_div_mult_func2 = str_replace(add_sub_div_mult_func2, "Water", "-")) %>% 
+  mutate(add_sub_div_mult_func2 = str_replace(add_sub_div_mult_func2, "Fire", "*")) %>% 
+  mutate(add_sub_div_mult_func2 = str_replace(add_sub_div_mult_func2, "Air", "/")) %>%
+
+  mutate(add_sub_func3 = str_replace(add_sub_func3, "Yes", "-")) %>% 
+  mutate(add_sub_func3 = str_replace(add_sub_func3, "No", "+")) %>%
+    
+  mutate(func3_deci_scalar = func3_deci_scalar/10) %>%
+  
+  
+  mutate(func3_inner_deci_scalar = ifelse(func3_inner_deci_scalar ==32, 1,
+         func3_inner_deci_scalar))
+
+
+head(entries)
+
+```
+
+
+## Build People-Specific Inputs 
+
+> This next section is not totally reproducible. I took artistic licenses and changed functions when their outputs or forms weren't cool enough. Be creative!
+
+
+
+### Me!
+```{r}
+print(entries[2,c(1,3:ncol(entries))])
+
+freddy <- function(x,y, mu=-27) c(y, mu * ( 1 - sin(x) ) * cos(y)^-4 + x*3)
+
+```
+
+```{r, fig.width=18, fig.height=24}
+res <- vector_field(
+  freddy,
+  xmin=-10, xmax=10, ymin=-10, ymax=10,
+  width=600, height=600,
+  iterations=20,
+  epsilon=.001
+)
+
+image(res > quantile(res,.006, na.rm=TRUE), col=0:1)
+```
+
+
+### My friend Emily!
+```{r}
+print(entries[1,c(1,3:ncol(entries))])
+
+emily <- function(x,y, mu=.2) c(-y, mu / (- cos(x) ) + tanh(.1 * csc(y^.5))^.1 + 4.1*sinh(x)/9)
+```
+
+```{r, fig.width=18, fig.height=24}
+res <- vector_field(
+  emily,
+  xmin=0, xmax=5, ymin=0, ymax=5,
+  width=600, height=600,
+  iterations=20,
+  epsilon=.001
+)
+
+image(res > quantile(res,.006, na.rm=TRUE), col=0:1)
+```
+
+
+### My friend Stefan!
+```{r}
+print(entries[3,c(1,3:ncol(entries))])
+
+steve <- function(x,y, mu=.3642) c(y, mu * ( 2.3 - x^4 ) - (sin(tan(.1*y))^.3)^.5 - -8.6*(2*x)/9)
+
+```
+
+
+```{r, fig.width=18, fig.height=24}
+res <- vector_field(
+  steve,
+  xmin=0, xmax=20, ymin=0, ymax=20,
+  width=600, height=600,
+  iterations=2,
+  epsilon=100
+)
+
+image(res > quantile(res,.006, na.rm=TRUE), col=0:1)
+```
+
+
+### My friend and classmate Izzy!
+```{r}
+print(entries[4,c(1,3:ncol(entries))])
+
+izzy <- function(x,y, mu=2.822) c(y, mu / ( 2 - x^4 ) - (cosh(sec(.7*y))^.2)^.6 / ((7.5*sinh(x))/9))
+
+```
+
+```{r, fig.width=18, fig.height=24}
+res <- vector_field(
+  izzy,
+  xmin=-5, xmax=5, ymin=-5, ymax=5,
+  width=600, height=600,
+  iterations=20,
+  epsilon=100
+)
+
+image(res > quantile(res,.006, na.rm=TRUE), col=0:1)
+```
+
+
+
+### My classmate george!
+
+```{r}
+print(entries[5,c(1,3:ncol(entries))])
+
+
+
+george <- function(x,y, mu=.7) c(y, mu / ( - x^2 ) - ((.5*cosh(tanh(.2*y)))^.2)^.1 - (6.969697*sinh(x)/4))
+
+```
+
+```{r, fig.width=18, fig.height=24}
+res <- vector_field(
+  george,
+  xmin=-10, xmax=10, ymin=-100, ymax=100,
+  width=600, height=600,
+  iterations=10,
+  epsilon=100
+)
+
+image(res > quantile(res,.006, na.rm=TRUE), col=0:1)
+```
+
+
+
+### My friend and old-classmate Danny!
+
+```{r}
+print(entries[6,c(1,3:ncol(entries))])
+
+
+
+danny <- function(x,y, mu=2.7) c(mu / (69420 - y^3 ) / (((sinh((.1*x)))))^5 +  x*(6.2*sinh(y/69)/7),x)
+
+```
+
+```{r, fig.width=18, fig.height=24}
+res <- vector_field(
+  danny,
+  xmin=-10, xmax=20, ymin=-50, ymax=100,
+  width=600, height=600,
+  iterations=20,
+  epsilon=.001
+)
+
+image(res > quantile(res,.006, na.rm=TRUE), col=0:1)
+```
+
+
+
+### My friend and partner Andrew!
+
+```{r}
+print(entries[7,c(1,3:ncol(entries))])
+
+andrew <- function(x,y, mu=.505) c(y, mu * (7 - tanh(x) ) / ((cosh(1*y)^.4))^.8 +  (-7.1*sinh(2*x)/8))
+
+```
+
+```{r, fig.width=18, fig.height=24}
+res <- vector_field(
+  andrew,
+  xmin=-10, xmax=10, ymin=0, ymax=100,
+  width=600, height=600,
+  iterations=4,
+  epsilon=10
+)
+
+image(res > quantile(res,.006, na.rm=TRUE), col=0:1)
+```
+
+
+### My friend Phia!
+
+```{r}
+print(entries[8,c(1,3:ncol(entries))])
+
+phia <- function(x,y, mu=-1.1) c(mu / (5000 - y^5 ) / .4*(((sin(5*x)^4))^.8 +  5.2*cos(.3*y)/8), x)
+
+```
+
+```{r, fig.width=18, fig.height=24}
+res <- vector_field(
+  phia,
+  xmin=-50, xmax=50, ymin=-100, ymax=100,
+  width=600, height=600,
+  iterations=75,
+  epsilon=.0001
+)
+
+image(res > quantile(res,.006, na.rm=TRUE), col=0:1)
+```
+
+
+### My friend Helena!
+
+```{r}
+print(entries[9,c(1,3:ncol(entries))])
+
+helena <- function(x,y, mu=.69420) c(mu * (- y^8 ) / .4*((coth(x)^.4))^.7 +tanh(x), mu* y^2)
+
+#(- y^5 ) + .4*((((.1*x)^.4))^.7 +  1.2*(y)/10
+```
+
+```{r, fig.width=18, fig.height=24}
+res <- vector_field(
+  helena,
+  xmin=.1, xmax=.3, ymin=.1, ymax=.3,
+  width=600, height=600,
+  iterations=20,
+  epsilon=100
+)
+
+image(res > quantile(res,.006, na.rm=TRUE), col=0:1)
+```
+
+### My classmate James!
+
+```{r}
+print(entries[11,c(1,3:ncol(entries))])
+
+james <- function(x,y, mu=7.2681) c(mu * (69- y^5 ) * ((asinh(csc(0.4*x))^.4))^.7 - -8.83*sinh(y/10), x)
+```
+
+```{r, fig.width=18, fig.height=24}
+res <- vector_field(
+  james,
+  xmin=.01, xmax=7.5, ymin=.01, ymax=15,
+  width=600, height=600,
+  iterations=2,
+  epsilon=1000
+)
+
+image(res > quantile(res,.006, na.rm=TRUE), col=0:1)
+```
+
+### My friend Devlin!
+
+```{r}
+print(entries[12,c(1,3:ncol(entries))])
+
+devlin <- function(x,y, mu=3.7602) c( x, mu * (cos(x)^5 ) * (7*(cos(0.2*y))^.3)^.6 * -6.9	*sinh(x/10))
+```
+
+```{r, fig.width=18, fig.height=24}
+res <- vector_field(
+  devlin,
+  xmin=60, xmax=100, ymin=60, ymax=70,
+  width=600, height=600,
+  iterations=3,
+  epsilon=.001
+)
+
+image(res > quantile(res,.0006, na.rm=TRUE), col=0:1)
+```
+
+
+
+### My professor, mentor, and friend Kelsey!
+
+```{r}
+kelsey <- function(x,y, mu=	9.1) c(sin(y), mu * (2 + 100*cos(y)^2) - (((3*.7*y)^0.05))^5 + (40*(3*cos(y))/4))
+```
+
+```{r, fig.width=18, fig.height=24}
+res <- vector_field(
+  kelsey,
+  xmin=0, xmax=2*pi, ymin=0, ymax=2*pi,
+  width=600, height=600,
+  iterations=5,
+  epsilon=20000
+)
+
+image(res > quantile(res,.0006, na.rm=TRUE), col=0:1)
+```
+
+
+
