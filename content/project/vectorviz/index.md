@@ -46,7 +46,7 @@ url_video: ""
 slides: ""
 ---
 
-![](vectorviz/freddy1.png)
+![](static/media/vectorviz/freddy1.png)
 
 This project is a personalized differential equation [quiz](https://docs.google.com/forms/d/1BiegzgnQxC45FrufjcSpS9_FzFtgWOX1YtPGNAyqQc8/edit) which takes in student responses and allows me to build plots based on their answers. Originally, the visualizations/function were an effort to combine my artistic interests and computational skillset, but I’ve decided to use them here because it fits in with Calc 3 concepts and functions. 
 
