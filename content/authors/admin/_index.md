@@ -23,7 +23,7 @@ interests:
 - Minority Health
 - Computational Art
 - Spatial Disease Modeling
-- Equity & Inclusion
+- Survival Analysis
 
 # Education to show in About widget
 education:
