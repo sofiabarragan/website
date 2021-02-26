@@ -23,9 +23,6 @@ tags: []
 
 {{< youtube U3PG8zf-fFc >}}
 
-\\
-\\
-
 
 **Abstract**
 
