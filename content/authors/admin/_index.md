@@ -56,6 +56,10 @@ social:
   icon_pack: fab
   label: Follow my Art
   link: https://instagram.com/mossydraw
+- icon: spotify
+  icon_pack: fab
+  label: Listen!
+  link: https://open.spotify.com/user/1263567699?si=4ec3a9cf47884afa
 
 # Link to a PDF of your resume/CV.
 # To use: copy your resume to `static/media/resume.pdf`, enable `ai` icons in `params.toml`, 
