@@ -48,6 +48,9 @@ slides: ""
 
 ![](vectorviz/freddy1.png)
 
-This project is a personalized differential equation [quiz](https://docs.google.com/forms/d/1BiegzgnQxC45FrufjcSpS9_FzFtgWOX1YtPGNAyqQc8/edit) which takes in student responses and allows me to build plots based on their answers. Originally, the visualizations/function were an effort to combine my artistic interests and computational skillset, but I’ve decided to use them here because it fits in with Calc 3 concepts and functions. The origin of this code was found on [stack overflow]"https://stackoverflow.com/questions/14936504/vector-field-visualisation-r/14939043) and written in base R, but I’ve edited its color output, fine-tuning parameters (to increase granularity/contrast/iterations), noise, and output size in the past. Really this was a fun quiz to make :) 
+This project is a personalized differential equation [quiz](https://docs.google.com/forms/d/1BiegzgnQxC45FrufjcSpS9_FzFtgWOX1YtPGNAyqQc8/edit) which takes in student responses and allows me to build plots based on their answers. Originally, the visualizations/function were an effort to combine my artistic interests and computational skillset, but I’ve decided to use them here because it fits in with Calc 3 concepts and functions. 
+
+
+The origin of this code was found on [stack overflow](https://stackoverflow.com/questions/14936504/vector-field-visualisation-r/14939043) and written in base R, but I’ve edited its color output, fine-tuning parameters (to increase granularity/contrast/iterations), noise, and output size in the past. Most importantly this was a fun quiz to make :) 
 
 
