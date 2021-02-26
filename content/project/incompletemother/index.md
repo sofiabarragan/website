@@ -48,9 +48,7 @@ slides: ""
 
 **Incomplete Mother:**
 
-
 ![ ](/media/inc_mom.png)
-
 
 **Nipple Play:**
 
