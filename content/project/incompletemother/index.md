@@ -1,8 +1,8 @@
 ---
 # Documentation: https://sourcethemes.com/academic/docs/managing-content/
 
-title: "Gendered Reflections"
-summary: "A couple disparate drawings about sexuality, motherhood, and music that collectively described the sparks in my gender transition."
+title: "Gender Drawings"
+summary: "A couple disparate drawings about my experiences with sexuality, transness & motherhood, and music."
 authors: []
 tags: 
 - Art
