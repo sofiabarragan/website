@@ -53,7 +53,7 @@ social:
 - icon: linkedin
   icon_pack: fab
   link: https://www.linkedin.com/in/freddybarragan
- -icon: instagram
+- icon: instagram
   icon_pack: fab
   label: Follow my Art
   link: https://instagram.com/mossydraw
