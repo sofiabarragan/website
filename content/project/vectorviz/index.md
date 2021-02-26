@@ -22,7 +22,7 @@ image:
 
 # Custom links (optional).
 #   Uncomment and edit lines below to show custom links.
-# links:
+links:
 - name: Follow
   url: https://twitter.com/freddybarragan_
   icon_pack: fab
@@ -31,6 +31,7 @@ image:
   url: https://instagram.com/mossydraw
   icon_pack: fab
   icon: instagram
+  
 
 url_code: ""
 url_pdf: ""
