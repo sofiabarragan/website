@@ -46,6 +46,13 @@ url_video: ""
 slides: ""
 ---
 
-<iframe src="https://cdn.flipsnack.com/widget/v2/widget.html?hash=f13agm3pr" width="100%" height="300" seamless="seamless" scrolling="no" frameBorder="0" allowFullScreen></iframe>
+<iframe src="https://cdn.flipsnack.com/widget/v2/widget.html?hash=f13agm3pr" width="80%" height="500" seamless="seamless" scrolling="no" frameBorder="0" allowFullScreen></iframe>
 
-I made a zine dedicated to understanding & reflecting on the COVID-19 pandemic and how it relates to disability, mental illness, & chronic illness! It's a very intimate look at how I, a chronically ill person, was navigating the drastic changes of quarantine & moving home.
+
+I made a zine dedicated to understanding & reflecting on the COVID-19 pandemic and how it relates to disability, mental illness, & chronic illness! It's a very intimate look at how I, a chronically ill person, was navigating the drastic changes of quarantine & moving home.  
+
+Each page is attached to a song that both describes the content & the way I felt drawing each piece. If you would like to listen while you read— which I highly suggest— you can listen to the official playlist below:
+
+<iframe src="https://open.spotify.com/embed/playlist/01lZ5wZFe2p0z6LPCNBSil" width="300" height="380" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+
+Fun Fact: The playlist was named after content from my Linear Algebra class— perhaps my favorite pure math class to date.
