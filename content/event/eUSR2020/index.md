@@ -9,7 +9,7 @@ summary: A winning video presentation on pediatric neuroblastoma for eUSR 2020.
 links:
  - icon: twitter
    icon_pack: fab
-   name: Follow
+   name: ""
    url: https://twitter.com/freddybarragan_
    url_video: "https://www.youtube.com/watch?time_continue=2&v=U3PG8zf-fFc&feature=emb_logo"
    
