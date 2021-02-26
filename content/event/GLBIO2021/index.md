@@ -2,9 +2,9 @@
 title: Upcoming: GLBIO Workshop Panelist
 
 event: Greater Lakes Bioinformatics Conference 2020
-event_url: https://www.causeweb.org/usproc/eusrc/2020
+event_url: "https://sites.google.com/macalester.edu/glbio2021tutorial/home"
 
-summary: Invited as a panelist to talk at a workshop for first-time conference attendees
+summary: Invited as a panelist to talk at a workshop for first-time conference attendees.
 
 links:
  - icon: twitter
