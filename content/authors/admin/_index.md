@@ -40,7 +40,7 @@ education:
 social:
 - icon: envelope
   icon_pack: fas
-  link: /#contact
+  link: "mailto:fabarraga@gmail.com".
 - display:
     header: true
   icon: twitter
