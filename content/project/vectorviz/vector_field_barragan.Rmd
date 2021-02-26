@@ -155,7 +155,7 @@ head(entries)
 
 ## Build People-Specific Inputs 
 
-> This next section is not totally reproducible. I took artistic licenses and changed functions when their outputs or forms weren't cool enough. Be creative!
+> This next section is not totally reproducible. I took artistic licenses and changed function inputs when their outputs or forms weren't cool enough. Be creative!
 
 
 
