@@ -4,7 +4,7 @@ title: Gene Expression & Clinical Differences in Neuroblastoma by Sex
 event: Electronic Undergraduate Statistics Research Conference 2020
 event_url: https://www.causeweb.org/usproc/eusrc/2020
 
-summary: A winning video presentation on pediatric neuroblastoma for eUSR 2020.  
+summary: My video presentation on the epigenomics of pediatric neuroblastoma for eUSR 2020.  I tied for best video!
 
 links:
  - icon: twitter

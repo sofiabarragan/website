@@ -1,17 +1,16 @@
 ---
 # Documentation: https://sourcethemes.com/academic/docs/managing-content/
 
-title: "Vector Field Quizzes & Vizs"
-summary: "Computational art -> personalized vector fields for friends & class :)"
+title: "Disability and Illness in the Times of COVID-19"
+summary: "My final art project for a course on Disability Studies"
 authors: []
 tags: 
 - Art
-- Data Science
 categories: []
 date: 2019-11-02T14:47:00-05:00
 
 # Optional external URL for project (replaces project detail page).
-external_link: ""
+external_link: "https://www.flipsnack.com/mossydraw/disability-and-illness-in-the-times-of-covid-19.html"
 
 # Featured image
 # To use, add an image named `featured.jpg/png` to your page's folder.
@@ -47,6 +46,3 @@ url_video: ""
 slides: ""
 ---
 
-<iframe src="https://cdn.flipsnack.com/widget/v2/widget.html?hash=f13agm3pr" width="100%" height="300" seamless="seamless" scrolling="no" frameBorder="0" allowFullScreen></iframe>
-
-I made a zine dedicated to understanding & reflecting on the COVID-19 pandemic and how it relates to disability, mental illness, & chronic illness! It's a very intimate look at how I, a chronically ill person, was navigating the drastic changes of quarantine & moving home.
