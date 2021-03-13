@@ -17,7 +17,7 @@ links:
 - name: ""
   url: https://markov-455.netlify.app
   icon_pack: fab
-  icon: external-link-alt
+  icon: link
 
 date: 2019-11-02T14:47:00-05:00
 ---
