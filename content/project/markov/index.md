@@ -22,7 +22,9 @@ links:
 date: 2019-11-02T14:47:00-05:00
 ---
 
-NOTE: In iterative progress (following grading).  
+![](/media/hmm.png)
+
+NOTE: In iterative progress 
 
 I made this bookdown on discrete Hidden Markov Models & their applications to statistical genetics for my Mathematical Statistics capstone! The target audience for this project is introductory statistics students, so expect some looser notation and word-heavy explanations.  
 
