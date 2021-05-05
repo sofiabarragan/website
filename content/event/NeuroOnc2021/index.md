@@ -1,11 +1,10 @@
 ---
-title: Upcoming - Survival disparities for some childhood brain tumors exist when defined by race/ethnicity
+title: Upcoming — Survival disparities for some childhood brain tumors exist when defined by race\/ethnicity
 and sex
-
 event: 2021 Neuro-Oncology Symposium
 event_url: https://cancer.umn.edu/researchers/translational-wgs/brain-tumor-program/events/2021-neuro-oncology-symposium
 
-summary: My poster presentation on concurrent survival disparities by race/ethnicity and sex in pediatric brain tumors for the 5th Neuro-Oncology Symposium at the University of Minnesota.
+summary: My poster presentation on concurrent survival disparities by race\/ethnicity and sex in pediatric brain tumors for the 5th Neuro-Oncology Symposium at the University of Minnesota.
 
 
 links:
@@ -13,7 +12,6 @@ links:
    icon_pack: fab
    name: ""
    url: https://twitter.com/freddybarragan_
-   url_video: "https://www.youtube.com/watch?time_continue=2&v=U3PG8zf-fFc&feature=emb_logo"
    
 # Schedule page publish date (NOT talk date).
 publishDate: "2021-5-05T00:00:00Z"

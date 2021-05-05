@@ -1,6 +1,5 @@
 ---
 title: Upcoming - GLBIO Workshop Panelist
-
 event: Greater Lakes Bioinformatics Conference 2020
 event_url: https://sites.google.com/macalester.edu/glbio2021tutorial/home
 
