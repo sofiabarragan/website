@@ -13,7 +13,7 @@ links:
    url_video: ""
    
 # Schedule page publish date (NOT talk date).
-publishDate: "2021-5-05T00:00:00Z"
+publishDate: "2021-05-05T00:00:00Z"
 
 authors: [Freddy Barragan]
 tags: []
