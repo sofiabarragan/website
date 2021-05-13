@@ -31,6 +31,8 @@ content:
     tag: Art
   - name: Data Science
     tag: Data Science
+  - name: Public Health
+    tag: Public Health  
 
 design:
   # Choose how many columns the section has. Valid values: '1' or '2'.
