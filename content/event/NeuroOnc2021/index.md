@@ -35,7 +35,6 @@ This is a poster presentation on intersecting survival disparities by race/ethni
 <center>
 
 <img style="border:1px solid black;" src="https://freddybarragan.netlify.app/media/barragan_neuroonc_poster.png"  alt="Poster on Disparities" />
-
 </center>
 
-You can see a full size copy of the poster [here](https://freddybarragan.netlify.app/media/barragan_neuroonc_poster.pdf)! And if you'd like to check out our abstract submission, you can find it [here]("https://freddybarragan.netlify.app/media/abstract_neuro_SEERsurvival.pdf"). 
+You can see a full size copy of the poster [here](https://freddybarragan.netlify.app/media/barragan_neuroonc_poster.pdf)! And if you'd like to check out our abstract submission, you can find it [here](https://freddybarragan.netlify.app/media/abstract_neuro_SEERsurvival.pdf). 
