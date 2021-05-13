@@ -16,7 +16,8 @@ links:
 publishDate: "2021-05-07T00:00:00Z"
 
 authors: [Freddy Barragan]
-tags: []
+tags: 
+- Data Science
 
 ---
 

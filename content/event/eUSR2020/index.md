@@ -18,7 +18,9 @@ url_video: "https://www.youtube.com/watch?time_continue=2&v=U3PG8zf-fFc&feature=
 publishDate: "2020-11-06T00:00:00Z"
 
 authors: [Freddy Barragan]
-tags: []
+tags: 
+- Public Health
+- Data Science
 
 ---
 

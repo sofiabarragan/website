@@ -17,7 +17,8 @@ links:
 publishDate: "2020-10-01T00:00:00Z"
 
 authors: [Freddy Barragan]
-tags: []
+tags: 
+- Public Health
 
 ---
 

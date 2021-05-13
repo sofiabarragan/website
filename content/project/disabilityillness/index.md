@@ -6,6 +6,7 @@ summary: "My final art project for a course in Disability studies"
 authors: []
 tags: 
 - Art
+- Public Health
 categories: []
 date: 2019-11-02T14:47:00-05:00
 
