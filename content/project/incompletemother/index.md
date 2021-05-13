@@ -2,7 +2,7 @@
 # Documentation: https://sourcethemes.com/academic/docs/managing-content/
 
 title: "Gender Drawings"
-summary: "A couple disparate drawings about my experiences with sexuality, transness & motherhood, and music."
+summary: "A couple disparate drawings about my experiences with sexuality, my transness, and one of my favorite bands."
 authors: []
 tags: 
 - Art
