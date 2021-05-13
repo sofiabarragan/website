@@ -27,7 +27,7 @@ publishDate: "2021-05-13T00:00:00Z"
 
 authors: [Freddy Barragan]
 tags: 
-- Art
+- Public Health
 - Data Science
 
 ---
