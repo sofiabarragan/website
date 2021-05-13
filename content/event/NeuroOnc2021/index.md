@@ -6,8 +6,6 @@ event_url: https://sites.google.com/umn.edu/neuro-oncology-symposium-2021/home
 
 summary: "My poster presentation on concurrent survival disparities by race/ethnicity and sex in pediatric brain tumors for the 5th Neuro-Oncology Symposium at the University of Minnesota."
 
-abstract: "There are documented differences in pediatric brain tumor survival by race/ethnicity. We previously reported on sex differences in pediatric ependymoma survival. However, it is unknown whether there are pediatric cancer survival disparities when defined by race/ethnicity and sex categories. Using SEER (2000-2014) data, we estimated survival differences between race/ethnicity-sex groupings (non-Hispanic White [NHW], non-Hispanic Black [NHB], Hispanic, and Asian/Pacific Islander [API], males and females) for 4 brain tumors diagnosed in children aged 0-19 years."
-
 links:
  - icon: twitter
    icon_pack: fab
@@ -32,7 +30,7 @@ tags: [Data Science]
 
 ---
 
-**Poster**
+This is a poster presentation on intersecting survival disparities by race/ethnicity and sex in pediatric brain tumors for the 5th Neuro-Oncology Symposium at the University of Minnesota. The work presented is actually a subset of a couple projects I've done under my PI, [Lindsay Williams]("https://med.umn.edu/bio/epidemiology/lindsay-williams") and her collaborator [Kristin Moore]("https://www.linkedin.com/in/kristinvoltzke"). If you'd like to check that out, stay tuned (until its published hehe)!
 
 <center>
 
@@ -40,4 +38,4 @@ tags: [Data Science]
 
 </center>
 
-
+You can see a full size copy of the poster [here]("https://freddybarragan.netlify.app/media/barragan_neuroonc_poster.pdf")! And if you'd like to check out our abstract submission, you can find it [here]("https://freddybarragan.netlify.app/media/abstract_neuro_SEERsurvival.pdf"). 
