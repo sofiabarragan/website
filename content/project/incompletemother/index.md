@@ -48,15 +48,26 @@ slides: ""
 
 **Incomplete Mother:**
 
-![ ](/media/inc_mom.png)
+<center>
+
+<img style="border:1px solid black;" src="https://freddybarragan.netlify.app/media/inc_mom.png"  alt="Incomplete Mother" />
+
+</center>
 
 **Nipple Play:**
 
-![ ](/media/nip.png)
+<center>
+
+<img style="border:1px solid black;" src="https://freddybarragan.netlify.app/media/nip.png"  alt="Nipple Play" />
+
+</center>
 
 
 **Oso Leone:**
 
-![ ](/media/oso_leone.png)
+<center>
 
+<img style="border:1px solid black;" src="https://freddybarragan.netlify.app/media/oso_leone.png"  alt="Oso Leone" />
+
+</center>
 
