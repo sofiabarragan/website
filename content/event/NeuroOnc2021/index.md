@@ -24,7 +24,9 @@ tags: []
 **Poster**
 
 <center>
-![](/static/media/barragan_neuroonc_poster.png)
+
+[![](featured.png)](https://freddybarragan.netlify.app/media/barragan_neuroonc_poster.png)
+
 </center>
 
 **Abstract**
