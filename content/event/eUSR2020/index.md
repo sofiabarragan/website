@@ -11,7 +11,8 @@ links:
    icon_pack: fab
    name: ""
    url: https://twitter.com/freddybarragan_
-   url_video: https://www.youtube.com/watch?time_continue=2&v=U3PG8zf-fFc&feature=emb_logo
+   
+url_video: "https://www.youtube.com/watch?time_continue=2&v=U3PG8zf-fFc&feature=emb_logo"
    
 # Schedule page publish date (NOT talk date).
 publishDate: "2020-11-06T00:00:00Z"
