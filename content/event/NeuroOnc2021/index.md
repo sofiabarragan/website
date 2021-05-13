@@ -25,6 +25,9 @@ tags: []
 
 <center>
 
+<img style="border:1px solid black;" src="https://freddybarragan.netlify.app/media/barragan_neuroonc_poster.png"  alt="Poster" />
+
+
 [](https://freddybarragan.netlify.app/media/barragan_neuroonc_poster.png)
 ![](/media/barragan_neuroonc_poster.png)
 
