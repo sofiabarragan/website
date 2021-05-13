@@ -30,7 +30,7 @@ tags: [Data Science]
 
 ---
 
-This is a poster presentation on intersecting survival disparities by race/ethnicity and sex in pediatric brain tumors for the 5th Neuro-Oncology Symposium at the University of Minnesota. The work presented is actually a subset of a couple projects I've done under my PI, [Lindsay Williams]("https://med.umn.edu/bio/epidemiology/lindsay-williams") and her collaborator [Kristin Moore]("https://www.linkedin.com/in/kristinvoltzke"). If you'd like to check that out, stay tuned (until its published hehe)!
+This is a poster presentation on intersecting survival disparities by race/ethnicity and sex in pediatric brain tumors for the 5th Neuro-Oncology Symposium at the University of Minnesota. The work presented is actually a subset of a couple projects I've done under my PI, [Lindsay Williams](https://med.umn.edu/bio/epidemiology/lindsay-williams) and her collaborator [Kristin Moore](https://www.linkedin.com/in/kristinvoltzke). If you'd like to check that out, stay tuned (until its published hehe)!
 
 <center>
 
@@ -38,4 +38,4 @@ This is a poster presentation on intersecting survival disparities by race/ethni
 
 </center>
 
-You can see a full size copy of the poster [here]("https://freddybarragan.netlify.app/media/barragan_neuroonc_poster.pdf")! And if you'd like to check out our abstract submission, you can find it [here]("https://freddybarragan.netlify.app/media/abstract_neuro_SEERsurvival.pdf"). 
+You can see a full size copy of the poster [here](https://freddybarragan.netlify.app/media/barragan_neuroonc_poster.pdf)! And if you'd like to check out our abstract submission, you can find it [here]("https://freddybarragan.netlify.app/media/abstract_neuro_SEERsurvival.pdf"). 
