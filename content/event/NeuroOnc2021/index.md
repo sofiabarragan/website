@@ -30,7 +30,7 @@ tags: [Data Science]
 
 ---
 
-This is a poster presentation on intersecting survival disparities by race/ethnicity and sex in pediatric brain tumors for the 5th Neuro-Oncology Symposium at the University of Minnesota. The work presented is actually a subset of a couple projects I've done under my PI, [Lindsay Williams](https://med.umn.edu/bio/epidemiology/lindsay-williams) and her collaborator, [Kristin Moore](https://www.linkedin.com/in/kristinvoltzke). If you'd like to check that out, stay tuned (until its published hehe)!
+This is a poster presentation on intersecting survival disparities by race/ethnicity and sex in pediatric brain tumors for the 5th Neuro-Oncology Symposium at the University of Minnesota. The work presented is actually a subset of a couple projects I've done under my PI, [Lindsay Williams](https://med.umn.edu/bio/epidemiology/lindsay-williams), and our collaborator, [Kristin Moore](https://www.linkedin.com/in/kristinvoltzke). If you'd like to check that out, stay tuned (until it's published hehe)!
 
 <center>
 
