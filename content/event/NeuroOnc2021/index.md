@@ -13,6 +13,8 @@ links:
    name: ""
    url: https://twitter.com/freddybarragan_
    
+slides: slides = "https://freddybarragan.netlify.app/media/barragan_neuroonc_poster.png"
+   
 # Schedule page publish date (NOT talk date).
 publishDate: "2021-05-13T00:00:00Z"
 
