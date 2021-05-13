@@ -1,5 +1,5 @@
 ---
-title: Upcoming - GLBIO Workshop Panelist
+title: GLBIO Workshop Panelist
 event: Greater Lakes Bioinformatics Conference 2020
 event_url: https://sites.google.com/macalester.edu/glbio2021tutorial/home
 
@@ -13,7 +13,7 @@ links:
    url_video: ""
    
 # Schedule page publish date (NOT talk date).
-publishDate: "2021-05-05T00:00:00Z"
+publishDate: "2021-05-07T00:00:00Z"
 
 authors: [Freddy Barragan]
 tags: []
