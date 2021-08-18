@@ -1,7 +1,7 @@
 ---
 # Documentation: https://sourcethemes.com/academic/docs/managing-content/
 
-title: "So Fake it's Californian"
+title: "She's So Fake"
 summary: "Applying Random Forests, KNN Regression, & Sentiment Analysis to the Detection of Fake News"
 authors: [Freddy Barragan]
 tags: 

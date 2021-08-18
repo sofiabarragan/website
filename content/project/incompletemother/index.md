@@ -1,13 +1,13 @@
 ---
 # Documentation: https://sourcethemes.com/academic/docs/managing-content/
 
-title: "A couple drawings"
-summary: "A couple disparate digital drawings about a bunch of things! Some practice, some personal."
+title: "Miscellaneous Art"
+summary: "A couple disparate digital works about a bunch of things! Some practice, some personal."
 authors: []
 tags: 
 - Art
 categories: []
-date: 2019-11-02T14:47:00-05:00
+date: 2021-8-11T14:47:00-05:00
 
 # Optional external URL for project (replaces project detail page).
 external_link: ""
@@ -46,7 +46,7 @@ url_video: ""
 slides: ""
 ---
 
-** Soon to Be My Tattoo**
+**Soon to Be My Tattoo**
 
 ![ ](/media/tattoo_design.png)
 
