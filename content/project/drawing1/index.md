@@ -50,17 +50,16 @@ slides: ""
 
 ![ ](/media/bag.png)
 
-
 **Spoons**
 
 ![ ](/media/spoons.png)
 
 **Garth from WMCN Radio**
 
-![ ](/media/garth.png)
+![ ](/static/media/garth.png)
 
 **Ginger**
 
-![ ](/media/ginger.png)
+![ ](/static/media/ginger.png)
 
 

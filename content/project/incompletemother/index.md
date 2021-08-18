@@ -46,10 +46,9 @@ url_video: ""
 slides: ""
 ---
 
-**Soon to Be My Tattoo**
+**My Tattoo (soon)**
 
 ![ ](/media/tattoo_design.png)
-
 
 **Figure Practice**
 
