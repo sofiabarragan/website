@@ -63,7 +63,7 @@ slides: ""
 **Garth from WMCN Radio**
 
 <center>
-<img src="/media/garth.png" width="50%" height="50%" >
+<img src="/media/garth.png" width="30%" height="30%" >
 </center>
 
 
