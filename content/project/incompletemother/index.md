@@ -49,30 +49,30 @@ slides: ""
 **My Tattoo (soon)**
 
 <center>
-<img src="/media/tattoo_design.png" width="50%" height="50%" >
+<img src="/media/tattoo_design.png" width="75%" height="75%" >
 </center>
 
 **Figure Practice**
 
 <center>
-<img src="/media/figure.png" width="50%" height="50%" >
+<img src="/media/figure.png" width="75%" height="75%" >
 </center>
 
 **Untitled**
 
 <center>
-<img src="/media/inc_mom.png" width="50%" height="50%" >
+<img src="/media/inc_mom.png" width="75%" height="75%" >
 </center>
 
 **Nipple Play:**
 
 <center>
-<img src="/media/nip.png" width="50%" height="50%" >
+<img src="/media/nip.png" width="75%" height="75%" >
 </center>
 
 **Oso Leone:**
 
 <center>
-<img src="/media/oso_leone.png" width="50%" height="50%" >
+<img src="/media/oso_leone.png" width="75%" height="75%" >
 </center>
 
