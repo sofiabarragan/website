@@ -56,10 +56,10 @@ slides: ""
 
 **Garth from WMCN Radio**
 
-![ ](/static/media/garth.png)
+![ ](/media/garth.png)
 
 **Ginger**
 
-![ ](/static/media/ginger.png)
+![ ](/media/ginger.png)
 
 
