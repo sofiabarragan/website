@@ -48,20 +48,30 @@ slides: ""
 
 **Bags**
 
-![ ](/media/bag.png) 
-
+<center>
 <img src="/media/bag.png" width="50%" height="50%" >
+</center>
+
 
 **Spoons**
 
-![ ](/media/spoons.png)
+<center>
+<img src="/media/spoons.png" width="50%" height="50%" >
+</center>
+
 
 **Garth from WMCN Radio**
 
-![ ](/media/garth.png)
+<center>
+<img src="/media/garth.png" width="50%" height="50%" >
+</center>
+
 
 **Ginger**
 
-![ ](/media/ginger.png)
+<center>
+<img src="/media/ginger.png" width="50%" height="50%" >
+</center>
+
 
 

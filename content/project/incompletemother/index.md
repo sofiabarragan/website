@@ -48,22 +48,31 @@ slides: ""
 
 **My Tattoo (soon)**
 
-![ ](/media/tattoo_design.png)
+<center>
+<img src="/media/tattoo_design.png" width="50%" height="50%" >
+</center>
 
 **Figure Practice**
 
-![ ](/media/figure.png)
+<center>
+<img src="/media/figure.png" width="50%" height="50%" >
+</center>
 
 **Untitled**
 
-![ ](/media/inc_mom.png)
+<center>
+<img src="/media/inc_mom.png" width="50%" height="50%" >
+</center>
 
 **Nipple Play:**
 
-![ ](/media/nip.png)
+<center>
+<img src="/media/nip.png" width="50%" height="50%" >
+</center>
 
 **Oso Leone:**
 
-![ ](/media/oso_leone.png)
-
+<center>
+<img src="/media/oso_leone.png" width="50%" height="50%" >
+</center>
 
