@@ -19,7 +19,6 @@ bio: My research interests include minority health, pediatric cancer, and bayesi
 # Interests to show in About widget
 interests:
 - Bayesian Biostatistics
-- Statistical Genetics
 - Minority Health
 - Computational Art
 - Spatial Disease Modeling
@@ -59,7 +58,7 @@ social:
 - icon: spotify
   icon_pack: fab
   label: Listen!
-  link: https://open.spotify.com/playlist/3jYcDkGMTdUuVpssGprfAY?si=e2ec5ccfe9914949
+  link: https://open.spotify.com/playlist/5KpD8DTinPfvYP7ekBtKRz?si=b2c269f0979543e0
 
 # Link to a PDF of your resume/CV.
 # To use: copy your resume to `static/media/resume.pdf`, enable `ai` icons in `params.toml`, 
@@ -75,6 +74,6 @@ email: ""
 highlight_name: false
 ---
 
-I'm a senior Applied Math & Statistics major and Community & Global Health concentrator at Macalester College. Currently, I'm researching survival disparities & epigenomic trends in pediatric cancers for the University of Minnesota's Division of Epidemiology and Clinical Research.
+I'm a senior Applied Math & Statistics major and Community & Global Health concentrator at Macalester College. Currently, I'm researching survival disparities & genetic trends in pediatric cancers for the University of Minnesota's Division of Epidemiology and Clinical Research.
 
-In the longterm, I want to study health disparities for low-income, minoritized, LGBTQ+ communities using rigorous statistical methods. Outside of research, I love making digital art, drinking monster, and making spotify playlists!
+In the longterm, I want to study geographic health disparities for low-income, minoritized, LGBTQ+ communities using rigorous bayesian methods. Outside of research, I love making digital art, drinking monster, and making spotify playlists!

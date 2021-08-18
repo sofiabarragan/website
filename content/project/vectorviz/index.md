@@ -53,5 +53,5 @@ I made a [buzzfeed-style quiz](https://docs.google.com/forms/d/1BiegzgnQxC45Fruf
 
 ![Sample Quiz Results 2](/media/vectorviz2.png)
 
-The origin of this code was found on [stack overflow](https://stackoverflow.com/questions/14936504/vector-field-visualisation-r/14939043) and written in base R, but I’ve edited its color output, fine-tuning parameters (to increase granularity/contrast/iterations), noise, and output size in the past. The github link to my repro & edits can be found [here](https://github.com/freddy-barragan/website/blob/master/content/project/vectorviz/vector_field_barragan.Rmd).
+The github link to my repro & edits can be found [here](https://github.com/freddy-barragan/website/blob/master/content/project/vectorviz/vector_field_barragan.Rmd).
 

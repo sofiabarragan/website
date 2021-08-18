@@ -1,13 +1,13 @@
 ---
 # Documentation: https://sourcethemes.com/academic/docs/managing-content/
 
-title: "A couple drawings"
-summary: "A couple disparate digital drawings about a bunch of things! Some practice, some personal."
+title: "Recent Work"
+summary: "My favorite drawings from my first formal art class!"
 authors: []
 tags: 
 - Art
 categories: []
-date: 2019-11-02T14:47:00-05:00
+date: 2021-05-02T14:47:00-05:00
 
 # Optional external URL for project (replaces project detail page).
 external_link: ""
@@ -46,25 +46,17 @@ url_video: ""
 slides: ""
 ---
 
-** Soon to Be My Tattoo**
+**Spoons:**
 
-![ ](/media/tattoo_design.png)
+![ ](/media/spoons.png)
 
+**Garth from WMCN Radio:**
 
-**Figure Practice**
+![ ](/media/garth.png)
 
-![ ](/media/figure.png)
+**Ginger:**
 
-**Untitled**
-
-![ ](/media/inc_mom.png)
-
-**Nipple Play:**
-
-![ ](/media/nip.png)
-
-**Oso Leone:**
-
-![ ](/media/oso_leone.png)
+![ ](/media/ginger.png
+)
 
 
