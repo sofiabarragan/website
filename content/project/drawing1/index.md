@@ -48,7 +48,9 @@ slides: ""
 
 **Bags**
 
-![ ](/media/bag.png)
+![ ](/media/bag.png) 
+
+<img src="/media/bag.png" width="50%" height="50%" >
 
 **Spoons**
 
