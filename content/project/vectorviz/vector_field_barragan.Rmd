@@ -244,7 +244,7 @@ image(res > quantile(res,.006, na.rm=TRUE), col=0:1)
 
 
 
-### My classmate george!
+### My classmate George!
 
 ```{r}
 print(entries[5,c(1,3:ncol(entries))])
