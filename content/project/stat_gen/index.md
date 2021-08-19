@@ -33,8 +33,8 @@ Note: Because our research is ongoing, I've obscured titles and axis legends. Fo
 
 <p float="left">
 <p align="middle">
-  <img src="/media/mh_1.png" width="50%" height="75%" />
-  <img src="/media/mh_2.png" width="50%" height="75%" />
+  <img src="/media/mh_1.png" width="50%" height="50%" />
+  <img src="/media/mh_2.png" width="50%" height="50%" />
 </p>
 </p>
 
@@ -45,7 +45,7 @@ Note: Because our research is ongoing, I've obscured titles and axis legends. Fo
 
 <p float="left">
 <p align="middle">
-  <img src="/media/mh_3.png" width="50%" height="75%" />
-  <img src="/media/mh_6.png" width="50%" height="75%" />
+  <img src="/media/mh_3.png" width="50%" height="50" />
+  <img src="/media/mh_6.png" width="50%" height="50%" />
 </p>
 </p>
