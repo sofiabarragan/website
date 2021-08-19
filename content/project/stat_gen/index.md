@@ -31,25 +31,16 @@ In any case, this section is a snapshot of all the pretty, interesting, and cool
 
 Note: Because our research is ongoing, I've obscured titles and axis legends. For more plots and their relevant context, read my honors thesis in Spring 2022!
 
-<tr>
- <td> <img src="/media/mh_1.png" width="50%" height="50%"/> </td>
- <td> <img src="/media/mh_2.png" width="50%" height="50%"/> </td>
-</tr>
-
-
+<p float="left">
+  <img src="/media/mh_1.png"  width="100" />
+  <img src="/media/mh_2.png"  width="100" />
+</p>
 
 <center>
-<img src="/media/mh_4.png" width="100%" height="100%"/>
+<img src="/media/mh_4.png" width="100%" height="100%" />
 </center>
 
-<tr>
- <td> <img src="/media/mh_3.png" width="50%" height="50"/> </td>
- <td> <img src="/media/mh_6.png" width="50%" height="50%"/> </td>
-</tr>
-  
-  
-  
-  
-  
-  
-  
+<p float="left">
+  <img src="/media/mh_3.png"  width="100" />
+  <img src="/media/mh_6.png"  width="100" />
+</p>
