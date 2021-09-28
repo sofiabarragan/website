@@ -19,15 +19,14 @@ bio: My research interests include minority health, pediatric cancer, and bayesi
 # Interests to show in About widget
 interests:
 - Bayesian Biostatistics
+- Bayesian Methods for Demography
 - Minority Health
 - Computational Art
-- Spatial Disease Modeling
-- Survival Analysis
 
 # Education to show in About widget
 education:
   courses:
-  - course: BA in Applied Mathematics & Statistics
+  - course: BA in Statistics
     institution: Mathematical Statistics, Causal Inference, Statistical Machine Learning, Probability, Environmental Public Health, International Public Health
     year: 2022
 
@@ -74,6 +73,6 @@ email: ""
 highlight_name: false
 ---
 
-I'm a senior Applied Math & Statistics major and Community & Global Health concentrator at Macalester College. Currently, I'm researching survival disparities & genetic trends in pediatric cancers for the University of Minnesota's Division of Epidemiology and Clinical Research.
+I'm a senior Statistics major and Community & Global Health concentrator at Macalester College. Currently, I'm researching survival disparities & genetic trends in pediatric cancers for the University of Minnesota's Division of Epidemiology and Clinical Research.
 
-In the longterm, I want to study geographic health disparities for low-income, minoritized, LGBTQ+ communities using rigorous bayesian methods. Outside of research, I love making digital art, drinking monster, and making spotify playlists!
+In the longterm, I want to study geographic health disparities and culturual trends for low-income, minoritized, LGBTQ+ communities using rigorous bayesian methods. Outside of research, I love making digital art, drinking monster, and making spotify playlists!
