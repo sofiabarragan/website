@@ -3,28 +3,23 @@ title: "Gene Expression Differences by Race and Genetic Ancestry in B-Cell Acute
 
 summary: "My poster presentation on the genetic characteristics of survival disparities by race/ethnicity in B-cell Acute Lymphoblastic Leukemia for the American Society for Human Genetics's annual conference."
 
-links:
- - icon: twitter
-   icon_pack: fab
-   name: ""
-   url: https://twitter.com/freddybarragan_
-   
-url_code: ""
-url_pdf: "https://freddybarragan.netlify.app/media/2730_FreddyBarragan.pdf"
-url_slides: ""
-url_video: ""
-   
-   
-# Schedule page publish date (NOT talk date).
-publishDate: "2020-9-26T00:00:00Z"
-
-#projects:
-#- Survival disparities by race/ethnicity
-
-authors: [Freddy Barragan]
 tags: 
-- Public Health
 - Data Science
+- Public Health
+categories: []
+
+image:
+  caption: ""
+  focal_point: ""
+  preview_only: true
+
+links:
+- name: ""
+  url: https://twitter.com/freddybarragan_
+  icon_pack: fab
+  icon: twitter
+
+date: 2019-11-02T14:47:00-05:00
 ---
 
 This is a poster presentation on survival disparities by race/ethnicity in pediatric blood cancers for the 2021 Annual Meeting of the American Society for Human Genetics. 
