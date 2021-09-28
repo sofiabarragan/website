@@ -4,7 +4,7 @@ title: "Upcoming | Gene Expression Differences by Race and Genetic Ancestry in B
 event: "2021 American Society for Human Genetics Annual Meeting"
 event_url: https://www.ashg.org/meetings/2021meeting/
 
-summary: "My poster presentation on the genetic characteristics of survival disparities by race/ethnicity in B-cell Acute Lymphoblastic Leukemia (B-ALL) for the American Society for Human Genetics's annual conference."
+summary: "My poster presentation on the genetic characteristics of survival disparities by race/ethnicity in B-cell Acute Lymphoblastic Leukemia for the American Society for Human Genetics's annual conference."
 
 links:
  - icon: twitter
@@ -19,7 +19,7 @@ url_video: ""
    
    
 # Schedule page publish date (NOT talk date).
-publishDate: "2021-10-01T00:00:00Z"
+publishDate: "2021-9-26T00:00:00Z"
 
 #projects:
 #- Survival disparities by race/ethnicity
