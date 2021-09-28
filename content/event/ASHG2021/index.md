@@ -19,11 +19,10 @@ url_video: ""
    
    
 # Schedule page publish date (NOT talk date).
-publishDate: "2021-11-27T00:00:00Z"
+publishDate: "2021-10-01T00:00:00Z"
 
 #projects:
-#- Survival disparities by race/ethnicity and sex 
-
+#- Survival disparities by race/ethnicity
 
 authors: [Freddy Barragan]
 tags: 
