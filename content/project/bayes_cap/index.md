@@ -2,7 +2,7 @@
 title: "Neighborhood Deserts: Transportation Access & Housing Disparities in NYC"
 author: "Freddy Barragan, Juthi Dewan, Sam Ding, Vichy Meas"
 
-summary: "My poster presentation on the genetic characteristics of survival disparities by race/ethnicity in B-cell Acute Lymphoblastic Leukemia for the American Society for Human Genetics's annual conference."
+summary: "Using Bayesian models to study the relationship between transportation access and housing inequities in NYC. "
 
 tags: 
 - Data Science
@@ -124,7 +124,7 @@ Extending the USDA's definition of a food desert, we define subway deserts as th
 We first geocoded subway stop locations in NYC from the NYC Department of Transportation. Then, using ArcGIS we created a 0.5-mile-radius buffer for each station and calculated what percent of each neighborhood was covered by a buffer region. We display an example below.
 
 <center>
-<img src="/media/bayes/plot_1.png" width="100%" height="100%" />
+<img src="/media/bayes/plot_1.png" width="75%" height="75%" />
 </center>
 
 
@@ -151,7 +151,7 @@ nyc_compiled %>%
            color = guide_legend(override.aes = list(size = 8)))
 ```
 <center>
-<img src="/media/bayes/plot_2.png" width="100%" height="100%" />
+<img src="/media/bayes/plot_2.png" width="75%" height="75%" />
 </center>
 
 
@@ -380,7 +380,8 @@ noncit_model <- stan_glm(
 
 ```
 
-`$$\begin{split}
+`$$
+\begin{split}
 \text{Non-Citizen Count} \mid  \beta_{0c}, \beta_1, ..., \beta_k, r & \sim \text{NegBin}(\mu, r) \; \; \; \; \text{where} \log(\mu) = \beta_{0c} + \sum^{14}_{k=1}X_{k}\beta_k \\
 \beta_{0c} &\sim N(0,2.5^2)\\				
 \beta_{1} &\sim N(0,6.2785^2)\\				
@@ -398,7 +399,8 @@ noncit_model <- stan_glm(
 \beta_{13} &\sim N(0,1.0952^2)\\				
 \beta_{14} &\sim N(0,1.638^2)\\				
 r & \sim Exp(1) \\
-\end{split}$$`
+\end{split}
+$$`
 
 ### Model 2: Mean Neighborhood Rental Prices
 
@@ -416,7 +418,8 @@ rent_model <- stan_glm(
 )
 ```
 
-`$$\begin{split}
+`$$
+\begin{split}
 \text{Mean Rent} \mid  \beta_{0c}, \beta_1, ..., \beta_k, r & \sim \text{Normal}(\mu, \sigma) \; \; \; \; \text{where} \mu = \beta_{0c} + \sum^{14}_{k=1}X_{k}\beta_k \\
 \beta_ {0c} &\sim N(1600,20^2)\\				
 \beta_{1} &\sim N(0,47.315^2)\\				
@@ -435,7 +438,8 @@ rent_model <- stan_glm(
 \beta_{14} &\sim N(0,8.2532^2)\\				
 \beta_{15} &\sim N(0,12.3441^2)\\
 \sigma & \sim Exp(0.13) \\
-\end{split}$$`
+\end{split}
+$$`
 
 We chose our prior specifications of mean rental price using Juthi’s experience renting in NYC and a group conversation about typical rental prices we would elect to pay in NYC, Los Angeles, and other major cities we have lived in or around. 
 
@@ -455,7 +459,8 @@ eviction_model <- stan_glm(
 )
 ```
 
-`$$\begin{split}
+`$$
+\begin{split}
 \text{Eviction Count} \mid  \beta_{0c}, \beta_1, ..., \beta_k, r & \sim \text{NegBin}(\mu, r) \; \; \; \; \text{where} \log(\mu) = \beta_{0c} + \sum^{14}_{k=1}X_{k}\beta_k \\
 \beta_{0c} &\sim N(0,2.5^2)\\				
 \beta_{1} &\sim N(0,6.2992^2)\\				
@@ -472,7 +477,8 @@ eviction_model <- stan_glm(
 \beta_{12} &\sim N(0,1.142^2)\\				
 \beta_{13} &\sim N(0,1.6003^2)\\	
 r & \sim Exp(1) \\
-\end{split}$$`
+\end{split}
+$$`
 
 
 
@@ -683,7 +689,7 @@ After removing predictors whose 80% credible intervals included the possibility 
 - Latinx Percentage
 - Asian Percentage
 
-In the following section, we interpret each predictor. However, we included total population to control for eviction count's incidence relative to neighborhood population. As such, we will not interpret its specific $\beta$ value.
+In the following section, we interpret each predictor. However, we included total population to control for eviction count's incidence relative to neighborhood population. As such, we will not interpret its specific `$\beta$` value.
 
 
 Next, we interpret each predictor:
