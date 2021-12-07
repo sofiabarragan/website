@@ -454,7 +454,7 @@ noncit_model <- stan_glm(
 
 `$$
 \begin{aligned}
-\text{Non-Citizen Count} \mid  \beta_{0c}, \beta_1, ..., \beta_k, r & \sim \text{NegBin}(\mu, r) \\\text{where} \log(\mu) = \beta_{0c} + \sum^{14}_{k=1}X_{k}\beta_k \\
+\text{Non-Citizen Count} \mid  \beta_{0c}, \beta_1, ..., \beta_k, r & \sim \text{NegBin}(\mu, r) \\\text{where} \log(\mu) &= \beta_{0c} + \sum^{14}_{k=1}X_{k}\beta_k \\
 \beta_{0c} &\sim N(0,2.5^2)\\				
 \beta_{1} &\sim N(0,6.2785^2)\\				
 \beta_{2} &\sim N(0,6.7918^2)\\				
@@ -492,7 +492,7 @@ rent_model <- stan_glm(
 
 `$$
 \begin{aligned}
-\text{Mean Rent} \mid  \beta_{0c}, \beta_1, ..., \beta_k, r & \sim \text{Normal}(\mu, \sigma) \\\text{where } \mu = \beta_{0c} + \sum^{15}_{k=1}X_{k}\beta_k \\
+\text{Mean Rent} \mid  \beta_{0c}, \beta_1, ..., \beta_k, r & \sim \text{Normal}(\mu, \sigma) \\\text{where } \mu &= \beta_{0c} + \sum^{15}_{k=1}X_{k}\beta_k \\
 \beta_ {0c} &\sim N(1600,20^2)\\				
 \beta_{1} &\sim N(0,47.315^2)\\				
 \beta_{2} &\sim N(0,51.1837^2)\\				
@@ -533,7 +533,7 @@ eviction_model <- stan_glm(
 
 `$$
 \begin{aligned}
-\text{Eviction Count} \mid  \beta_{0c}, \beta_1, ..., \beta_k, r & \sim \text{NegBin}(\mu, r) \\\text{where} \log(\mu) = \beta_{0c} + \sum^{13}_{k=1}X_{k}\beta_k \\
+\text{Eviction Count} \mid  \beta_{0c}, \beta_1, ..., \beta_k, r & \sim \text{NegBin}(\mu, r) \\\text{where} \log(\mu) &= \beta_{0c} + \sum^{13}_{k=1}X_{k}\beta_k \\
 \beta_{0c} &\sim N(0,2.5^2)\\				
 \beta_{1} &\sim N(0,6.2992^2)\\				
 \beta_{2} &\sim N(0,6.7813^2)\\				
