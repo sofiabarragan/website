@@ -549,7 +549,7 @@ eviction_model <- stan_glm(
 \beta_{12} &\sim N(0,1.142^2)\\				
 \beta_{13} &\sim N(0,1.6003^2)\\	
 r & \sim Exp(1) \\
-end{aligned}
+\end{aligned}
 $$`
 
 
