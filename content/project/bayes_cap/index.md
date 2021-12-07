@@ -91,30 +91,9 @@ The process involved grouping geotagged locations by the defined neighborhood bo
 
 # Data Summaries 
 
-Our data has 224 observations of 38 variables. The following table presents a numeric summary and breakdown for a subset of our variables of interests. However, note that we present most demographic count variables using their equivalent percent.
+We present a [numeric summary](https://freddybarragan.netlify.app/media/ch4.html#Data_Summaries) on our data with 224 observations of 38 variables. However, note that we use percent equivalents for most demographic count variables.
 
-```{r eval = TRUE}
-#summary(modeling_data)
-library(table1)
-table_print <- table1(~ 
-                        total_pop + mean_income + mean_rent +
-                        gini_neighborhood + 
-                        below_poverty_line_perc + 
-                        eviction_count + 
-                        transportation_desert_4cat + 
-                        noncitizen_perc + white_perc + black_perc +
-                        latinx_perc + asian_perc
-                        | borough, data = nyc_compiled %>% as_tibble())  %>% as_tibble() 
-
-colnames(table_print) <- c("Variable", "Bronx (N=44)", "Brooklyn (N=64)","Manhattan (N=39)", "Queens (N=77)", "Overall (N=224)")
-
-library(kableExtra)
-table_print%>%
-  filter(Variable!="") %>% kable() %>% kable_styling() 
-```
-
-
-Using [descriptive statistics](https://freddybarragan.netlify.app/media/ch4.html#Data_Summaries), we found that Manhattan has the largest population counts, highest mean rental prices, highest mean income, highest income inequality (e.g. gini value), most number of neighborhoods with excellent subway access, and the greatest proportion of white citizens. 
+We found that Manhattan had the largest population counts, highest mean rental prices, highest mean income, highest income inequality (e.g. gini value), most number of neighborhoods with excellent subway access, and the greatest proportion of white citizens. 
 
 Conversely, we observed that the Bronx has the lowest mean income and highest eviction counts, while having the highest proportions of people living below the poverty line, and the highest number of people with limited subway access. Importantly, the Bronx also had the highest densities of both Latinx and Black residents of any other borough in New York, meaning that the Black and Latinx residents in New York are experiencing the burden of New York's structural inequities.
 
