@@ -31,97 +31,6 @@ We were initially interested in characterizing New York City’s internal racial
 
 # Data Introduction
 
-```{r}
-# Load packages
-library(tidyverse)
-library(janitor)
-library(here)
-library(rstan)
-library(rstanarm)
-library(bayesrules)
-library(tidyverse)
-library(rstanarm)
-library(broom.mixed)
-library(tidybayes)
-library(bayesplot)
-library(bayesrules)
-library(tidyverse)
-library(rstanarm)
-library(broom.mixed)
-library(tidybayes)
-library(forcats)
-library(bayesplot)
-library(sf)
-library(nycgeo)
-library(tidycensus)
-library(extrafont)
-library(extrafontdb)
-# themes
-theme_set(theme_minimal() +
-            theme(text = element_text(family="DIN Condensed")))
-brown_green <- c("#E9DBC2","#7D9B8A","#4D6F5C","#D29B5B","#744410","#1C432D")
-color_scheme_set(brown_green)
-```
-
-```{r, results='hide'}
-nyc_join <- merge(nta_sf,nta_acs_data)
-
-
-nyc_join <- nyc_join %>%
-  st_transform(., 4269)
-
-county_list <- nyc_join %>% pull(county_name) %>% unique()
-
-
-census_api_key("0cc07f06386e317f312adef5e0892b0d002b7254")
-
-census_data <- get_acs(state = "NY", 
-        county = c(county_list), 
-        geography = "tract", 
-        variables = c(gini_inequality ="B19083_001"),
-        year = 2019,
-        output = "wide",
-        survey = "acs5",
-        geometry = TRUE) %>% 
-  dplyr::select(-c(NAME, ends_with("M"))) %>%
-         rename_at(vars(ends_with("E")), .funs = list(~str_sub(., end = -2)))  %>%
-  st_transform(., 4269) %>%
-  dplyr::select(-GEOID)
-```
-
-```{r, results='hide'}
-vari_names <- read_csv(here("clean_data", "nyc_names_vichy_complied2.csv"))
-nyc_clean <- st_read(here("clean_data", "nyc_data_vichy_complied2.shp"))
-colnames(nyc_clean) <- colnames(vari_names)
-
-gini_neighborhood <- st_join(nyc_clean, census_data, left = TRUE) %>%
-  group_by(nta_id) %>%
-  summarize(gini_neighborhood=median(gini_inequality, na.rm=T)) %>%
-  as.tibble() %>%
-  dplyr::select(nta_id, gini_neighborhood) 
-
-nyc_clean <- nyc_clean %>%
-  as.tibble() %>%
-  left_join(., gini_neighborhood, by="nta_id")%>% 
-  unique() %>%
-  st_as_sf()
-
-nyc_compiled <- nyc_clean %>%
-   mutate(asian_perc = asian_count / total_pop) %>%
-   mutate(white_perc = white_count / total_pop) %>%
-   mutate(black_perc = black_count / total_pop) %>%
-   mutate(latinx_perc = latinx_count / total_pop) %>%
-   mutate(native_perc = native_count / total_pop) %>%
-   mutate(noncitizen_perc = noncitizen_count / total_pop) %>%
-   mutate(evictions_perc = eviction_count / total_pop) %>%
-   mutate(uninsured_perc = uninsured_count / total_pop) %>%
-  mutate(unemployment_perc = unemployment_count / total_pop) %>%
-  mutate(below_poverty_line_perc = below_poverty_line_count / total_pop) %>%
-  mutate(transportation_desert_4cat = 
-           factor(transportation_desert_4cat, levels=c("Poor", "Limited", "Satisfactory", "Excellent")))
-```
-
-
 All data used in this project are from two major sources: the Tidycensus package and NYC Open Data. 
 
 Tidycensus is an R package interface, developed by Kyle Walker and Matt Herman, that enables easy access to the US Census Bureau’s data APIs and returns Tidyverse-ready data frames from various major US Census Bureau datasets. Our demographic and socioeconomic data are drawn from the 2019 American Community Survey results found in Tidycensus package. A summary of our ACS data variables is below:
@@ -215,13 +124,13 @@ Extending the USDA's definition of a food desert, we define subway deserts as th
 We first geocoded subway stop locations in NYC from the NYC Department of Transportation. Then, using ArcGIS we created a 0.5-mile-radius buffer for each station and calculated what percent of each neighborhood was covered by a buffer region. We display an example below.
 
 <center>
-<img src="/media/bayes/plot_1.png" width="50%" height="50%" />
+<img src="/media/bayes/plot_1.png" width="100%" height="100%" />
 </center>
 
 
 In the graph, buffer zones are in light pink with overlapping boundaries dissolved between stations, while the dark pink dots indicate the exact geographic locations of the stations. Each neighborhood, then, had a percentage score that defined it's subway accessibility score. 
 
-Upon observation, we categorized the areas served by the subway network into four ordinal categories: Poor, Limited, Satisfactory, and Excellent. These categories are defined at 0-1%, 1-75%, 75-90%, and 90-100% of area covered by transit, respectively. We defined these cutoffs using the distribution of subway coverage percentages and our own judgment on what constitutes a desert. As such, these cutoffs are specific to New York City and may not be perfectly reproducible. The following plot details the spatial locations of these transportation categories.
+Upon observation, we categorized the areas served by the subway network into four ordinal categories: Poor, Limited, Satisfactory, and Excellent. These categories are defined at 0-1\%, 1-75\%, 75-90\%, and 90-100\% of area covered by transit, respectively. We defined these cutoffs using the distribution of subway coverage percentages and our own judgment on what constitutes a desert. As such, these cutoffs are specific to New York City and may not be perfectly reproducible. The following plot details the spatial locations of these transportation categories.
 
 
 ```{r, fig.height=5*1.2, fig.width=5*1.2}
@@ -242,7 +151,7 @@ nyc_compiled %>%
            color = guide_legend(override.aes = list(size = 8)))
 ```
 <center>
-<img src="/media/bayes/plot_2.png" width="50%" height="50%" />
+<img src="/media/bayes/plot_2.png" width="100%" height="100%" />
 </center>
 
 
@@ -254,34 +163,14 @@ Naive Bayes Model is one of the most popular models for classifying a response v
 
 We implemented a naive Bayes classifier on subway access because it is both computationally efficient and applicable to Bayesian classification settings where outcomes may have 2+ categories. Specifically, we fit transportation access by taking mean_income, percentage below the poverty line, and the number of grocery stores. Because we are predicting 4 levels of transportation access, we initially fit this model using the `e1071` package to classify subway transit level. 
 
-
 ```{r}
-library(e1071)
-
-nyc_naive <- read_csv(here("clean_data", "nyc_names_vichy_complied2.csv"))%>%
-  mutate(transportation_desert_4cat = factor(transportation_desert_4cat, levels=c("Poor", "Limited", "Satisfactory", "Excellent"))) %>%
-  mutate(transportation_desert_4num = factor(as.numeric(transportation_desert_4cat))) %>%
-   mutate(asian_perc = (asian_count / total_pop) * 100) %>%
-   mutate(white_perc = (white_count / total_pop)* 100) %>%
-   mutate(black_perc = (black_count / total_pop)* 100) %>%
-   mutate(latinx_perc = (latinx_count / total_pop)* 100) %>%
-   mutate(native_perc = (native_count / total_pop)* 100) %>%
-   mutate(below_poverty_perc = (below_poverty_line_count / total_pop) * 100) %>%
-   mutate(noncitizen_perc = (noncitizen_count / total_pop)* 100) %>%
-   mutate(evictions_perc = (eviction_count / total_pop)* 100) %>%
-   mutate(uninsured_perc = (uninsured_count / total_pop)* 100) %>%
-  mutate(unemployment_perc = (unemployment_count / total_pop)* 100) %>%
-  filter(nta_type == 0)
-
 set.seed(454)
 naive_model <- naiveBayes(transportation_desert_4cat ~ 
                               mean_income +
                               below_poverty_perc +
                               store_count,
                             data = nyc_naive)
-
 ```
-
 
 ```{r}
 naive2_prediction <- naive_classification_summary_cv(naive_model, 
@@ -292,24 +181,10 @@ naive2_prediction %>%
   kable_styling()
 ```
 
-
-Under 10-fold cross validation, our Naive Bayes model had an overall cross-validated accuracy of `r (25+4+2+61)/nrow(nyc_naive)`%. However, our predictions were most accurate when predicting Poor transportation access (78.12%) and Excellent transportation access (72.62%). The following plot describes the cross-validated accuracy breakdown by each observed transportation access category.
+Under 10-fold cross validation, our Naive Bayes model had an overall cross-validated accuracy of 51.11\%. However, our predictions were most accurate when predicting Poor transportation access (78.12\%) and Excellent transportation access (72.62\%). The following plot describes the cross-validated accuracy breakdown by each observed transportation access category.
 
 
 ```{r}
-library(tidyverse)
-
-prediction <- as.data.frame(naive2_prediction) %>%
-  pivot_longer(
-  cols= Poor:Excellent, 
-  names_to = 'Predictions', 
-  values_to = 'Probability'
-) %>% 
-  mutate(Probability = as.numeric(str_extract(Probability,'\\d+\\.\\d+'))/100) %>%
-  mutate(transportation_desert_4cat = factor(transportation_desert_4cat, levels=c("Poor", "Limited", "Satisfactory", "Excellent"))) %>%
-  mutate(Predictions = factor(Predictions, levels=c("Poor", "Limited", "Satisfactory", "Excellent"))) 
-
-
 prediction %>%  
   ggplot(aes(x=transportation_desert_4cat, y=Probability, fill=Predictions)) + 
   geom_bar(position="fill", stat="identity")  +
@@ -325,7 +200,7 @@ prediction %>%
 ```
 
 <center>
-<img src="/media/bayes/plot_3.png" width="50%" height="50%" />
+<img src="/media/bayes/plot_3.png" width="100%" height="100%" />
 </center>
 
 From the plot, it is clear that our naive Bayes model is sufficient when predicting the extrema of subway (in)access given the overwhelming proportion of true-poor and true-excellent classifications. However, it remains imperfect when considering the inaccuracy for both the limited and satisfactory transportation categories, our data's distributions, and its interpretability.
@@ -341,29 +216,6 @@ Importantly, naive Bayes assumes that all quantitative predictors are normally d
 ## Ordinal Model
 
 Having realized the shortcomings of the naive Bayes model, we wanted to see if there are any alternatives. We land on the ordinal regression model.
-
-```{r}
-library(rsample)
-set.seed(454)
-
-nyc_compiled_classify <- nyc_compiled %>%
-  mutate(transportation_desert_4cat = factor(transportation_desert_4cat, levels=c("Poor", "Limited", "Satisfactory", "Excellent"))) %>%
-  mutate(transportation_desert_4num = factor(as.numeric(transportation_desert_4cat))) %>%
-   mutate(asian_perc = (asian_count / total_pop) * 100) %>%
-   mutate(white_perc = (white_count / total_pop)* 100) %>%
-   mutate(black_perc = (black_count / total_pop)* 100) %>%
-   mutate(latinx_perc = (latinx_count / total_pop)* 100) %>%
-   mutate(native_perc = (native_count / total_pop)* 100) %>%
-   mutate(below_poverty_perc = (below_poverty_line_count / total_pop) * 100) %>%
-   mutate(noncitizen_perc = (noncitizen_count / total_pop)* 100) %>%
-   mutate(uninsured_perc = (uninsured_count / total_pop)* 100) %>%
-  mutate(unemployment_perc = (unemployment_count / total_pop)* 100) %>%
-  filter(nta_type == 0)
-
-data_split <- initial_split(nyc_compiled_classify, prop = .8) 
-data_train <- training(data_split)
-data_test <- testing(data_split) 
-```
 
 ```{r}
 model2 <- stan_polr(transportation_desert_4num ~ 
@@ -383,7 +235,7 @@ tidy(model2, effects = "fixed", conf.int = TRUE, conf.level = 0.8) %>%
   kable_styling()
 ```
 
-Then using a function written by Connie Zhang's, we describe the accuracy of the ordinal model below.
+Then using a function written by [Connie Zhang](https://connie-zhang.github.io/pet-adoption/modelling.html), we describe the accuracy of the ordinal model below.
 
 ```{r}
 ordinal_accuracy<-function(post_preds,mydata){
@@ -416,28 +268,9 @@ my_prediction2 <- posterior_predict(
 ordinal_accuracy(my_prediction2, data_test)
 ```
 
+We are then 63.88% accurate when predicting transportation access categories.
 
 ```{r}
-my_prediction2 <- posterior_predict(
-  model2, 
-  newdata = data_test)
-
-prediction_long <- my_prediction2 %>% 
-  t() %>% 
-  as.tibble() %>%
-  mutate_if(is.character, as.numeric) %>%
-  rownames_to_column() %>% 
-  rowwise(id=rowname) %>%
-  summarize(median=ifelse(mean(c_across(where(is.numeric)))>3.5, ceiling(mean(c_across(where(is.numeric)))), floor(mean(c_across(where(is.numeric)))))) %>%
-  rename(predicted_desert = median)%>%
-  mutate(predicted_desert = case_when(
-    predicted_desert==1 ~ "Poor",
-    predicted_desert ==2 ~ "Limited",
-    predicted_desert ==3 ~ "Satisfactory",
-    TRUE ~ "Excellent",
-  ))  %>%
-  mutate(predicted_desert = factor(predicted_desert, levels=c("Poor", "Limited", "Satisfactory", "Excellent")))
-
 data_test %>%
   select(nta_id, borough, transportation_desert_4cat) %>%
   rownames_to_column() %>%
@@ -457,7 +290,7 @@ data_test %>%
 ```
 
 <center>
-<img src="/media/bayes/plot_4.png" width="50%" height="50%" />
+<img src="/media/bayes/plot_4.png" width="100%" height="100%" />
 </center>
 
 # Transportation and Structural Inequity
@@ -466,159 +299,19 @@ Transportation access is a pervasive structural issue. However, previous researc
 
 This next section aims to connect transportation access to housing-inequities that we know also have racial and class dimensions. In particular, we wanted to assess transportation access’s relationship with immigrant community size, rental prices, and eviction counts by neighborhood. We felt that this was an appropriate direction because as you can see from the plots below:
 
-```{r}
-desert_map <- nyc_compiled %>%
-  filter(nta_type == 0) %>%
-  ggplot() +
-  geom_sf(aes(fill = transportation_desert_4cat), color = "#8f98aa") +
-  scale_fill_manual(values=c("#895F32","#E9DBC2","#7D9B8A", "#395645"),
-                       guide = guide_legend(title = "Subway Accessibility \nCategory"), na.value="#D6D6D6") +
-  theme_minimal() +
-  theme(panel.grid.major = element_line("transparent"),
-        axis.text = element_blank()) +
-  ggtitle("Subway Access in \nNYC")+ 
-    theme(panel.grid.major = element_line("transparent"),
-          plot.title = element_text(family="DIN Condensed", size = 2* 30, face = "bold"),
-          legend.title = element_text(size = 12, family="DIN Condensed"), 
-          legend.text = element_text(size = 12)) + 
-    guides(shape = guide_legend(override.aes = list(size = 8)),
-           color = guide_legend(override.aes = list(size = 8)))
-
-rent_map <- nyc_compiled %>%
-  filter(nta_type == 0) %>%
-  ggplot() +
-  geom_sf(aes(fill = mean_rent), color = "#8f98aa") +
-  scale_fill_gradient(low = "#FCF5EE", high = "#30969C",
-                      guide = guide_legend(title = "Dollars")) +
-  theme_minimal() +
-  theme(panel.grid.major = element_line("transparent"),
-        axis.text = element_blank()) +
-  ggtitle("Mean Rent in \nNYC")+ 
-    theme(panel.grid.major = element_line("transparent"),
-          plot.title = element_text(family="DIN Condensed", size = 2* 30, face = "bold"),
-          legend.title = element_text(size = 12, family="DIN Condensed"),
-          legend.text = element_text(size = 12)) +
-    guides(shape = guide_legend(override.aes = list(size = 8)),
-           color = guide_legend(override.aes = list(size = 8)))
-
-evict <- nyc_compiled %>%
-  filter(nta_type == 0) %>%
-  ggplot() +
-  geom_sf(aes(fill = eviction_count), color = "#8f98aa")+
-  scale_fill_gradient(low = "#FCF5EE", high = "#C47572", 
-                      guide = guide_legend(title = "Number of Evictions")) +
-  theme_minimal() +
-  theme(panel.grid.major = element_line("transparent"),
-        axis.text = element_blank()) +
-  ggtitle("Eviction Counts in \nNYC")+ 
-    theme(panel.grid.major = element_line("transparent"),
-          plot.title = element_text(family="DIN Condensed", size = 2* 30, face = "bold"),
-          legend.title = element_text(size = 12, family="DIN Condensed"), 
-          legend.text = element_text(size = 12)) + 
-    guides(shape = guide_legend(override.aes = list(size = 8)),
-           color = guide_legend(override.aes = list(size = 8)))
-
-noncit <- nyc_compiled %>%
-  filter(nta_type == 0) %>%
-  ggplot() +
-  geom_sf(aes(fill = noncitizen_perc), color = "#8f98aa") +
-scale_fill_gradient(low = "#FCF5EE", high = "#5E76AD",
-                    guide = guide_legend(title = "Percent Non-Citizen")) +
-  theme_minimal() +
-  theme(panel.grid.major = element_line("transparent"),
-        axis.text = element_blank()) +
-  ggtitle("Immigrant Density in \nNYC")+ 
-    theme(panel.grid.major = element_line("transparent"),
-          plot.title = element_text(family="DIN Condensed", size = 2* 30, face = "bold"),
-          legend.title = element_text(size = 12, family="DIN Condensed"), 
-          legend.text = element_text(size = 12)) + 
-    guides(shape = guide_legend(override.aes = list(size = 8)),
-           color = guide_legend(override.aes = list(size = 8)))
-```
-
 
 ```{r, fig.height=8*2, fig.width=8*2}
-library(egg)
 ggarrange(desert_map, rent_map, evict, noncit,
           ncol=2, nrow=2)
 ```
 
 <center>
-<img src="/media/bayes/plot_5.png" width="50%" height="50%" />
+<img src="/media/bayes/plot_5.png" width="100%" height="100%" />
 </center>
 
 Transportation access is typically worst in areas with the highest densities of non-citizen residents, while it is the best in neighborhoods with the highest mean rental prices. Further, observe that eviction counts are highly concentrated in north and south NYC, where some of these neighborhoods have mixed-accessibility to transit. 
 
 Unfortunately, rent, transportation access, and eviction counts may also be associated with respective density of nonwhite communities.
-
-```{r}
-white <- nyc_compiled %>%
-  filter(nta_type == 0) %>%
-  ggplot() +
-  geom_sf(aes(fill = white_perc), color = "#8f98aa") +
-  scale_fill_gradientn(colors = c("#FCF5EE","#919BB6", "#5A6687", "#3D465C"),  guide = guide_legend(title = "Percent White")) +
-  theme_minimal() +
-  theme(panel.grid.major = element_line("transparent"),
-        axis.text = element_blank()) +
-  ggtitle("White Population \nin NYC")+ 
-    theme(panel.grid.major = element_line("transparent"),
-          plot.title = element_text(family="DIN Condensed", size = 2* 30, face = "bold"),
-          legend.title = element_text(size = 12, family="DIN Condensed"), 
-          legend.text = element_text(size = 12)) + 
-    guides(shape = guide_legend(override.aes = list(size = 8)),
-           color = guide_legend(override.aes = list(size = 8)))
-
-black <- nyc_compiled %>%
-  filter(nta_type == 0) %>%
-  ggplot() +
-  geom_sf(aes(fill = black_perc), color = "#8f98aa") +
-  scale_fill_gradientn(colors = c("#FCF5EE","#F8ABA6", "#F58581", "#DB3F37"), guide = guide_legend(title = "Percent Black")) +
-  theme_minimal() +
-  theme(panel.grid.major = element_line("transparent"),
-        axis.text = element_blank()) +
-  ggtitle("Black Population \nin NYC")+ 
-    theme(panel.grid.major = element_line("transparent"),
-          plot.title = element_text(family="DIN Condensed", size = 2* 30, face = "bold"),
-          legend.title = element_text(size = 12, family="DIN Condensed"), 
-          legend.text = element_text(size = 12)) + 
-    guides(shape = guide_legend(override.aes = list(size = 8)),
-           color = guide_legend(override.aes = list(size = 8)))
-
-asian <- nyc_compiled %>%
-  filter(nta_type == 0) %>%
-  ggplot() +
-  geom_sf(aes(fill = asian_perc), color = "#8f98aa") +
-  scale_fill_gradientn(colors = c("#FCF5EE","#C1C5EC", "#A1A8E2", "#4451C5"),                      guide = guide_legend(title = "Percent Asian")) +
-  theme_minimal() +
-  theme(panel.grid.major = element_line("transparent"),
-        axis.text = element_blank()) +
-  ggtitle("Asian Population \nin NYC")+ 
-    theme(panel.grid.major = element_line("transparent"),
-          plot.title = element_text(family="DIN Condensed", size = 2* 30, face = "bold"),
-          legend.title = element_text(size = 12, family="DIN Condensed"), 
-          legend.text = element_text(size = 12)) + 
-    guides(shape = guide_legend(override.aes = list(size = 8)),
-           color = guide_legend(override.aes = list(size = 8)))
-
-latinx <- nyc_compiled %>%
-  filter(nta_type == 0) %>%
-  ggplot() +
-  geom_sf(aes(fill = latinx_perc), color = "#8f98aa")+
-  scale_fill_gradientn(colors = c("#FCF5EE","#F4E2B8", "#E9C572", "#E77E2F"), 
-                      guide = guide_legend(title = "Percent Latinx")) +
-  theme_minimal() +
-  theme(panel.grid.major = element_line("transparent"),
-        axis.text = element_blank()) +
-  ggtitle("Latinx Population \nin NYC")+ 
-    theme(panel.grid.major = element_line("transparent"),
-          plot.title = element_text(family="DIN Condensed", size = 2* 30, face = "bold"),
-          legend.title = element_text(size = 12, family="DIN Condensed"), 
-          legend.text = element_text(size = 12)) + 
-    guides(shape = guide_legend(override.aes = list(size = 8)),
-           color = guide_legend(override.aes = list(size = 8)))
-
-```
-
 
 ```{r, fig.height=16, fig.width=16+4}
 ggarrange(desert_map, white, black, latinx, asian, ncol=3, nrow=2)
@@ -626,188 +319,24 @@ ggarrange(desert_map, white, black, latinx, asian, ncol=3, nrow=2)
 
 
 <center>
-<img src="/media/bayes/plot_6.png" width="50%" height="50%" />
+<img src="/media/bayes/plot_6.png" width="100%" height="100%" />
 </center>
 
 From the plots, neighborhoods with the highest densities of Black and Asian community members also have the poorest scores of subway access, while the converse holds true for neighborhoods with the highest proportion of White residents. 
 
 Further, observe that eviction counts are most common in neighborhoods with the highest densities of Black and Latinx community members. The below faceted visualizations detail the specific relationships between the proportion of Black, Latinx, Asian, and White residents in a neighborhood with eviction counts.
 
-```{r}
-black_eviction <- nyc_compiled %>%
-  filter(nta_type == 0) %>%
-  ggplot(aes(x=black_perc,
-             color=transportation_desert_4cat, 
-             y=eviction_count)) +
-  geom_point(size=2)+
-  geom_smooth(method="lm", size=3, se=F)+
-  labs(title="Eviction Counts by Black Density per Transportation Category", y="", y="Black (%)")+
-  theme_linedraw()+
-    theme(legend.position = "none",
-         # axis.text.y.left = element_blank(),
-        #  axis.text.x.bottom = element_text(size = 16, face = "bold"),
-          plot.title = element_text(family="DIN Condensed", size = 20 ,hjust=.5, face = "bold"),
-    strip.background.x = element_rect(fill="Black", color="Black"),
-    strip.text.x = element_text(size = 14, 
-                                color = "White",
-                                face = "bold")) + 
-   scale_color_manual(values=c("#895F32","#E9DBC2","#7D9B8A", "#395645"))+  facet_wrap(.~transportation_desert_4cat, scales = "free") 
-
-asian_eviction <- nyc_compiled %>%
-  filter(nta_type == 0) %>%
-  ggplot(aes(x=asian_perc,
-             color=transportation_desert_4cat, 
-             y=eviction_count)) +
-  geom_point(size=2)+
-  geom_smooth(method="lm", size=3, se=F)+
-  labs(title="Eviction Counts by Asian Density per Transportation Category", y="", y="Black (%)")+
-  theme_linedraw()+
-    theme(legend.position = "none",
-         # axis.text.y.left = element_blank(),
-        #  axis.text.x.bottom = element_text(size = 16, face = "bold"),
-          plot.title = element_text(family="DIN Condensed", size = 20,hjust=.5, face = "bold"),
-    strip.background.x = element_rect(fill="Black", color="Black"),
-    strip.text.x = element_text(size = 14, 
-                                color = "White",
-                                face = "bold")) + 
-   scale_color_manual(values=c("#895F32","#E9DBC2","#7D9B8A", "#395645"))+  facet_wrap(.~transportation_desert_4cat, scales = "free") 
-
-latinx_eviction <- nyc_compiled %>%
-  filter(nta_type == 0) %>%
-  ggplot(aes(x=latinx_perc,
-             color=transportation_desert_4cat, 
-             y=eviction_count)) +
-  geom_point(size=2)+
-  geom_smooth(method="lm", size=3, se=F)+
-  labs(title="Eviction Counts by Latinx Density per Transportation Category", y="", y="Black (%)")+
-  theme_linedraw()+
-    theme(legend.position = "none",
-         # axis.text.y.left = element_blank(),
-        #  axis.text.x.bottom = element_text(size = 16, face = "bold"),
-          plot.title = element_text(family="DIN Condensed", size = 20,hjust=.5, face = "bold"),
-    strip.background.x = element_rect(fill="Black", color="Black"),
-    strip.text.x = element_text(size = 14, 
-                                color = "White",
-                                face = "bold")) + 
-   scale_color_manual(values=c("#895F32","#E9DBC2","#7D9B8A", "#395645"))+  facet_wrap(.~transportation_desert_4cat, scales = "free") 
-
-white_eviction <- nyc_compiled %>%
-  filter(nta_type == 0) %>%
-  ggplot(aes(x=white_perc,
-             color=transportation_desert_4cat, 
-             y=eviction_count)) +
-  geom_point(size=2)+
-  geom_smooth(method="lm", size=3, se=F)+
-  labs(title="Eviction Counts by White Density per Transportation Category", y="", y="Black (%)")+
-  theme_linedraw()+
-    theme(legend.position = "none",
-         # axis.text.y.left = element_blank(),
-        #  axis.text.x.bottom = element_text(size = 16, face = "bold"),
-          plot.title = element_text(family="DIN Condensed", size = 20,hjust=.5, face = "bold"),
-    strip.background.x = element_rect(fill="Black", color="Black"),
-    strip.text.x = element_text(size = 14, 
-                                color = "White",
-                                face = "bold")) + 
-   scale_color_manual(values=c("#895F32","#E9DBC2","#7D9B8A", "#395645"))+  facet_wrap(.~transportation_desert_4cat, scales = "free") 
-```
-
-```{r, fig.height=8*2, fig.width=8*2}
-ggarrange(black_eviction, latinx_eviction, asian_eviction, white_eviction, ncol=2, nrow=2)
-```
-
-
 <center>
-<img src="/media/bayes/plot_7.png" width="50%" height="50%" />
+<img src="/media/bayes/plot_7.png" width="100%" height="100%" />
 </center>
 
 Black and Latinx residential proportions by neighborhood are associated with increased eviction counts. However, we must specify that Black resident proportions are uniformly associated with increases in eviction counts across transportation levels, while the relationship between eviction counts and Latinx resident proportion is not. In contrast, both White and Asian proportions are uniformly associated with decreases in eviction counts.
 
 Lastly, let's consider mean neighborhood rental prices. The following visualizations detail the relationships between the proportion of Black, Latinx, Asian, and White residents in a neighborhood with that neighborhood mean rental price.
 
-```{r}
-black_rent <- nyc_compiled %>%
-  filter(nta_type == 0) %>%
-  ggplot(aes(x=black_perc,
-             color=transportation_desert_4cat, 
-             y=mean_rent)) +
-  geom_point(size=2)+
-  geom_smooth(method="lm", size=3, se=F)+
-  labs(title="Neighborhood Rental Price Averages \nby Black Density per Transportation Category", y="", y="Black (%)")+
-  theme_linedraw()+
-    theme(legend.position = "none",
-         # axis.text.y.left = element_blank(),
-        #  axis.text.x.bottom = element_text(size = 16, face = "bold"),
-          plot.title = element_text(family="DIN Condensed", size =20,hjust=.5, face = "bold"),
-    strip.background.x = element_rect(fill="Black", color="Black"),
-    strip.text.x = element_text(size = 14, 
-                                color = "White",
-                                face = "bold")) + 
-   scale_color_manual(values=c("#895F32","#E9DBC2","#7D9B8A", "#395645"))+  facet_wrap(.~transportation_desert_4cat, scales = "free") 
-
-asian_rent <- nyc_compiled %>%
-  filter(nta_type == 0) %>%
-  ggplot(aes(x=asian_perc,
-             color=transportation_desert_4cat, 
-             y=mean_rent)) +
-  geom_point(size=2)+
-  geom_smooth(method="lm", size=3, se=F)+
-  labs(title="Neighborhood Rental Price Averages \nby Asian Density per Transportation Category", y="", y="Black (%)")+
-  theme_linedraw()+
-    theme(legend.position = "none",
-         # axis.text.y.left = element_blank(),
-        #  axis.text.x.bottom = element_text(size = 16, face = "bold"),
-          plot.title = element_text(family="DIN Condensed", size = 20,hjust=.5, face = "bold"),
-    strip.background.x = element_rect(fill="Black", color="Black"),
-    strip.text.x = element_text(size = 14, 
-                                color = "White",
-                                face = "bold")) + 
-   scale_color_manual(values=c("#895F32","#E9DBC2","#7D9B8A", "#395645"))+  facet_wrap(.~transportation_desert_4cat, scales = "free") 
-
-latinx_rent <- nyc_compiled %>%
-  filter(nta_type == 0) %>%
-  ggplot(aes(x=latinx_perc,
-             color=transportation_desert_4cat, 
-             y=mean_rent)) +
-  geom_point(size=2)+
-  geom_smooth(method="lm", size=3, se=F)+
-  labs(title="Neighborhood Rental Price Averages \nby Latinx Density per Transportation Category", y="", y="Black (%)")+
-  theme_linedraw()+
-    theme(legend.position = "none",
-         # axis.text.y.left = element_blank(),
-        #  axis.text.x.bottom = element_text(size = 16, face = "bold"),
-          plot.title = element_text(family="DIN Condensed", size = 20,hjust=.5, face = "bold"),
-    strip.background.x = element_rect(fill="Black", color="Black"),
-    strip.text.x = element_text(size = 14, 
-                                color = "White",
-                                face = "bold")) + 
-   scale_color_manual(values=c("#895F32","#E9DBC2","#7D9B8A", "#395645"))+  facet_wrap(.~transportation_desert_4cat, scales = "free") 
-
-white_rent <- nyc_compiled %>%
-  filter(nta_type == 0) %>%
-  ggplot(aes(x=white_perc,
-             color=transportation_desert_4cat, 
-             y=mean_rent)) +
-  geom_point(size=2)+
-  geom_smooth(method="lm", size=3, se=F)+
-  labs(title="Neighborhood Rental Price Averages \nby White Density per Transportation Category", y="", y="Black (%)")+
-  theme_linedraw()+
-    theme(legend.position = "none",
-         # axis.text.y.left = element_blank(),
-        #  axis.text.x.bottom = element_text(size = 16, face = "bold"),
-          plot.title = element_text(family="DIN Condensed", size = 20,hjust=.5, face = "bold"),
-    strip.background.x = element_rect(fill="Black", color="Black"),
-    strip.text.x = element_text(size = 14, 
-                                color = "White",
-                                face = "bold")) + 
-   scale_color_manual(values=c("#895F32","#E9DBC2","#7D9B8A", "#395645"))+  facet_wrap(.~transportation_desert_4cat, scales = "free") 
-```
-
-```{r, fig.height=8*2, fig.width=8*2}
-ggarrange(black_rent, latinx_rent, asian_rent, white_rent, ncol=2, nrow=2)
-```
 
 <center>
-<img src="/media/bayes/plot_8.png" width="50%" height="50%" />
+<img src="/media/bayes/plot_8.png" width="100%" height="100%" />
 </center>
 
 Increases in White-resident proportions were uniformly associated with increases in average neighborhood rental prices across all transportation access categories. The converse is true for the relationship between Black and Latinx neighborhood densities and rental prices. It then seems that despite living in cheaper neighborhoods, both NYC's Black and Latinx communities are carrying the largest burden of eviction. 
@@ -838,21 +367,6 @@ Our model specifications are detailed in the following subsections
 ### Model 1: Immigrant/Non-Citizen Count
 
 ```{r}
-modeling_data <- nyc_compiled %>%
-  mutate(black_perc = black_perc * 10) %>%
-  mutate(white_perc = white_perc * 10) %>%
-  mutate(latinx_perc = latinx_perc * 10) %>%
-  mutate(asian_perc = asian_perc * 10) %>%
-  mutate(native_perc = native_perc * 10) %>%
-  mutate(unemployment_perc = unemployment_perc * 5) %>%
-  mutate(uninsured_perc = uninsured_perc * 5) %>%
-  mutate(mean_income = mean_income / 100) %>%
-  mutate(mean_rent = mean_rent / 100) %>%
-  filter(nta_type==0)
-```
-
-
-```{r}
 noncit_model <- stan_glm(
   noncitizen_count ~
     transportation_desert_4cat + 
@@ -866,7 +380,7 @@ noncit_model <- stan_glm(
 
 ```
 
-$$\begin{split}
+`$$\begin{split}
 \text{Non-Citizen Count} \mid  \beta_{0c}, \beta_1, ..., \beta_k, r & \sim \text{NegBin}(\mu, r) \; \; \; \; \text{where} \log(\mu) = \beta_{0c} + \sum^{14}_{k=1}X_{k}\beta_k \\
 \beta_{0c} &\sim N(0,2.5^2)\\				
 \beta_{1} &\sim N(0,6.2785^2)\\				
@@ -884,7 +398,7 @@ $$\begin{split}
 \beta_{13} &\sim N(0,1.0952^2)\\				
 \beta_{14} &\sim N(0,1.638^2)\\				
 r & \sim Exp(1) \\
-\end{split}$$
+\end{split}$$`
 
 ### Model 2: Mean Neighborhood Rental Prices
 
@@ -902,7 +416,7 @@ rent_model <- stan_glm(
 )
 ```
 
-$$\begin{split}
+`$$\begin{split}
 \text{Mean Rent} \mid  \beta_{0c}, \beta_1, ..., \beta_k, r & \sim \text{Normal}(\mu, \sigma) \; \; \; \; \text{where} \mu = \beta_{0c} + \sum^{14}_{k=1}X_{k}\beta_k \\
 \beta_ {0c} &\sim N(1600,20^2)\\				
 \beta_{1} &\sim N(0,47.315^2)\\				
@@ -921,7 +435,7 @@ $$\begin{split}
 \beta_{14} &\sim N(0,8.2532^2)\\				
 \beta_{15} &\sim N(0,12.3441^2)\\
 \sigma & \sim Exp(0.13) \\
-\end{split}$$
+\end{split}$$`
 
 We chose our prior specifications of mean rental price using Juthi’s experience renting in NYC and a group conversation about typical rental prices we would elect to pay in NYC, Los Angeles, and other major cities we have lived in or around. 
 
@@ -941,7 +455,7 @@ eviction_model <- stan_glm(
 )
 ```
 
-$$\begin{split}
+`$$\begin{split}
 \text{Eviction Count} \mid  \beta_{0c}, \beta_1, ..., \beta_k, r & \sim \text{NegBin}(\mu, r) \; \; \; \; \text{where} \log(\mu) = \beta_{0c} + \sum^{14}_{k=1}X_{k}\beta_k \\
 \beta_{0c} &\sim N(0,2.5^2)\\				
 \beta_{1} &\sim N(0,6.2992^2)\\				
@@ -958,7 +472,7 @@ $$\begin{split}
 \beta_{12} &\sim N(0,1.142^2)\\				
 \beta_{13} &\sim N(0,1.6003^2)\\	
 r & \sim Exp(1) \\
-\end{split}$$
+\end{split}$$`
 
 
 
@@ -976,22 +490,12 @@ pp_check(noncit_model)+
 ```
 
 <center>
-<img src="/media/bayes/plot_9.png" width="50%" height="50%" />
+<img src="/media/bayes/plot_9.png" width="100%" height="100%" />
 </center>
 
+
 ```{r}
-non_citizen_clean <- modeling_data %>%
-  na.omit()%>%
-  arrange(noncitizen_count)
-
-list <- non_citizen_clean %>%
-  arrange(noncitizen_count) %>% pull(noncitizen_count)
-
-
 set.seed(84735)
-
-predictions_non_citizen <-  posterior_predict(
-  noncit_model, newdata = non_citizen_clean)
 
 ppc_intervals(list, yrep = predictions_non_citizen,
               prob_outer = 0.8) +
@@ -1003,18 +507,20 @@ ppc_intervals(list, yrep = predictions_non_citizen,
   theme(panel.grid.major = element_line("transparent"),
         axis.title.x = element_blank(),
         axis.text.x = element_blank())
+        
+```
 
+<center>
+<img src="/media/bayes/plot_10.png" width="100%" height="100%" />
+</center>
+
+```{r}
 prediction_summary_cv(model = noncit_model, data=modeling_data, k=10)$cv %>%
   kable(align = "c", caption = "Non-Citizen Model - Cross-Validated Error Metrics") %>% 
   kable_styling()
 ```
 
-<center>
-<img src="/media/bayes/plot_10.png" width="50%" height="50%" />
-</center>
-
-
-Under 10-fold cross-validation, we can see how our model performs when predicting new, randomly-assorted, non-citizen counts. In this case, it seems that the 10-fold CV median absolute error (MAE) is 2704. (2.38 sd) meaning that the typical difference between the averages of our posterior prediction distributions is 2704 people or 2.37 standard deviations away from the observed number of non-citizen counts. Beyond accuracy metrics, it also seems that only 10.55% and 51.67% of the observed non-citizen counts are falling within their 50% and 95% posterior prediction intervals. Together, this indicates our model's performance when predicting non-citizen counts may need further work.
+Under 10-fold cross-validation, we can see how our model performs when predicting new, randomly-assorted, non-citizen counts. In this case, it seems that the 10-fold CV median absolute error (MAE) is 2704. (2.38 sd) meaning that the typical difference between the averages of our posterior prediction distributions is 2704 people or 2.37 standard deviations away from the observed number of non-citizen counts. Beyond accuracy metrics, it also seems that only 10.55\% and 51.67\% of the observed non-citizen counts are falling within their 100% and 95% posterior prediction intervals. Together, this indicates our model's performance when predicting non-citizen counts may need further work.
 
 ```{r}
 library(kableExtra)
@@ -1051,32 +557,14 @@ tidy(noncit_model, effects = "fixed", conf.int = TRUE, conf.level = 0.8)%>%
 
 ### Model 2: Mean Neighborhood Rental Prices
 
-```{r}
-pp_check(rent_model)+ 
-  xlab("Mean Rental Price") +
-  labs(title = "Normal Model of \nMonthly Mean Rental Price")+
-  theme(plot.title =  element_text(family="DIN Condensed", face="bold", size=25, hjust=.5)) 
-```
+
 
 <center>
-<img src="/media/bayes/plot_11.png" width="50%" height="50%" />
+<img src="/media/bayes/plot_11.png" width="100%" height="100%" />
 </center>
 
 
 ```{r}
-rent_clean <- modeling_data %>%
-  na.omit()%>%
-  arrange(mean_rent)
-
-list <- rent_clean %>%
-  arrange(mean_rent) %>% pull(mean_rent)
-
-
-set.seed(84735)
-
-predictions_rent <-  posterior_predict(
-  rent_model, newdata = rent_clean)
-
 ppc_intervals(list, 
               yrep = predictions_rent,
               prob_outer = 0.8) +
@@ -1091,18 +579,20 @@ ppc_intervals(list,
   theme(panel.grid.major = element_line("transparent"),
         axis.title.x = element_blank(),
         axis.text.x = element_blank())
+```
+<center>
+<img src="/media/bayes/plot_12.png" width="100%" height="100%" />
+</center>
+
+
+```{r}
 
 prediction_summary_cv(model = rent_model, data=nyc_compiled, k=10)$cv %>%
   kable(align = "c", caption = "Mean Rent Model - Cross-Validated Error Metrics") %>% 
   kable_styling()
 ```
 
-<center>
-<img src="/media/bayes/plot_12.png" width="50%" height="50%" />
-</center>
-
-
-Under 10-fold cross-validation, we can see how our model performs when predicting new, randomly-assorted, mean rental prices. In this case, it seems that the 10-fold CV median absolute error (MAE) is 119.256 (0.68 sd) meaning that the typical difference between the averages of our posterior prediction distributions is 119.25 dollars or .68 standard deviations away from the observed mean rental price. Beyond accuracy metrics, it also seems that only 49.55% and 77.23% of the observed mean rental price estimates are falling within their 50% and 95% posterior prediction intervals, respectively. That's great! Together, this indicates our model's performance when predicting mean rental prices by neighborhood is superb.
+Under 10-fold cross-validation, we can see how our model performs when predicting new, randomly-assorted, mean rental prices. In this case, it seems that the 10-fold CV median absolute error (MAE) is 119.256 (0.68 sd) meaning that the typical difference between the averages of our posterior prediction distributions is 119.25 dollars or .68 standard deviations away from the observed mean rental price. Beyond accuracy metrics, it also seems that only 49.55% and 77.23% of the observed mean rental price estimates are falling within their 100% and 95% posterior prediction intervals, respectively. That's great! Together, this indicates our model's performance when predicting mean rental prices by neighborhood is superb.
 
 ```{r}
 library(kableExtra)
@@ -1135,24 +625,11 @@ pp_check(eviction_model)+
 ```
 
 <center>
-<img src="/media/bayes/plot_13.png" width="50%" height="50%" />
+<img src="/media/bayes/plot_13.png" width="100%" height="100%" />
 </center>
 
 
 ```{r}
-eviction_clean <- modeling_data %>%
-  na.omit()%>%
-  arrange(eviction_count)
-
-list <- eviction_clean %>%
-  arrange(eviction_count) %>% pull(eviction_count)
-
-
-set.seed(84735)
-
-predictions_eviction <-  posterior_predict(
-  eviction_model, newdata = eviction_clean)
-
 ppc_intervals(list, 
               yrep = predictions_eviction,
               prob_outer = 0.8) +
@@ -1167,18 +644,19 @@ ppc_intervals(list,
   theme(panel.grid.major = element_line("transparent"),
         axis.title.x = element_blank(),
         axis.text.x = element_blank())
+```
+<center>
+<img src="/media/bayes/plot_14.png" width="100%" height="100%" />
+</center>
 
+```{r}
 prediction_summary_cv(model = eviction_model, data=nyc_compiled, k=10)$cv %>%
   kable(align = "c", caption = "Eviction Model - Cross-Validated Error Metrics") %>% 
   kable_styling()
 ```
 
-<center>
-<img src="/media/bayes/plot_14.png" width="50%" height="50%" />
-</center>
 
-
-Under 10-fold cross-validation, we can see how our model performs when predicting new, randomly-assorted, eviction counts. In this case, it seems that the 10-fold CV median absolute error (MAE) is 63.139 (1.56 sd) meaning that the typical difference between the averages of our posterior prediction distributions is 63 counts or 1.56 standard deviations away from the observed number of eviction counts. Beyond accuracy metrics, it also seems that only 25.89% and 58.92% of the observed eviction counts are falling within their 50% and 95% posterior prediction intervals. Together, this indicates our model's performance when predicting eviction counts may need further work.
+Under 10-fold cross-validation, we can see how our model performs when predicting new, randomly-assorted, eviction counts. In this case, it seems that the 10-fold CV median absolute error (MAE) is 63.139 (1.56 sd) meaning that the typical difference between the averages of our posterior prediction distributions is 63 counts or 1.56 standard deviations away from the observed number of eviction counts. Beyond accuracy metrics, it also seems that only 25.89% and 58.92% of the observed eviction counts are falling within their 100% and 95% posterior prediction intervals. Together, this indicates our model's performance when predicting eviction counts may need further work.
 
 ```{r}
 library(kableExtra)
