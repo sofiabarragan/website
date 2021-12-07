@@ -230,6 +230,13 @@ naive2_prediction %>%
   kable_styling()
 ```
 
+| transportation\_desert\_4cat | Poor        | Limited     | Satisfactory | Excellent   |
+| ---------------------------- | ----------- | ----------- | ------------ | ----------- |
+| Poor                         | 78.12% (25) | 12.50% (4)  | 0.00% (0)    | 9.38% (3)   |
+| Limited                      | 31.43% (11) | 11.43% (4)  | 20.00% (7)   | 37.14% (13) |
+| Satisfactory                 | 20.69% (6)  | 17.24% (5)  | 6.90% (2)    | 55.17% (16) |
+| Excellent                    | 9.52% (8)   | 15.48% (13) | 2.38% (2)    | 72.62% (61) |
+
 Under 10-fold cross validation, our Naive Bayes model had an overall cross-validated accuracy of 51.11\%. However, our predictions were most accurate when predicting Poor transportation access (78.12\%) and Excellent transportation access (72.62\%). The following plot describes the cross-validated accuracy breakdown by each observed transportation access category.
 
 
@@ -283,6 +290,15 @@ tidy(model2, effects = "fixed", conf.int = TRUE, conf.level = 0.8) %>%
   kable(align = "c", caption = "Ordinal Model - Summary") %>% 
   kable_styling()
 ```
+
+| term                       | estimate   | std.error | conf.low   | conf.high  |
+| -------------------------- | ---------- | --------- | ---------- | ---------- |
+| mean\_income               | 0.0000460  | 0.0000104 | 0.0000339  | 0.0000596  |
+| below\_poverty\_line\_perc | 17.0648982 | 3.4532734 | 12.8319749 | 22.3269332 |
+| store\_count               | 0.0189996  | 0.0052394 | 0.0126227  | 0.0254789  |
+| Poor | Limited             | 5.4113154  | 1.2620341 | 3.9385520  | 7.1398347  |
+| Limited | Satisfactory     | 6.7324319  | 1.3225479 | 5.2493699  | 8.5003721  |
+| Satisfactory | Excellent   | 7.7039327  | 1.3435146 | 6.1613497  | 9.5624926  |
 
 Then using a function written by [Connie Zhang](https://connie-zhang.github.io/pet-adoption/modelling.html), we describe the accuracy of the ordinal model below.
 
@@ -574,6 +590,10 @@ prediction_summary_cv(model = noncit_model, data=modeling_data, k=10)$cv %>%
   kable(align = "c", caption = "Non-Citizen Model - Cross-Validated Error Metrics") %>% 
   kable_styling()
 ```
+| mae      | mae\_scaled | within\_50 | within\_95 |
+| -------- | ----------- | ---------- | ---------- |
+| 2799.686 | 2.424508    | 0.1055556  | 0.5055556  |
+
 
 Under 10-fold cross-validation, we can see how our model performs when predicting new, randomly-assorted, non-citizen counts. In this case, it seems that the 10-fold CV median absolute error (MAE) is 2704. (2.38 sd) meaning that the typical difference between the averages of our posterior prediction distributions is 2704 people or 2.37 standard deviations away from the observed number of non-citizen counts. Beyond accuracy metrics, it also seems that only 10.55\% and 51.67\% of the observed non-citizen counts are falling within their 100% and 95% posterior prediction intervals. Together, this indicates our model's performance when predicting non-citizen counts may need further work.
 
@@ -588,6 +608,21 @@ tidy(noncit_model, effects = "fixed", conf.int = TRUE, conf.level = 0.8)%>%
   kable(align = "c", caption = "Non-Citizen Model - Summary") %>% 
   kable_styling()
 ```
+
+| term                                     | estimate    | std.error | conf.low    | conf.high    |
+| ---------------------------------------- | ----------- | --------- | ----------- | ------------ |
+| (Intercept)                              | 646.2336556 | 0.5796958 | 306.0856641 | 1394.6080720 |
+| transportation\_desert\_4catLimited      | 21.8211134  | 0.0968957 | 7.4802317   | 38.2773377   |
+| transportation\_desert\_4catSatisfactory | 30.2269405  | 0.1038534 | 13.9913248  | 49.0942148   |
+| transportation\_desert\_4catExcellent    | 29.8440521  | 0.1023578 | 13.3463433  | 48.5186263   |
+| total\_pop                               | 0.0025371   | 0.0000017 | 0.0023216   | 0.0027461    |
+| boroughBrooklyn                          | 16.6136923  | 0.1079475 | 1.6899821   | 34.0724482   |
+| boroughManhattan                         | 20.5835833  | 0.1297466 | 2.2686502   | 42.8453923   |
+| mean\_income                             | \-0.0793199 | 0.0002426 | \-0.1102853 | \-0.0476387  |
+| mean\_rent                               | 6.2938700   | 0.0171338 | 3.9675372   | 8.6886472    |
+| black\_perc                              | 5.2070100   | 0.0163627 | 2.9904044   | 7.4540175    |
+| latinx\_perc                             | 13.4606683  | 0.0242572 | 10.0812702  | 17.0711789   |
+| asian\_perc                              | 19.6300153  | 0.0258335 | 15.7585721  | 23.6996981   |
 
 - Limited Subway Access: When controlling for all other predictors, a neighborhood with limited transit access is expected to have approximately 21.82% more non-citizens than a neighborhood with poor transit access. There's an 80% probability that this increase could lie anywhere between (7.48%, 38.27%) non citizen residents, indicating that neighborhoods with limited transit access almost certainly have more non citizen residents than neighborhoods with poor access.
 - Satisfactory Subway Access: When controlling for all other predictors, a neighborhood with satisfactory transit access is expected to have approximately 30.22% more non-citizens than a neighborhood with poor transit access. There's an 80% probability that this increase could lie anywhere between (13.99%, 49.09%) non citizen residents, indicating that neighborhoods with satisfactory transit access almost certainly have more non citizen residents than neighborhoods with poor access.
@@ -637,6 +672,9 @@ prediction_summary_cv(model = rent_model, data=nyc_compiled, k=10)$cv %>%
   kable(align = "c", caption = "Mean Rent Model - Cross-Validated Error Metrics") %>% 
   kable_styling()
 ```
+| mae     | mae\_scaled | within\_50 | within\_95 |
+| ------- | ----------- | ---------- | ---------- |
+| 117.354 | 0.6569101   | 0.4907115  | 0.7725296  |
 
 Under 10-fold cross-validation, we can see how our model performs when predicting new, randomly-assorted, mean rental prices. In this case, it seems that the 10-fold CV median absolute error (MAE) is 119.256 (0.68 sd) meaning that the typical difference between the averages of our posterior prediction distributions is 119.25 dollars or .68 standard deviations away from the observed mean rental price. Beyond accuracy metrics, it also seems that only 49.55% and 77.23% of the observed mean rental price estimates are falling within their 100% and 95% posterior prediction intervals, respectively. That's great! Together, this indicates our model's performance when predicting mean rental prices by neighborhood is superb.
 
@@ -647,6 +685,14 @@ tidy(rent_model, effects = "fixed", conf.int = TRUE, conf.level = 0.8)%>%
   kable(align = "c", caption = "Rent Model - Summary") %>% 
   kable_styling()
 ```
+
+| term         | estimate    | std.error | conf.low    | conf.high   |
+| ------------ | ----------- | --------- | ----------- | ----------- |
+| (Intercept)  | 8.0899937   | 2.6195905 | 4.7672539   | 11.4222283  |
+| store\_count | 0.0104850   | 0.0059110 | 0.0030623   | 0.0180846   |
+| mean\_income | 0.0120611   | 0.0006062 | 0.0112967   | 0.0128377   |
+| black\_perc  | \-0.1022345 | 0.0736815 | \-0.1953202 | \-0.0091913 |
+| asian\_perc  | 0.2003005   | 0.1129153 | 0.0595393   | 0.3482055   |
 
 For rent model:
 
@@ -701,6 +747,9 @@ prediction_summary_cv(model = eviction_model, data=nyc_compiled, k=10)$cv %>%
   kable_styling()
 ```
 
+| mae      | mae\_scaled | within\_50 | within\_95 |
+| -------- | ----------- | ---------- | ---------- |
+| 66.95797 | 1.552947    | 0.2592885  | 0.5802372  |
 
 Under 10-fold cross-validation, we can see how our model performs when predicting new, randomly-assorted, eviction counts. In this case, it seems that the 10-fold CV median absolute error (MAE) is 63.139 (1.56 sd) meaning that the typical difference between the averages of our posterior prediction distributions is 63 counts or 1.56 standard deviations away from the observed number of eviction counts. Beyond accuracy metrics, it also seems that only 25.89% and 58.92% of the observed eviction counts are falling within their 100% and 95% posterior prediction intervals. Together, this indicates our model's performance when predicting eviction counts may need further work.
 
@@ -715,7 +764,22 @@ tidy(eviction_model, effects = "fixed", conf.int = TRUE, conf.level = 0.8)%>%
   kable(align = "c", caption = "Eviction Model - Summary") %>% 
   kable_styling()
 ```
-
+| term                                     | estimate     | std.error | conf.low     | conf.high    |
+| ---------------------------------------- | ------------ | --------- | ------------ | ------------ |
+| (Intercept)                              | 25.1153852   | 0.6640682 | 10.7108552   | 58.3015048   |
+| transportation\_desert\_4catLimited      | 39.8142056   | 0.1117065 | 21.1074597   | 61.5205875   |
+| transportation\_desert\_4catSatisfactory | 41.2507768   | 0.1171572 | 21.8925348   | 64.3921302   |
+| transportation\_desert\_4catExcellent    | 40.5846940   | 0.1181260 | 20.6687118   | 63.6290625   |
+| total\_pop                               | 0.0022473    | 0.0000019 | 0.0020083    | 0.0024903    |
+| boroughBrooklyn                          | \-39.6044331 | 0.1222681 | \-48.4523352 | \-29.2619633 |
+| boroughManhattan                         | \-19.2391339 | 0.1447390 | \-32.7647680 | \-2.3682836  |
+| boroughQueens                            | \-28.8494627 | 0.1230540 | \-39.5014175 | \-16.6339924 |
+| gini\_neighborhood                       | 658.5249924  | 1.1780131 | 73.7386748   | 3243.9315409 |
+| mean\_income                             | \-0.1182042  | 0.0002976 | \-0.1553186  | \-0.0799461  |
+| mean\_rent                               | 4.5479523    | 0.0192714 | 1.9355581    | 7.1291966    |
+| black\_perc                              | 17.7731246   | 0.0189693 | 15.0288160   | 20.6738937   |
+| latinx\_perc                             | 6.6045671    | 0.0289748 | 2.7257152    | 10.6945575   |
+| asian\_perc                              | \-4.2067980  | 0.0310719 | \-7.8802878  | \-0.2344382  |
 
 After removing predictors whose 80% credible intervals included the possibility of non-effect when controlling for other covariates, we found that there were 13 remaining predictors of an arbitrary neighborhood's eviction counts. In the following list, categorical predictors’ classes were listed together:
 
