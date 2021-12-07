@@ -22,6 +22,12 @@ links:
 date: 2021-12-06T14:47:00-05:00
 ---
 
+<script src="//yihui.org/js/math-code.js" defer></script>
+<!-- Just one possible MathJax CDN below. You may use others. -->
+<script defer
+  src="//mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
 # Motivation
 
 In collaboration with Juthi Dewan, Sam Ding, and Vichy Meas, we designed this project for our Bayesian Statistics course taught by [Dr. Alicia Johnson](https://ajohns24.github.io/portfolio/). We'd like to extend our thanks to Alicia for guiding us through Bayes and the capstone experience!
@@ -444,10 +450,9 @@ noncit_model <- stan_glm(
   family = neg_binomial_2,
   chains = 5, iter = 2000*2, seed = 84735, refresh = 0
 )
-
 ```
 
-$$
+`$$
 \begin{aligned}
 \text{Non-Citizen Count} \mid  \beta_{0c}, \beta_1, ..., \beta_k, r & \sim \text{NegBin}(\mu, r) \; \; \; \; \text{where} \log(\mu) = \beta_{0c} + \sum^{14}_{k=1}X_{k}\beta_k \\
 \beta_{0c} &\sim N(0,2.5^2)\\				
@@ -467,7 +472,7 @@ $$
 \beta_{14} &\sim N(0,1.638^2)\\				
 r & \sim Exp(1) \\
 \end{aligned}
-$$
+$$`
 
 ### Model 2: Mean Neighborhood Rental Prices
 
@@ -485,7 +490,7 @@ rent_model <- stan_glm(
 )
 ```
 
-$$
+`$$
 \begin{aligned}
 \text{Mean Rent} \mid  \beta_{0c}, \beta_1, ..., \beta_k, r & \sim \text{Normal}(\mu, \sigma) \; \; \; \; \text{where} \mu = \beta_{0c} + \sum^{14}_{k=1}X_{k}\beta_k \\
 \beta_ {0c} &\sim N(1600,20^2)\\				
@@ -506,7 +511,7 @@ $$
 \beta_{15} &\sim N(0,12.3441^2)\\
 \sigma & \sim Exp(0.13) \\
 \end{aligned}
-$$
+$$`
 
 We chose our prior specifications of mean rental price using Juthi’s experience renting in NYC and a group conversation about typical rental prices we would elect to pay in NYC, Los Angeles, and other major cities we have lived in or around. 
 
@@ -526,7 +531,7 @@ eviction_model <- stan_glm(
 )
 ```
 
-$$
+`$$
 \begin{aligned}
 \text{Eviction Count} \mid  \beta_{0c}, \beta_1, ..., \beta_k, r & \sim \text{NegBin}(\mu, r) \; \; \; \; \text{where} \log(\mu) = \beta_{0c} + \sum^{14}_{k=1}X_{k}\beta_k \\
 \beta_{0c} &\sim N(0,2.5^2)\\				
@@ -545,7 +550,7 @@ $$
 \beta_{13} &\sim N(0,1.6003^2)\\	
 r & \sim Exp(1) \\
 end{aligned}
-$$
+$$`
 
 
 
