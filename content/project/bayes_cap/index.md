@@ -540,24 +540,15 @@ tidy(noncit_model, effects = "fixed", conf.int = TRUE, conf.level = 0.8)%>%
   kable_styling()
 ```
 
-- Limited Subway Access: When controlling for all other predictors, a neighborhood with limited transit access is expected to have approximately 21.82% more non-citizens than a neighborhood with poor transit access. There's an 80% probability that this increase could lie anywhere between (7.48%, 38.27%) non citizen residents, indicating that neighborhoods with limited transit access almost certainly have more non citizen residents than neighborhoods with poor access.
-
+> - Limited Subway Access: When controlling for all other predictors, a neighborhood with limited transit access is expected to have approximately 21.82% more non-citizens than a neighborhood with poor transit access. There's an 80% probability that this increase could lie anywhere between (7.48%, 38.27%) non citizen residents, indicating that neighborhoods with limited transit access almost certainly have more non citizen residents than neighborhoods with poor access.
 - Satisfactory Subway Access: When controlling for all other predictors, a neighborhood with satisfactory transit access is expected to have approximately 30.22% more non-citizens than a neighborhood with poor transit access. There's an 80% probability that this increase could lie anywhere between (13.99%, 49.09%) non citizen residents, indicating that neighborhoods with satisfactory transit access almost certainly have more non citizen residents than neighborhoods with poor access.
-
 - Excellent Subway Access: When controlling for all other predictors, a neighborhood with excellent transit access is expected to have approximately 29.84% more non-citizens than a neighborhood with poor transit access. There's an 80% probability that this increase could lie anywhere between (13.34%, 48.51%) non citizen residents, indicating that neighborhoods with excellent transit access almost certainly have more non citizen residents than neighborhoods with poor access.
-
 - Brooklyn: When controlling for all other predictors, a neighborhood in Brooklyn is expected to have approximately 16.61% more non-citizens than a neighborhood in the Bronx. There's an 80% probability that this increase could lie anywhere between (1.68%, 34.07) non citizen residents, indicating that neighborhoods in Brooklyn almost certainly have more non citizen residents than the Bronx, but the magnitude of this increase may vary. 
-
 - Manhattan: When controlling for all other predictors, a neighborhood in Manhattan is expected to have approximately 20.58% more non-citizens than in the Bronx. There's an 80% probability that this increase could lie anywhere between (2.268, 42.85) non citizen residents, indicating that neighborhoods in Manhattan almost certainly have more non citizen residents than the Bronx. 
-
 - Mean Income: When controlling for all other predictors, a 100 dollar increase in mean neighborhood income is associated with approximately a 0.0793% decrease in non citizen count. However, there is a 80% chance that the decrease in non citizen count may be any value between (0.1102, 0.0476), indicating that there is almost certainly a negative relationship between mean income and non citizen count, but its magnitude may vary.
-  
 - Mean Rent: When controlling for all other predictors, a 100 dollar increase in mean neighborhood rent is associated with approximately a 6.29% increase in non citizen counts. However, there is an 80% chance that the increase in non citizen count may be any value between (3.96%, 8.68%), indicating that there is almost certainly a positive relationship between mean rent and non citizen count, but its magnitude may vary.
-  
 - Black Percentage: When controlling for all other predictors, a 10% increase in the Black population in a neighborhood is associated with approximately a 5.20% increase in non citizen counts. However, there is an 80% chance that the increase in non citizen count may be any value between (2.99%, 7.45%), indicating that there is almost certainly a positive relationship between Black resident percentage and non citizen count, but its magnitude may vary.
-
 - Latinx Percentage: When controlling for all other predictors, a 10% increase in the Latinx population in a neighborhood is associated with approximately a 13.46% increase in non citizen count. However, there is an 80% chance that the increase in non citizen count may be any value between (10.08%, 17.07%), indicating that there is almost certainly a positive relationship between Latinx resident percentage and non citizen count, but its magnitude may vary.
-
 - Asian Percentage: When controlling for all other predictors, a 10% increase in the Asian population in a neighborhood is associated with approximately a 19.63% increase in non citizen count. However, there is an 80% chance that the increase in non citizen count may be any value between (15.75%, 23.69%), indicating that there is almost certainly a positive relationship between Asian resident percentage and non citizen count, but its magnitude may vary.
 
 
