@@ -124,7 +124,7 @@ Extending the USDA's definition of a food desert, we define subway deserts as th
 We first geocoded subway stop locations in NYC from the NYC Department of Transportation. Then, using ArcGIS we created a 0.5-mile-radius buffer for each station and calculated what percent of each neighborhood was covered by a buffer region. We display an example below.
 
 <center>
-<img src="/media/bayes/plot_1.png" width="75%" height="75%" />
+<img src="/media/bayes/plot_1.png" width="50%" height="50%" />
 </center>
 
 
@@ -381,7 +381,7 @@ noncit_model <- stan_glm(
 ```
 
 `$$
-\begin{split}
+\begin{aligned}
 \text{Non-Citizen Count} \mid  \beta_{0c}, \beta_1, ..., \beta_k, r & \sim \text{NegBin}(\mu, r) \; \; \; \; \text{where} \log(\mu) = \beta_{0c} + \sum^{14}_{k=1}X_{k}\beta_k \\
 \beta_{0c} &\sim N(0,2.5^2)\\				
 \beta_{1} &\sim N(0,6.2785^2)\\				
@@ -399,7 +399,7 @@ noncit_model <- stan_glm(
 \beta_{13} &\sim N(0,1.0952^2)\\				
 \beta_{14} &\sim N(0,1.638^2)\\				
 r & \sim Exp(1) \\
-\end{split}
+\end{aligned}
 $$`
 
 ### Model 2: Mean Neighborhood Rental Prices
@@ -419,7 +419,7 @@ rent_model <- stan_glm(
 ```
 
 `$$
-\begin{split}
+\begin{aligned}
 \text{Mean Rent} \mid  \beta_{0c}, \beta_1, ..., \beta_k, r & \sim \text{Normal}(\mu, \sigma) \; \; \; \; \text{where} \mu = \beta_{0c} + \sum^{14}_{k=1}X_{k}\beta_k \\
 \beta_ {0c} &\sim N(1600,20^2)\\				
 \beta_{1} &\sim N(0,47.315^2)\\				
@@ -438,7 +438,7 @@ rent_model <- stan_glm(
 \beta_{14} &\sim N(0,8.2532^2)\\				
 \beta_{15} &\sim N(0,12.3441^2)\\
 \sigma & \sim Exp(0.13) \\
-\end{split}
+\end{aligned}
 $$`
 
 We chose our prior specifications of mean rental price using Juthi’s experience renting in NYC and a group conversation about typical rental prices we would elect to pay in NYC, Los Angeles, and other major cities we have lived in or around. 
@@ -460,7 +460,7 @@ eviction_model <- stan_glm(
 ```
 
 `$$
-\begin{split}
+\begin{aligned}
 \text{Eviction Count} \mid  \beta_{0c}, \beta_1, ..., \beta_k, r & \sim \text{NegBin}(\mu, r) \; \; \; \; \text{where} \log(\mu) = \beta_{0c} + \sum^{14}_{k=1}X_{k}\beta_k \\
 \beta_{0c} &\sim N(0,2.5^2)\\				
 \beta_{1} &\sim N(0,6.2992^2)\\				
@@ -477,7 +477,7 @@ eviction_model <- stan_glm(
 \beta_{12} &\sim N(0,1.142^2)\\				
 \beta_{13} &\sim N(0,1.6003^2)\\	
 r & \sim Exp(1) \\
-\end{split}
+end{aligned}
 $$`
 
 
