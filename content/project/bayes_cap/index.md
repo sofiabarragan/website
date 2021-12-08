@@ -791,7 +791,7 @@ rbind(rent_moran, evict_moran) %>%
 | Eviction  | 0.5794612 | 0.001   | 1000      | Monte-Carlo simulation of Moran I | greater     |
 
 
-Our results are then likely biased by the spatial relationships between neighborhoods. As such, we could extend this work to the spatial domain using methods from the `CARBayes` package, however, they are beyond the scope of this particular course and project. Lastly, we have not accounted for other unmeasured structural predictors in housing equity such as a neighborhood's rent control policies nor have we adjusted for the reasons behind eviction. 
+Our results are then likely biased by the spatial relationships between neighborhoods. As such, we could extend this work to the spatial domain using methods from the `CARBayes` or `inla` packages, however, they are beyond the scope of this particular course and project. Lastly, we have not accounted for other unmeasured structural predictors in housing equity such as a neighborhood's rent control policies nor have we adjusted for the reasons behind eviction. 
 
 Further, it becomes clear that many of the structural housing and demographic issues present in NYC need to be more rigorously addressed by both policy-makers and its citizens, regardless of these particular models' performance. Health begins at home. And if NYC's Black and Latinx residents are being crushed under the fist of inequity and consequently experiencing increased risks of eviction or tenuous rental prices, then it becomes a health imperative to critically and revolutionarily address NYC's housing system. 
 
