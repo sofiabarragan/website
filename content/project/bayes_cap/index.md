@@ -32,7 +32,7 @@ date: 2021-12-06T14:47:00-05:00
 
 In collaboration with Juthi Dewan, Sam Ding, and Vichy Meas, we designed this project for our Bayesian Statistics course taught by [Dr. Alicia Johnson](https://ajohns24.github.io/portfolio/). We'd like to extend our thanks to Alicia for guiding us through Bayes and the capstone experience!
 
-A reproducible version of this blog post with all code can be found [here](https://freddybarragan.netlify.app/media/ch4.html).
+A reproducible version of this blog post with all code can be found [here](https://freddybarragan.netlify.app/static/media/ch4.html).
 
 We were initially interested in characterizing New York City’s internal racial dynamics using demography, geographic mobility, community health, and economic outcomes. As this project developed, we found ourselves thinking about the relationships between transportation (in)access and housing inequity. In our project, there are two major sections: **Subway Accessibility** and **Transportation and Structural Inequity**.  In **Subway Accessibility** we explore transportation deserts and what are the major determinants of Subway Inaccess in New York City using two Bayesian classification models. While in **Transportation and Structural Inequity**, we extend our discussion of transportation access to study its relationship to both rental prices and evictions using Bayesian multivariable regression.
 
@@ -759,8 +759,39 @@ Next, we interpret each predictor:
 
 # Discussion
 
-We've confirmed that even after adjusting for income, rental prices, income inequality, and borough differences, neighborhoods in NYC with a substantial proportion of Black and Latinx residents are experiencing dramatic increased risks of eviction. Interestingly, when accounting for economic and demographic predictors, the relationships with transportation we expected to see were reversed. That is, increased transportation access was associated with more evictions, more non-citizens, and was not associated with rental prices. This could be related to the increased population sizes in areas with the best access to transportation (e.g. Manhattan) or it could be because the disparities that transportation inaccess reflects (e.g. racial and class-based tensions) have been accounted for by our models. Further, our results are almost certainly confounded by both the potential spatial relationships between neighborhoods and the effect of other unmeasured structural predictors in housing equity.
+We've confirmed that even after adjusting for income, rental prices, income inequality, and borough differences, neighborhoods in NYC with a substantial proportion of Black and Latinx residents are experiencing dramatic increased risks of eviction. Interestingly, when accounting for economic and demographic predictors, the relationships with transportation we expected to see were reversed. That is, increased transportation access was associated with more evictions. This could be related to the increased population sizes in areas with the best access to transportation (e.g. Manhattan) or it could be because the disparities that transportation inaccess reflects (e.g. racial and class-based tensions) have been accounted for.
 
-Our models are imperfect. However, we can extend our work to account for both the spatial relationships between neighborhoods and even change how we simulate case-counts to other probability distributions and account for zero-inflation in eviction and non-citizen counts. 
+Importantly, we found that there was statistically significant spatial clustering of both eviction counts and mean rental prices using Moran's I from the `spdep` package. 
+
+```{r}
+library(spdep)
+modeling_data <- modeling_data %>%
+  st_as_sf()
+
+col_sp <- as(modeling_data, "Spatial")
+col_nb <- poly2nb(col_sp) # queen neighborhood
+col_listw <- nb2listw(col_nb, style = "B") # listw version of the neighborhood
+W <- nb2mat(col_nb, style = "B") # binary structure
+
+evict_moran <- tidy(moran.mc(col_sp$eviction_count, listw = col_listw, nsim = 999, alternative = "greater")) %>%
+  mutate(variable = "Eviction", .before=1)   
+
+rent_moran <- tidy(moran.mc(col_sp$mean_rent, listw = col_listw, nsim = 999, alternative = "greater")) %>%
+  mutate(variable = "Mean Rent", .before=1)   
+  
+rbind(rent_moran, evict_moran) %>%
+  kable() %>%
+  kable_styling()
+  
+```
+
+| Term      | statistic | p.value | parameter | method                            | alternative |
+| --------- | --------- | ------- | --------- | --------------------------------- | ----------- |
+| Mean Rent | 0.6560430 | 0.001   | 1000      | Monte-Carlo simulation of Moran I | greater     |
+| Eviction  | 0.5794612 | 0.001   | 1000      | Monte-Carlo simulation of Moran I | greater     |
+
+
+Our results are then likely biased by the spatial relationships between neighborhoods. As such, we could extend this work to the spatial domain using methods from the `CARBayes` package, however, they are beyond the scope of this particular course and project. Lastly, we have not accounted for other unmeasured structural predictors in housing equity such as a neighborhood's rent control policies nor have we adjusted for the reasons behind eviction. 
+
 Further, it becomes clear that many of the structural housing and demographic issues present in NYC need to be more rigorously addressed by both policy-makers and its citizens, regardless of these particular models' performance. Health begins at home. And if NYC's Black and Latinx residents are being crushed under the fist of inequity and consequently experiencing increased risks of eviction or tenuous rental prices, then it becomes a health imperative to critically and revolutionarily address NYC's housing system. 
 
