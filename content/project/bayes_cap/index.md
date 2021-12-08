@@ -32,16 +32,18 @@ date: 2021-12-06T14:47:00-05:00
 
 In collaboration with Juthi Dewan, Sam Ding, and Vichy Meas, we designed this project for our Bayesian Statistics course taught by [Dr. Alicia Johnson](https://ajohns24.github.io/portfolio/). We'd like to extend our thanks to Alicia for guiding us through Bayes and the capstone experience!
 
-All supporting code can be found [here](https://freddybarragan.netlify.app/media/ch4.html).
+A reproducible version of this blog post with all code can be found [here](https://freddybarragan.netlify.app/media/ch4.html).
 
-We were initially interested in characterizing New York City’s internal racial dynamics using demography, geographic mobility, community health, and economic outcomes. As this project developed, we found ourselves thinking about the relationships between transportation (in)access and housing inequity. In our project, there are two major sections: **Subway Accessibility** and **Transportation and Structural Inequity**. First, however, let's do a data introduction:
+We were initially interested in characterizing New York City’s internal racial dynamics using demography, geographic mobility, community health, and economic outcomes. As this project developed, we found ourselves thinking about the relationships between transportation (in)access and housing inequity. In our project, there are two major sections: **Subway Accessibility** and **Transportation and Structural Inequity**.  In **Subway Accessibility** we explore transportation deserts and what are the major determinants of Subway Inaccess in New York City using two Bayesian classification models. While in **Transportation and Structural Inequity**, we extend our discussion of transportation access to study its relationship to both rental prices and evictions using Bayesian multivariable regression.
+
+First, however, let's do a data introduction:
 
 
 # Data Introduction
 
 All data used in this project are from two major sources: the Tidycensus package and NYC Open Data. 
 
-Tidycensus is an R package interface, developed by Kyle Walker and Matt Herman, that enables easy access to the US Census Bureau’s data APIs and returns Tidyverse-ready data frames from various major US Census Bureau datasets. Our demographic and socioeconomic data are drawn from the 2019 American Community Survey results found in Tidycensus package. A summary of our ACS data variables is below:
+[Tidycensus](https://walker-data.com/tidycensus/index.html) is an R package interface, developed by Kyle Walker and Matt Herman, that enables easy access to the US Census Bureau’s data APIs and returns Tidyverse-ready data frames from various major US Census Bureau datasets. Our demographic and socioeconomic data are drawn from the 2019 American Community Survey results found in Tidycensus package. A summary of our ACS data variables is below:
 
 - `borough:` NYC Borough
 - `total_pop`: Total Population Count by Census Tract
@@ -76,7 +78,7 @@ Then, for count based demographic predictors, we divide by the total population 
 - `unemployment_perc`: Percentage of People on Unemployment by Neighborhood
 - `below_poverty_line_perc`: Percentage of people living below the 100% poverty line.
 
-We used NYC's Open Data portal to collect information on the remaining predictors. In particular, we used geotagged locations of Subway Stops, Bus Stops, Grocery Stores, Schools, and Eviction Sites from the Departments of Transportation, Health, Education, and Housing, respectively, to calculate the following variables: 
+We used [NYC's Open Data](https://opendata.cityofnewyork.us/data/) portal and the [Baruch College GIS Lab](https://www.baruch.cuny.edu/confluence/pages/viewpage.action?pageId=28016896) to collect information on the remaining predictors. In particular, we used geotagged locations of [Subway Stops](https://data.cityofnewyork.us/Transportation/Subway-Stations/arq3-7z49), [Bus Stops] (https://www.baruch.cuny.edu/confluence/pages/viewpage.action?pageId=28016896), [Grocery Stores](https://data.ny.gov/Economic-Development/Retail-Food-Stores/9a8c-vfzj), [Schools](https://data.cityofnewyork.us/Education/School-Point-Locations/jfju-ynrr), and [Evictions](https://data.cityofnewyork.us/City-Government/Evictions/6z8x-wfk4) from the Departments of Transportation, Health, Education, and Housing, respectively, to calculate the following variables: 
 
 - `school_count`: Public school counts by Neighborhood 
 - `eviction_count`: Eviction counts by Neighborhood 
@@ -86,8 +88,7 @@ We used NYC's Open Data portal to collect information on the remaining predictor
 - `perc_covered_by_transit`: Percent of Neighborhood Within Walking Distance (.5 miles) of Any Subway Stop. 
 - `transportation_desert_4cat`: Subway Accessibility by Neighborhood (Poor, Limited, Satisfactory, Excellent)
 
-The process involved grouping geotagged locations by the defined neighborhood boundary regions in R’s SF package and ArcGIS We will detail the process of identifying subway deserts in the "Subway Deserts" section, however, for the remaining predictors, the process is largely the same.
-
+The process involved grouping geotagged locations by the defined neighborhood boundary regions in R’s SF package and ArcGIS. We will detail the process of identifying subway deserts in the "Subway Deserts" section. 
 
 # Data Summaries 
 
@@ -101,7 +102,9 @@ We will touch on the connections between demographics, transportation access, an
 
 # Subway Accessibility
 
-New York City is the most populous city in the US with [more than 8.8 million people](https://en.wikipedia.org/wiki/New_York_City). To support the daily commutes of its residents, NYC also built the New York City Subway, the oldest, longest, and currently busiest subway system in the US, averaging [approximately 5.6 million daily rides on weekdays and a combined 5.7 million rides each weekend](https://en.wikipedia.org/wiki/New_York_City_Subway). Compared to other US cities where automobiles are the most popular mode of transportation (ahem, Minneapolis), NYC only has about 32% of the population who choose to commute by cars, thanks to its efficient and far-reaching transit system, whereas most metro areas in the US have [more than 70% of the population](https://en.wikipedia.org/wiki/Modal_share) who chose to commute by cars.
+New York City is the most populous city in the US with [more than 8.8 million people](https://en.wikipedia.org/wiki/New_York_City). To support the daily commutes of its residents, NYC also built the New York City Subway, the oldest, longest, and currently busiest subway system in the US, averaging [approximately 5.6 million daily rides on weekdays and a combined 5.7 million rides each weekend](https://en.wikipedia.org/wiki/New_York_City_Subway). 
+
+Compared to other US cities where automobiles are the most popular mode of transportation (ahem, Minneapolis), only 32% of NYC's population chooses to commute by cars. NYC's far-reaching transit system is then unique, given that [more than 70% of the population](https://en.wikipedia.org/wiki/Modal_share) commute by cars in other metropolitan areas.
 
 Despite having the most extensive transit network in the entire US, NYC is still lacking in terms of transit accessibility for some neighborhoods. The general consensus in academia is that residents who walk more than 0.5 miles to get to reliable transit are considered lacking transportation access, or residing in a transportation desert. For our research, we adopted this concept to study these gaps in transportation access. Specifically, we attempt to identify and study "Subway Deserts". 
 
@@ -301,8 +304,7 @@ data_test %>%
 
 Transportation access is a pervasive structural issue. However, previous research on transportation access has demonstrated that many of these gaps in access also deepen the chasms of racial and class-based inequity. In this analysis, it seemed that low-income and racialized— typically Black and Latinx— communities were most likely to confront [transportation inequities](https://nyc.streetsblog.org/2021/06/18/report-racial-and-economic-inequities-in-transit-affect-accessibility-to-jobs-healthcare/). Additionally, we have observed that predominantly Black and Latinx neighborhoods in the Bronx faced some of the highest rates of eviction, likely indicating that these inequities may overlap.
 
-This next section aims to connect transportation access to housing-inequities that we know also have racial and class dimensions. In particular, we wanted to assess transportation access’s relationship with immigrant community size, rental prices, and eviction counts by neighborhood. We felt that this was an appropriate direction because as you can see from the plots below:
-
+This next section aims to connect transportation access to housing-inequities that we know also have racial and class dimensions. In particular, we wanted to assess transportation access’s relationship with immigrant community size, rental prices, and eviction counts by neighborhood. 
 
 ```{r, fig.height=8*2, fig.width=8*2}
 ggarrange(desert_map, rent_map, evict, noncit,
@@ -349,7 +351,7 @@ Our next section details the statistical models we used to better characterize t
 
 ## Bayesian Model Specification
 
-In order to understand the respective distributions of immigrant population size, evictions, and mean rental prices in NYC, we fit 3 non-hierarchical Bayesian models with each variable as an outcome. In previous iterations, we fit hierarchical models on these same relationships where neighborhood values were grouped by borough. We initially felt that the internal diversity of boroughs with respect to housing, demographics, and wealth made it more appropriate as a grouping variable. However, we ultimately saw that the non-hierarchical models we fit were largely comparable to their hierarchical counterparts. Further, we considered how even though there is a dramatic internal diversity in boroughs their effects on our outcomes were still sufficiently meaningful to warrant a true statistical adjustment.
+In order to understand the respective distributions of immigrant population size, evictions, and mean rental prices in NYC, we fit 3 non-hierarchical Bayesian models with each variable as an outcome. In previous iterations, we fit hierarchical models on these same relationships where neighborhood values were grouped by borough. We initially felt that the internal diversity of boroughs with respect to housing, demographics, and wealth made it more appropriate as a grouping variable since it did not cary a coherent set of effects. However, we ultimately saw that the non-hierarchical models we fit were largely comparable to their hierarchical counterparts. Additionally, we found that borough-level policies and housing plans did have meaningful effects on eviction and rental prices. As such, we have decided it should be considered as a covariate we adjust for, rather than a grouping variable.
 
 We list our non-hierarchical models and their predictors below:
 
@@ -364,7 +366,11 @@ We list our non-hierarchical models and their predictors below:
   `bus_count`,`store_count`,`unemployment_perc`, `uninsured_perc`
   
 
-For 1 and 3, we used weakly informative priors and allowed `stan_glm` to estimate initial priors. This decision was ultimately due to our unfamiliarity with NYC's history of evictions and non-citizen population. For Model 2, we specified a normal prior with mean 1600 and standard deviation at 20 using previous experience as renters both in NYC and other comparable major cities. Across all count models, we fit both Poisson and Negative-Binomial prior distributions for the observed eviction and non-citizen counts. However, we observed an inconsistent spread of variance and increased 0 counts in both the eviction and immigrant count data. As such, we felt that a Negative-Binomial distribution was more appropriate for both data.
+Across all models we specified normal priors for the `$\beta_{k}$`s associated with each predictor. 
+
+For 1 and 3, we used weakly informative normal priors on all predictors and the intercept, then allowed `stan_glm` to estimate initial priors. This decision was ultimately due to our unfamiliarity with NYC's history of evictions and non-citizen population. We also fit other versions of models 1 and 2 that specified a Poisson distribution of eviction and non-citizen counts. However, we observed an inconsistent spread of variance and increased 0 counts in both the eviction and immigrant count data and ultimately decided that a Negative-Binomial distribution was more appropriate. As such, we have removed these Poisson-distributed models from our discussion here.
+
+For Model 2, we also used weakly informative normal priors on all predictors. However, we specified a normal prior with `$\mu = 600$` and `$\sigma = 20$` for the intercept of mean rental prices. We chose these parameters specifically using previous experience as renters both in NYC and other comparable major cities. 
 
 Our model specifications are detailed in the following subsections
 
@@ -424,7 +430,7 @@ rent_model <- stan_glm(
 `$$
 \begin{aligned}
 \text{Mean Rent} \mid  \beta_{0c}, \beta_1, ..., \beta_k, r & \sim \text{Normal}(\mu, \sigma) \\\text{where } \mu &= \beta_{0c} + \sum^{15}_{k=1}X_{k}\beta_k \\
-\beta_ {0c} &\sim N(1600,20^2)\\				
+\beta_{0c} &\sim N(1600,20^2)\\				
 \beta_{1} &\sim N(0,47.315^2)\\				
 \beta_{2} &\sim N(0,51.1837^2)\\				
 \beta_{3} &\sim N(0,38.3432^2)\\				
@@ -444,7 +450,7 @@ rent_model <- stan_glm(
 \end{aligned}
 $$`
 
-We chose our prior specifications of mean rental price using Juthi’s experience renting in NYC and a group conversation about typical rental prices we would elect to pay in NYC, Los Angeles, and other major cities we have lived in or around. 
+We chose our prior specifications of mean rental price (`$\beta_{0c}$`) using Juthi’s experience renting in NYC and a group conversation about typical rental prices we would elect to pay in NYC, Los Angeles, and other major cities we have lived in or around. 
 
 
 ### Model 3: Eviction Count
