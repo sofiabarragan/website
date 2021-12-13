@@ -750,10 +750,10 @@ Using in-sample scaled MAE, it’s evident that the differences between our two 
 
 
 
-| model            | elpd\_diff        | se\_diff    | elpd\_loo | se\_elpd\_loo | p\_loo   | se\_p\_loo | looic    | se\_looic |
-| ----------------- | ----------- | --------- | ------------- | -------- | ---------- | -------- | --------- |
-| hi\_noncit\_model | 0.0000000   | 0.0000000 | \-1603.686    | 11.69514 | 13.74279   | 2.572952 | 3207.373  | 23.39029 |
-| noncit\_model     | \-0.7008571 | 0.6682885 | \-1604.387    | 11.59500 | 14.55443   | 2.396960 | 3208.775  | 23.19000 |
+| model             | elpd\_diff  | se\_diff  | elpd\_loo  | se\_elpd\_loo | p\_loo   | se\_p\_loo | looic    | se\_looic |
+| ----------------- | ----------- | --------- | ---------- | ------------- | -------- | ---------- | -------- | --------- |
+| hi\_noncit\_model | 0.0000000   | 0.0000000 | \-1607.625 | 11.46815      | 13.50260 | 2.306438   | 3215.250 | 22.93629  |
+| noncit\_model     | \-0.9888152 | 0.7546653 | \-1608.614 | 11.61547      | 14.85341 | 2.514718   | 3217.227 | 23.23093  |
 
 
 From the above ELPD rankings, it seems that the non-hierarchical model of non-citizen counts performed better than its hierarchical parallel. Explicitly, there was a decrease of .536 standard deviations when comparing the non-hiearchical to its hiearchical parallel.
@@ -783,10 +783,10 @@ Our last error metric of non-citizen counts is the Watanabe–Akaike information
 
 Once again when using in-sample scaled MAE, the differences between our two models of mean rental prices were largely minimal. Our predictions of rental price in both models were about 80 dollars away from their observed rental prices. However, the scaled mean absolute error metrics in the hierarchical model indicate that across simulations the observed value is about 0.3 standard deviations away from their the medians of the posterior predictive distributions of rental prices. This is a nontrivial improvement from the .5 standard deviation in the case of the non-hierarchical distribution. 
 
-| model            | elpd\_diff      | se\_diff   | elpd\_loo | se\_elpd\_loo | p\_loo   | se\_p\_loo | looic    | se\_looic |
-| --------------- | ---------- | --------- | ------------- | -------- | ---------- | -------- | --------- |
-| hi\_rent\_model | 0.000000   | 0.0000000 | \-340.4415    | 14.97455 | 16.67414   | 3.558889 | 680.8830  | 29.94909 |
-| rent\_model     | \-2.194559 | 0.6438043 | \-342.6361    | 14.82936 | 18.33416   | 3.689465 | 685.2721  | 29.65871 |
+| model           | elpd\_diff | se\_diff  | elpd\_loo  | se\_elpd\_loo | p\_loo   | se\_p\_loo | looic    | se\_looic |
+| --------------- | ---------- | --------- | ---------- | ------------- | -------- | ---------- | -------- | --------- |
+| hi\_rent\_model | 0.000000   | 0.0000000 | \-341.3198 | 15.17132      | 17.47628 | 3.915789   | 682.6395 | 30.34264  |
+| rent\_model     | \-1.542781 | 0.6447002 | \-342.8626 | 14.91792      | 18.60953 | 3.799422   | 685.7251 | 29.83584  |
 
 From the above ELPD rankings, it seems that the hierarchical model of mean neighborhood rental prices performed better than its non-hierarchical parallel.
 
@@ -814,10 +814,10 @@ It seems that hierarchical model of rental prices has the lowest WAIC, but the d
 
 Using in-sample scaled MAE, the differences between our two negative-binomial models of evictions count were largely minimal. Our predictions of eviction counts in both models were about 40 cases away from their observed counts and with very similar scaled MAE metrics. Typically, we'd suggest the use of the non-hierarchical model given that the performance is so similar and the computational burden of a hierarchical model is no longer warranted. 
 
-| model            |  elpd\_diff          | se\_diff    | elpd\_loo | se\_elpd\_loo | p\_loo   | se\_p\_loo | looic    | se\_looic |
-| ------------------- | ----------- | --------- | ------------- | -------- | ---------- | -------- | --------- |
-| hi\_eviction\_model | 0.0000000   | 0.0000000 | \-1051.930    | 13.74662 | 16.95747   | 2.781855 | 2103.86   | 27.49324 |
-| eviction\_model     | \-0.0950349 | 0.5368605 | \-1052.025    | 13.84190 | 17.51510   | 2.923380 | 2104.05   | 27.68380 |
+| model               | elpd\_diff | se\_diff  | elpd\_loo  | se\_elpd\_loo | p\_loo   | se\_p\_loo | looic    | se\_looic |
+| ------------------- | ---------- | --------- | ---------- | ------------- | -------- | ---------- | -------- | --------- |
+| eviction\_model     | 0.000000   | 0.0000000 | \-1054.382 | 13.52879      | 16.69892 | 2.592070   | 2108.764 | 27.05759  |
+| hi\_eviction\_model | \-0.038482 | 0.5198728 | \-1054.420 | 13.54050      | 16.34022 | 2.549446   | 2108.841 | 27.08100  |
 
 From the above ELPD rankings, it also seems that the hierarchical model of eviction counts performed better than its non-hierarchical parallel. Next, we will compare how these 2 models' residuals are spatially distributed.
 
