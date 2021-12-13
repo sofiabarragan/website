@@ -174,6 +174,7 @@ naive2_prediction %>%
   kable(align = "c", caption = "Naive Model - Summary") %>% 
   kable_styling()
 ```
+<center>
 
 | transportation\_desert\_4cat | Poor        | Limited     | Satisfactory | Excellent   |
 | ---------------------------- | ----------- | ----------- | ------------ | ----------- |
@@ -181,6 +182,9 @@ naive2_prediction %>%
 | Limited                      | 31.43% (11) | 11.43% (4)  | 20.00% (7)   | 37.14% (13) |
 | Satisfactory                 | 20.69% (6)  | 17.24% (5)  | 6.90% (2)    | 55.17% (16) |
 | Excellent                    | 9.52% (8)   | 15.48% (13) | 2.38% (2)    | 72.62% (61) |
+
+</center>
+
 
 Under 10-fold cross validation, our Naive Bayes model had an overall cross-validated accuracy of 51.11\%. However, our predictions were most accurate when predicting Poor transportation access (78.12\%) and Excellent transportation access (72.62\%). The following plot describes the cross-validated accuracy breakdown by each observed transportation access category.
 
@@ -236,6 +240,9 @@ tidy(model2, effects = "fixed", conf.int = TRUE, conf.level = 0.8) %>%
   kable_styling()
 ```
 
+<center>
+
+
 | term                       | estimate   | std.error | conf.low   | conf.high  |
 | -------------------------- | ---------- | --------- | ---------- | ---------- |
 | mean\_income               | 0.0000460  | 0.0000104 | 0.0000339  | 0.0000596  |
@@ -244,6 +251,9 @@ tidy(model2, effects = "fixed", conf.int = TRUE, conf.level = 0.8) %>%
 | Poor | Limited             | 5.4113154  | 1.2620341 | 3.9385520  | 7.1398347  |
 | Limited | Satisfactory     | 6.7324319  | 1.3225479 | 5.2493699  | 8.5003721  |
 | Satisfactory | Excellent   | 7.7039327  | 1.3435146 | 6.1613497  | 9.5624926  |
+
+</center>
+
 
 Then using a function written by [Connie Zhang](https://connie-zhang.github.io/pet-adoption/modelling.html), we describe the accuracy of the ordinal model below.
 
@@ -740,20 +750,28 @@ In the following sections, we go through each particular model's performance bef
 
 ### Immigrant/Non-Citizen Count
 
+<center>
 
 | model            | mae      | mae\_scaled | within\_50 | within\_95 |
 | ---------------- | -------- | ----------- | ---------- | ---------- |
 | Non-Hierarchical | 1026.946 | 0.5670020   | 0.5666667  | 0.9666667  |
 | Hierarchical     | 1036.095 | 0.5555193   | 0.5555556  | 0.9666667  |
 
+</center>
+
+
 Using in-sample scaled MAE, it’s evident that the differences between our two negative binomial models of non-citizen counts were minute In other settings, we would typically recommend to use cross-validated error metrics to truly compare these models. However, because we are comparing a hierarchical model to a non-hierarchical model, cross-validation works slightly differently. In the former case, cross-validation via the `prediction_summary_cv` function in `bayesrules` makes data permutations to represent a "new borough", rather than a set of arbitrary models. To circumvent these differences, we use the expected-log predictive density (ELPD) of each respective model to compare the performance of each model. The details of this approach can be found [here](https://www.bayesrulesbook.com/chapter-10.html#chapter-10-train-test).
 
 
+<center>
 
 | model             | elpd\_diff  | se\_diff  | elpd\_loo  | se\_elpd\_loo | p\_loo   | se\_p\_loo | looic    | se\_looic |
 | ----------------- | ----------- | --------- | ---------- | ------------- | -------- | ---------- | -------- | --------- |
 | hi\_noncit\_model | 0.0000000   | 0.0000000 | \-1607.625 | 11.46815      | 13.50260 | 2.306438   | 3215.250 | 22.93629  |
 | noncit\_model     | \-0.9888152 | 0.7546653 | \-1608.614 | 11.61547      | 14.85341 | 2.514718   | 3217.227 | 23.23093  |
+
+</center>
+
 
 
 From the above ELPD rankings, it seems that the non-hierarchical model of non-citizen counts performed better than its hierarchical parallel. Explicitly, there was a decrease of .536 standard deviations when comparing the non-hiearchical to its hiearchical parallel.
@@ -766,27 +784,39 @@ From the above ELPD rankings, it seems that the non-hierarchical model of non-ci
 
 The residuals on our hierarchical model are not perfectly randomly distributed across all neighborhoods in NYC. Specifically, one could also make the case that there are slight over predictions (darker blue) of non-citizen counts in the Brooklyn (bottom left) for the non-hierarchical model. However, these differences and concentrations seem mostly negligible upon visual inspection.
 
+<center>
 
 | Model            | WAIC     | SE       |
 | ---------------- | -------- | -------- |
 | Non-Hierarchical | 3208.463 | 23.15916 |
 | Hierarchical     | 3206.880 | 23.22938 |
 
+</center>
+
+
 Our last error metric of non-citizen counts is the Watanabe–Akaike information criterion (WAIC). When comparing two models with the WAIC, the better predicting model would be the model with the smaller WAIC value. Here, it seems that non-hierarchical model of non-citizen counts has the lowest WAIC, but the difference is largely minimal. Altogether, we choose the hierarchical model of non-citizen counts given its lower ELPD, WAIC, and spatial residual patterning.
 
 ## Mean Neighborhood Rental Prices
+
+<center>
 
 | model            | mae       | mae\_scaled | within\_50 | within\_95 |
 | ---------------- | --------- | ----------- | ---------- | ---------- |
 | Non-Hierarchical | 0.8377195 | 0.5259208   | 0.6055556  | 0.9500000  |
 | Hierarchical     | 0.8024302 | 0.5087840   | 0.5888889  | 0.9444444  |
 
+</center>
+
 Once again when using in-sample scaled MAE, the differences between our two models of mean rental prices were largely minimal. Our predictions of rental price in both models were about 80 dollars away from their observed rental prices. However, the scaled mean absolute error metrics in the hierarchical model indicate that across simulations the observed value is about 0.3 standard deviations away from their the medians of the posterior predictive distributions of rental prices. This is a nontrivial improvement from the .5 standard deviation in the case of the non-hierarchical distribution. 
+
+<center>
 
 | model           | elpd\_diff | se\_diff  | elpd\_loo  | se\_elpd\_loo | p\_loo   | se\_p\_loo | looic    | se\_looic |
 | --------------- | ---------- | --------- | ---------- | ------------- | -------- | ---------- | -------- | --------- |
 | hi\_rent\_model | 0.000000   | 0.0000000 | \-341.3198 | 15.17132      | 17.47628 | 3.915789   | 682.6395 | 30.34264  |
 | rent\_model     | \-1.542781 | 0.6447002 | \-342.8626 | 14.91792      | 18.60953 | 3.799422   | 685.7251 | 29.83584  |
+
+</center>
 
 From the above ELPD rankings, it seems that the hierarchical model of mean neighborhood rental prices performed better than its non-hierarchical parallel.
 
@@ -797,27 +827,40 @@ From the above ELPD rankings, it seems that the hierarchical model of mean neigh
 
 Regarding the non-hierarchical model, the distribution of our residuals indicate that our model's mispredictions are randomly distributed. Further, our residuals in the non-hierarchical model are relatively small when compared to the hierarchical model. In the hierarchical model there is a slight indication of systematic mispredictions that appear distributed by borough. Crucially, it seems that we are systematically overpredicting rental prices in both Queens (bottom right) and Brooklyn (bottom left), but with greater overprediction occurring for Brooklyn. 
 
+<center>
+
 | Model            | WAIC     | SE       |
 | ---------------- | -------- | -------- |
 | Non-Hierarchical | 684.9805 | 29.67027 |
 | Hierarchical     | 680.4569 | 29.84038 |
+
+</center>
 
 It seems that hierarchical model of rental prices has the lowest WAIC, but the difference is largely minimal. The hierarchical model’s residual patterning, ELPD metric, in-sample residual errors, and WAIC all indicate that the hierarchical version may be more appropriate.
 
 
 ## Eviction Count
 
+<center>
+
 | model            | mae      | mae\_scaled | within\_50 | within\_95 |
 | ---------------- | -------- | ----------- | ---------- | ---------- |
 | Non-Hierarchical | 42.28500 | 0.5461398   | 0.5777778  | 0.9555556  |
 | Hierarchical     | 43.08787 | 0.5467191   | 0.5777778  | 0.955555   |
 
+</center>
+
 Using in-sample scaled MAE, the differences between our two negative-binomial models of evictions count were largely minimal. Our predictions of eviction counts in both models were about 40 cases away from their observed counts and with very similar scaled MAE metrics. Typically, we'd suggest the use of the non-hierarchical model given that the performance is so similar and the computational burden of a hierarchical model is no longer warranted. 
+
+<center>
 
 | model               | elpd\_diff | se\_diff  | elpd\_loo  | se\_elpd\_loo | p\_loo   | se\_p\_loo | looic    | se\_looic |
 | ------------------- | ---------- | --------- | ---------- | ------------- | -------- | ---------- | -------- | --------- |
 | eviction\_model     | 0.000000   | 0.0000000 | \-1054.382 | 13.52879      | 16.69892 | 2.592070   | 2108.764 | 27.05759  |
 | hi\_eviction\_model | \-0.038482 | 0.5198728 | \-1054.420 | 13.54050      | 16.34022 | 2.549446   | 2108.841 | 27.08100  |
+
+</center>
+
 
 From the above ELPD rankings, it also seems that the hierarchical model of eviction counts performed better than its non-hierarchical parallel. Next, we will compare how these 2 models' residuals are spatially distributed.
 
@@ -827,10 +870,14 @@ From the above ELPD rankings, it also seems that the hierarchical model of evict
 
 Our residuals are randomly distributed across all neighborhoods indicating that our model’s bias is consistent across observations— this is really good! One could make the case that there are slight under predictions (darker red) of eviction counts in the Bronx (top) for both models. However, these patterns are relatively minute.
 
+<center>
+
 | Model            | WAIC     | SE       |
 | ---------------- | -------- | -------- |
 | Non-Hierarchical | 2103.173 | 27.53465 |
 | Hierarchical     | 2103.144 | 27.38933 |
+
+</center>
 
 It seems that hierarchical model of rental prices has the lowest WAIC, but only by .03 units. But given the hierarchical model’s residual patterning, ELPD metric, in-sample residual patterns, and WAIC we select the hierarchical model of eviction counts.
 
@@ -863,11 +910,14 @@ rbind(rent_moran, evict_moran) %>%
   kable_styling()
   
 ```
+<center>
 
 | Term      | statistic | p.value | parameter | method                            | alternative |
 | --------- | --------- | ------- | --------- | --------------------------------- | ----------- |
 | Mean Rent | 0.6560430 | 0.001   | 1000      | Monte-Carlo simulation of Moran I | greater     |
 | Eviction  | 0.5794612 | 0.001   | 1000      | Monte-Carlo simulation of Moran I | greater     |
+
+</center>
 
 
 Our results are then likely biased by the spatial relationships between neighborhoods. As such, we could extend this work to the spatial domain using methods from the `CARBayes` or `INLA` packages. Following work by [Katie Jolly and Raven McKnight](https://www.ravenmcknight.com/post/carbayes-tutorial/), we have outlined a spatial workflow for both the eviction and rental price models using `CARBayes` in the appendix. However, because spatial models were beyond the scope of this project and class, we'd like to emphasize that in a more detailed analysis the models we outline in the appendix would likely be adjusted in `STAN` or `CARBayes` to use different likelihoods, spatial effect priors (e.g. BYM, Intrinsic CAR, etc), and different priors for the predictors' coefficients. Further, in a more detailed analysis, we would explicitly describe the mathematical construction of the models.
