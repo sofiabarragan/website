@@ -214,11 +214,15 @@ prediction %>%
 <img src="/media/bayes/plot_3.png" width="100%" height="100%" />
 </center>
 
-From the plot, it is clear that our naive Bayes model is sufficient when predicting the extrema of subway (in)access given the overwhelming proportion of true-poor and true-excellent classifications. However, it remains imperfect when considering the inaccuracy for both the limited and satisfactory transportation categories, our data's distributions, and its interpretability.
+From the plot, it is clear that our naive Bayes model is sufficient when predicting the extrema of subway (in)access given the overwhelming proportion of true-poor and true-excellent classifications. However, it remains imperfect when considering the inaccuracy for both the limited and satisfactory transportation categories, our data’s distributions, and its interpretability.
 
-Importantly, naive Bayes assumes that all quantitative predictors are normally distributed within each Y category and further it assumes (i.e. that predictors are independent within each Y category). Our data do not meet these assumptions, unfortunately. Further, naive Bayes is a blackbox classifier. That is, naive Bayes classification might give us accurate predictions, but it doesn’t give us a sense of where these predictions come from or subway access is related to the predictors.
+Importantly, naive Bayes assumes that all quantitative predictors are normally distributed within each Y category and further it assumes (i.e. that predictors are independent within each Y category). Below we verify whether this is an appropriate assumption for our data.
 
+<center>
+<img src="/media/bayes/naive_assumption.png" width="100%" height="100%" />
+</center>
 
+Naive Bayes’s assumption of normality within categories does not hold, unfortunately. Meaning that although this is a “good” classifier, it is not an appropriate one. Further, naive Bayes is a black box classifier meaning that although our classifications might be accurate, we will never understand where these predictions come from or how subway access is related to these predictors.
 
 
 
@@ -228,96 +232,142 @@ Importantly, naive Bayes assumes that all quantitative predictors are normally d
 
 Having realized the shortcomings of the naive Bayes model, we wanted to see if there are any alternatives. We land on the ordinal regression model.
 
+An ordinal regression model, or ordered logistic regression model, predicts the outcome of an ordinal variable, which is a variable whose value exists on an arbitrary scale where only the relative ordering between different values is significant. In this case, our subway desert classification is the ordinal variable with categories ranging from the least covered to the most covered (1 ~ 4) by the NYC subway system.
+
+Here we introduce a latent variable `$y^*$`, which would be a linear combination of the predictor variables. After going through a variable selection process, we took out variables with a confidence interval consisting model consisting of mean income, percentage below poverty, number of evictions, and number of stores in our compiled data. A mathematical expression of the categorization would be as follows:
+
+`$$
+Y_i |  \zeta_1, \zeta_2, \zeta_3, \beta_1, \beta_2, \beta_3, \beta_4 =
+\begin{cases}
+1 &, y^{*} < \zeta_1 \\
+2 &, \zeta_1 \leq y^{*} < \zeta_2 \\
+3 &, \zeta_2 \leq y^{*} < \zeta_3 \\
+4 &, y^{*} \geq \zeta_3 \\
+\end{cases} 
+$$`
+
+`$$y^{*} = \beta_1x_1 + \beta_2x_2 + \beta_3x_3 + \beta_4x_4 + \epsilon $$`
+
+Where
+
+- `$\zeta_i$` : is a vector of cut-points for categories. 
+- `$y^{*}$` : a linear combination of 4 predictor variables consisting of `mean income`, `below poverty percentage`, `eviction count`, and `store_count`.
+- `$\beta_i$` : is the coefficient for the $ith$ predictor variable. 
+
+
+`$$
+\begin{align*}
+\zeta_1 &\sim N(m_{\zeta 1}, s_{\zeta 1}^{2}) \\
+\zeta_2 &\sim N(m_{\zeta 2}, s_{\zeta 2}^{2}) \\
+\zeta_3 &\sim N(m_{\zeta 3}, s_{\zeta 3}^{2}) \\
+\zeta_4 &\sim N(m_{\zeta 4}, s_{\zeta 4}^{2}) \\
+\beta_1 &\sim N(m_{\beta 1}, s_{\beta 1}^{2}) \\
+\beta_2 &\sim N(m_{\beta 2}, s_{\beta 2}^{2}) \\
+\beta_3 &\sim N(m_{\beta 3}, s_{\beta 3}^{2}) \\
+\beta_4 &\sim N(m_{\beta 4}, s_{\beta 4}^{2}) \\
+\end{align*}
+`$$
+
+Each `$\zeta_i$` is a vector of cut-points for categories, and each `$\beta_i$` is the coefficient for the `$i^{th}$` predictor variable. 
+
+Note that there is no intercept in this model because the data cannot distinguish an intercept from the cut points. 
+
+Since we do not have prior information about the data, we will be using the default prior R2 given by the `stan_polr` function, which is null, or a uniform prior. We fit our model below.
+
+
 ```{r}
-model2 <- stan_polr(transportation_desert_4num ~ 
-                      mean_income + below_poverty_line_perc + store_count, 
-                    data =data_train, prior_counts = rstanarm::dirichlet(1),
+ordinal_model <- stan_polr(transportation_desert_4num ~ mean_income + below_poverty_line_perc + store_count, 
+                    data =data_train, prior_counts = dirichlet(1),
                     prior=R2(0.5), iter=500, seed = 86437, refresh=0, prior_PD=FALSE)
-
-
-tidy(model2, effects = "fixed", conf.int = TRUE, conf.level = 0.8) %>%
-  mutate(term = case_when(
-    term == "1|2" ~ "Poor | Limited",
-    term == "2|3" ~ "Limited | Satisfactory",
-    term == "3|4" ~ "Satisfactory | Excellent",
-    TRUE ~ term
-    ))%>%
-  kable(align = "c", caption = "Ordinal Model - Summary") %>% 
-  kable_styling()
 ```
 
-<center>
-
-
-| term                       | estimate   | std.error | conf.low   | conf.high  |
-| -------------------------- | ---------- | --------- | ---------- | ---------- |
-| mean\_income               | 0.0000460  | 0.0000104 | 0.0000339  | 0.0000596  |
-| below\_poverty\_line\_perc | 17.0648982 | 3.4532734 | 12.8319749 | 22.3269332 |
-| store\_count               | 0.0189996  | 0.0052394 | 0.0126227  | 0.0254789  |
-| Poor | Limited             | 5.4113154  | 1.2620341 | 3.9385520  | 7.1398347  |
-| Limited | Satisfactory     | 6.7324319  | 1.3225479 | 5.2493699  | 8.5003721  |
-| Satisfactory | Excellent   | 7.7039327  | 1.3435146 | 6.1613497  | 9.5624926  |
-
-</center>
-
-
-Then using a function written by [Connie Zhang](https://connie-zhang.github.io/pet-adoption/modelling.html), we describe the accuracy of the ordinal model below.
+Then extending a function written by [Connie Zhang](https://connie-zhang.github.io/pet-adoption/modelling.html) into a tidy format, we compute the accuracy of the ordinal model when predicting transportation desert categories below.
 
 ```{r}
-ordinal_accuracy<-function(post_preds,mydata){
-  post_preds<-as.data.frame(post_preds)
-  results<-c()
-  for (j in (1:length(post_preds))){
-    results[j]<-as.numeric(tail(names(sort(table(post_preds[,j]))))[4])
-    }
-  results<-as.data.frame(results)
-  compare<-cbind(results,mydata$transportation_desert_4num)
-  compare<-compare %>%mutate(results=as.numeric(results))
-  compare<-compare %>% mutate(`mydata$transportation_desert_4num`=as.numeric(`mydata$transportation_desert_4num`))
-  compare<-compare %>%mutate(accuracy=ifelse(as.numeric(results)==as.numeric(`mydata$transportation_desert_4num`),1,0))
-  print(sum(compare$accuracy)/length(post_preds))
+tidy_ordinal_accuracy <- function(testing_data, predictions){
+  
+  # write mode function since it does not exist in R
+  mode <- function(x) {
+                t <- table(x)
+                names(t)[which.max(t)]
+  }
+  
+  #write mode function since it does not exist in R
+  mydata <- testing_data  %>%
+    dplyr::select(`transportation_desert_4num`) %>% 
+    rownames_to_column("observation") 
+  
+  # extract predictions
+  # transpose so each row is a case from the training data, 
+  # then compute rowwise modes of classifications to find the most common prediction
+  raw_table <- predictions%>%
+    t() %>%
+    as.tibble()%>% 
+    mutate_if(is.character, as.numeric) %>%
+    rownames_to_column("observation") %>% 
+    rowwise(id="observation") %>%
+    mutate_if(is.numeric, as.factor) %>%
+    summarize(modal_prediction = mode(c_across(where(is.factor))))  %>%
+    right_join(mydata, ., by = "observation")
+
+  # compute transportation category accuracies
+  group_specific <- raw_table %>%
+    mutate(Accurate = ifelse(modal_prediction == transportation_desert_4num, 1,0))%>%
+    group_by(transportation_desert_4num) %>%
+    summarise(Accuracy = mean(Accurate)) %>%
+    mutate(transportation_desert_4num = case_when(
+    transportation_desert_4num==1 ~ "Poor",
+    transportation_desert_4num ==2 ~ "Limited",
+    transportation_desert_4num ==3 ~ "Satisfactory",
+    TRUE ~ "Excellent"))  
+ 
+   # compute overall accuracy
+  overall <- raw_table %>%
+    mutate(Accurate = ifelse(modal_prediction ==transportation_desert_4num, 1,0))%>%
+    summarise(Accuracy = mean(Accurate)) %>%
+    mutate(transportation_desert_4num = "Overall", .before=1)
+  
+  # bind into table
+  rbind(group_specific, overall) %>%
+    dplyr::rename("Access Level" = transportation_desert_4num) %>%
+    kable(align = "c", caption = "Non-Citizen Model - Summary") %>% 
+    kable_styling()
+  
 }
 ```
 
-
-
-
 ```{r}
-nyc_compiled[is.na(nyc_compiled)] = 0
-
 set.seed(86437)
 
 my_prediction2 <- posterior_predict(
-  model2, 
+  ordinal_model, 
   newdata = data_test)
 
-ordinal_accuracy(my_prediction2, data_test)
+tidy_ordinal_accuracy(data_test, my_prediction2)
 ```
 
-We are then 63.88% accurate when predicting transportation access categories.
 
-```{r}
-data_test %>%
-  select(nta_id, borough, transportation_desert_4cat) %>%
-  rownames_to_column() %>%
-  left_join(., prediction_long, by="rowname") %>%
-  
-  ggplot(aes(x=transportation_desert_4cat, fill=predicted_desert)) + 
-  geom_bar(position="fill")+
-  scale_y_continuous(labels = seq(0, 100, by = 25)) +
-  labs(title="Accessibility Predictions by Observed Category", y="Proportion", x="")+
-    theme(panel.grid.major.x = element_line("transparent"),
-         # axis.text.y.left = element_blank(),
-          axis.text.x.bottom = element_text(size = 12, face = "bold"),
-          plot.title = element_text(family="DIN Condensed", size =20, hjust=.5, face = "bold")) +
-   scale_fill_manual(values=c("#895F32","#E9DBC2","#7D9B8A", "#395645"),
-                       guide = guide_legend(title = "Subway Accessibility \nCategory"), na.value="#D6D6D6")
-  
-```
+| Access Level | Accuracy  |
+| ------------ | --------- |
+| Poor         | 0.571 |
+| Limited      | 0.555 |
+| Satisfactory | 0.000 |
+| Excellent    | 1.000 |
+| Overall      | 0.722|
+
+It seems our model is dramatically accurate when classifying neighborhoods with excellent subway access (72.22\%), while entirely inaccurate when studying a neighborhood with satisfactory subway access (0.00\%). For the remaining categories of transportation access, both had an accuracy of about 56\%, with only a 2\% difference in accuracy between the two categories. 
 
 <center>
 <img src="/media/bayes/plot_4.png" width="100%" height="100%" />
 </center>
+
+Here, we visualize the same accuracy metrics for the ordinal model by each category. Once again, observe that our predictions on neighborhoods with "Satisfactory" access are always wrong.
+
+It is important to consider that in both the ordinal and the naive model, we could never predict the "Satisfactory" category. Likely, this is a byproduct of how we defined the respective levels of transportation inaccess— that is, these categories may not be sufficiently different to find differences.
+
+In the next section, we aimed to see how transportation inaccess affected real-world urban housing issues.
+
+
 
 # Transportation and Structural Inequity
 
@@ -337,12 +387,11 @@ Unfortunately, rent, transportation access, and eviction counts may also be asso
 ggarrange(desert_map, white, black, latinx, asian, ncol=3, nrow=2)
 ```
 
-
 <center>
 <img src="/media/bayes/plot_6.png" width="100%" height="100%" />
 </center>
 
-From the plots, neighborhoods with the highest densities of Black and Asian community members also have the poorest scores of subway access, while the converse holds true for neighborhoods with the highest proportion of White residents. 
+From the above plots, neighborhoods with the highest densities of Black and Asian community members also have the poorest scores of subway access, while the converse holds true for neighborhoods with the highest proportion of White residents. 
 
 Further, observe that eviction counts are most common in neighborhoods with the highest densities of Black and Latinx community members. The below faceted visualizations detail the specific relationships between the proportion of Black, Latinx, Asian, and White residents in a neighborhood with eviction counts.
 
@@ -364,6 +413,8 @@ Increases in White-resident proportions were uniformly associated with increases
 Our next section details the statistical models we used to better characterize the clear relationships between housing inequities, urban racism, and transportation access.
 
 ## Non-Hierarchical Models
+
+
 
 In order to understand the respective distributions of immigrant population size, evictions, and mean rental prices in NYC, we fit 3 non-hierarchical Bayesian models with each variable as an outcome. In the following section, we fit hierarchical regression models with similar likelihood and prior structure. However, in those models neighborhood values are grouped by borough. 
 
@@ -400,19 +451,6 @@ Our model specifications are detailed in the following subsections
 
 ### Model 1: Immigrant/Non-Citizen Count
 
-```{r}
-noncit_model <- stan_glm(
-  noncitizen_count ~
-    transportation_desert_4cat + 
-    borough + total_pop + gini_neighborhood + 
-    mean_income + mean_rent + unemployment_perc + 
-    black_perc + latinx_perc + asian_perc,
-  data = modeling_data,
-  family = neg_binomial_2,
-  chains = 4, iter = 1000*2, seed = 84735, refresh = 0
-)
-```
-
 `$$
 \begin{split}
 \text{Non-Citizen Count}_{i} \mid  \beta_{0c}, \beta_1, ..., \beta_k, r & \sim \text{NegBin}(\mu_i, r) \; \; \; \text{where } \log(\mu_i) = \beta_{0c} + \sum^{14}_{k=1} \beta_{k}X_{ik} \\
@@ -445,6 +483,23 @@ s_k \in \{
 \end{align}
 $$`
 
+
+We fit our model below using `stan_glm`.
+
+```{r}
+noncit_model <- stan_glm(
+  noncitizen_count ~
+    transportation_desert_4cat + 
+    borough + total_pop + gini_neighborhood +mean_income + mean_rent + unemployment_perc + 
+    black_perc + latinx_perc + asian_perc,
+  data = modeling_data,
+  family = neg_binomial_2,
+  chains = 4, iter = 1000*2, seed = 84735, refresh = 0
+)
+```
+
+Next, we assess its distributional fit to our data.
+
 <center>
 <img src="/media/bayes/plot_9.png" width="100%" height="100%" />
 </center>
@@ -454,18 +509,6 @@ It seems that our simulations (light green) of non-citizen count distributions w
 
 ### Model 2: Mean Neighborhood Rental Prices
 
-```{r}
-rent_model <- stan_glm(
-  mean_rent  ~ 
-  transportation_desert_4cat + borough + gini_neighborhood +
-    mean_income + black_perc + latinx_perc + asian_perc+
-    below_poverty_line_perc + school_count + store_count,
-  data = modeling_data, 
-  family = gaussian,
-  prior_intercept = normal(1600 , 20),
-  chains = 4, iter = 1000*2, seed = 84735, refresh = 0
-)
-```
 
 `$$
 \begin{split}
@@ -502,6 +545,23 @@ $$`
 
 Once again note that we are specifying the parameters of our scaled intercept prior, `$\beta_{0c}$`, so that the the typical mean neighborhood rental price `$\sim $N(1600,20^2)$`, while our priors for the $\beta_k$ are weakly-informed negative priors. We chose our prior intercept specifications of mean rental price (`$\beta_{0c}$`) using Juthi’s experience renting in NYC and a group conversation about typical rental prices we would elect to pay in NYC, Los Angeles, and other major cities we have lived in or around. However, we decided to continue using weakly-informative normal priors for the predictors because we were unsure about their relationship— if any— to rental prices.
 
+We fit our model below.
+
+```{r}
+rent_model <- stan_glm(
+  mean_rent  ~ 
+  transportation_desert_4cat + borough + gini_neighborhood +
+    mean_income + black_perc + latinx_perc + asian_perc+
+    below_poverty_line_perc + school_count + store_count,
+  data = modeling_data, 
+  family = gaussian,
+  prior_intercept = normal(1600 , 20),
+  chains = 4, iter = 1000*2, seed = 84735, refresh = 0
+)
+```
+
+Next, we assess its distributional fit to our data.
+
 <center>
 <img src="/media/bayes/plot_10.png" width="100%" height="100%" />
 </center>
@@ -511,17 +571,6 @@ From the above posterior prediction check, it seems that our simulations are rel
 
 ### Model 3: Eviction Count
 
-```{r}
-eviction_model <- stan_glm(
-  eviction_count  ~ 
-    transportation_desert_4cat + borough + total_pop +
-    below_poverty_line_perc + gini_neighborhood + mean_income + mean_rent+ 
-    black_perc + latinx_perc + asian_perc,
-  data = modeling_data, 
-  family = neg_binomial_2,
-  chains = 4, iter = 1000*2, seed = 84735,
-)
-```
 
 `$$
 \begin{split}
@@ -555,18 +604,33 @@ s_k \in \{
 \end{align}
 $$`
 
+We fit our model below.
+
+```{r}
+eviction_model <- stan_glm(
+  eviction_count  ~ 
+    transportation_desert_4cat + borough + total_pop +
+    below_poverty_line_perc + gini_neighborhood + mean_income + mean_rent+ 
+    black_perc + latinx_perc + asian_perc,
+  data = modeling_data, 
+  family = neg_binomial_2,
+  chains = 4, iter = 1000*2, seed = 84735, refresh = 0
+)
+```
+
+Next, we assess its distributional fit to our data.
+
 <center>
 <img src="/media/bayes/plot_11.png" width="100%" height="100%" />
 </center>
 
 
-Our simulations of eviction count distributions are dramatically consistent across the iterations. Further, our simulations were relatively consistent with the observed eviction counts. Our negative-binomial model seems to be a pretty good distributional fit, but could certainly be improved upon! 
-
+Our simulations of eviction count distributions are dramatically consistent across the iterations. Further, our simulations were relatively consistent with the observed eviction counts. So, our negative-binomial model seems to be a pretty good distributional fit, but could certainly be improved upon! 
 
 
 ## Hierarchical Models
 
-Given the potential differences in demographic characteristics, housing trends, and transportation by borough and the clear hierarchy from borough to neighborhood, we fit 3 hierarchical parallels of the  non-hierarchical models above. Now, however, we let borough be a grouping variable in our data. Importantly, our priors for the $\beta_k$s have stayed the same. 
+Given the potential differences in demographic characteristics, housing trends, and transportation by borough and the clear hierarchy from borough to neighborhood, we fit 3 hierarchical parallels of the  non-hierarchical models above. Now, however, we let borough be a grouping variable in our data. Importantly, our priors for the `$\beta_k$`s have stayed the same. 
 
 We list our hierarchical models and their predictors below:
 
@@ -585,21 +649,10 @@ We list our hierarchical models and their predictors below:
 
 Again for 4 and 6, we used weakly informative priors and allowed `stan_glm` to estimate initial priors. While for 5, we specified the same prior intercept as a normal distribution with mean 1600 and standard deviation at 20. 
 
+
 ### Model 4: Immigrant/Non-Citizen Count
 
-```{r}
-hi_noncit_model <- stan_glmer(
-  noncitizen_count ~
-    transportation_desert_4cat + 
-    total_pop + gini_neighborhood + 
-    mean_income + mean_rent +
-    unemployment_perc + 
-    black_perc + latinx_perc + asian_perc + (1 | borough),
-  data = modeling_data,
-  family = neg_binomial_2,
-  chains = 4, iter = 1000*2, seed = 84735, refresh = 0
-)
-```
+
 
 `$$
 \begin{split}
@@ -629,7 +682,25 @@ s_k \in \{
 1.142,
 1.6003\}
 \end{align}
-$$`
+$$` 
+
+We fit our model using `stan_glmer` below.
+
+```{r}
+hi_noncit_model <- stan_glmer(
+  noncitizen_count ~
+    transportation_desert_4cat + 
+    total_pop + gini_neighborhood + 
+    mean_income + mean_rent +
+    unemployment_perc + 
+    black_perc + latinx_perc + asian_perc + (1|borough),
+  data = modeling_data,
+  family = neg_binomial_2,
+  chains = 4, iter = 1000*2, seed = 84735, refresh = 0
+)
+```
+
+Next, we check it's distributional fit to our data.
 
 <center>
 <img src="/media/bayes/plot_15.png" width="100%" height="100%" />
@@ -640,19 +711,6 @@ It seems that our simulations of non-citizen count distributions in the hierarch
 
 ### Model 5: Mean Neighborhood Rental Prices
 
-```{r}
-hi_rent_model <- stan_glmer(
-  mean_rent  ~ 
-    transportation_desert_4cat + gini_neighborhood +
-    mean_income + black_perc + latinx_perc + asian_perc+
-    below_poverty_line_perc + school_count + store_count + (1 | borough),
-  data = modeling_data, 
-  family = gaussian,
-  prior_intercept = normal(1600, 20, autoscale = TRUE),
-  prior = normal(0, 2.5, autoscale = TRUE), 
-  chains = 4, iter = 1000*2, seed = 84735, refresh = 0
-)
-```
 
 `$$
 \begin{split}
@@ -685,6 +743,27 @@ s_k \in \{
 \end{align}
 $$`
 
+
+Once again, we chose our prior specifications of the mean rental price intercept `$\beta_{0c}$` using Juthi’s experience renting in NYC and a group conversation about typical rental prices we would elect to pay in NYC, Los Angeles, and other major cities we have lived in or around. 
+
+We fit our model using `stan_glmer` below.
+
+```{r}
+hi_rent_model <- stan_glmer(
+  mean_rent  ~ 
+    transportation_desert_4cat + gini_neighborhood +
+    mean_income + black_perc + latinx_perc + asian_perc+
+    below_poverty_line_perc + school_count + store_count + (1 | borough),
+  data = modeling_data, 
+  family = gaussian,
+  prior_intercept = normal(1600, 20, autoscale = TRUE),
+  prior = normal(0, 2.5, autoscale = TRUE), 
+  chains = 4, iter = 1000*2, seed = 84735, refresh = 0
+)
+```
+
+Next, we check it's distributional fit to our data.
+
 <center>
 <img src="/media/bayes/plot_16.png" width="100%" height="100%" />
 </center>
@@ -693,19 +772,6 @@ Our simulations are relatively consistent. However, these simulated distribution
 
 
 ### Model 6: Eviction Count
-
-```{r}
-hi_eviction_model <- stan_glmer(
-  eviction_count  ~ 
-    transportation_desert_4cat +
-    total_pop + below_poverty_line_perc+
-    gini_neighborhood + mean_income +  mean_rent + 
-    black_perc + latinx_perc + asian_perc + (1|borough),
-  data = modeling_data, 
-  family = neg_binomial_2,
-  chains = 4, iter = 1000*2, seed = 84735, refresh = 0
-)
-```
 
 `$$
 \begin{split}
@@ -737,6 +803,23 @@ s_k \in \{
 \end{align}
 $$`
 
+We fit our model using `stan_glmer` below.
+
+```{r}
+hi_eviction_model <- stan_glmer(
+  eviction_count  ~ 
+    transportation_desert_4cat +
+    total_pop + below_poverty_line_perc+
+    gini_neighborhood + mean_income +  mean_rent + 
+    black_perc + latinx_perc + asian_perc + (1|borough),
+  data = modeling_data, 
+  family = neg_binomial_2,
+  chains = 4, iter = 1000*2, seed = 84735, refresh = 0
+)
+```
+
+Next, we check it's distributional fit to our data.
+
 <center>
 <img src="/media/bayes/plot_17.png" width="100%" height="100%" />
 </center>
@@ -744,7 +827,7 @@ $$`
 
 Our simulations of eviction count distributions are dramatically consistent across the iterations. Further, our simulations were relatively consistent with the observed eviction counts. Our negative-binomial model seems to be a pretty good distributional fit, but could certainly be improved upon! 
 
-In the following sections, we go through each particular model's performance before selecting our final set of models to interpret.
+In the following sections, we go through each particular model's outcome and what they tell us about the relationships between transportation and housing.
 
 
 ## Model Performance
@@ -776,6 +859,13 @@ Using in-sample scaled MAE, it’s evident that the differences between our two 
 
 
 From the above ELPD rankings, it seems that the non-hierarchical model of non-citizen counts performed better than its hierarchical parallel. Explicitly, there was a decrease of .536 standard deviations when comparing the non-hiearchical to its hiearchical parallel.
+
+
+<center>
+<img src="/media/bayes/residual_scatter_noncit.png" width="100%" height="100%" />
+</center>
+
+Our residuals don't look perfect, given the slight heteroskedasticity as noncitizen count increased, but it seems that the distributions were almost perfectly comparable between the two models!
 
 
 <center>
@@ -820,6 +910,14 @@ Once again when using in-sample scaled MAE, the differences between our two mode
 </center>
 
 From the above ELPD rankings, it seems that the hierarchical model of mean neighborhood rental prices performed better than its non-hierarchical parallel.
+
+
+<center>
+<img src="/media/bayes/residual_scatter_rent.png" width="100%" height="100%" />
+</center>
+
+Our residuals don't look perfect, given the slight heteroskedasticity as noncitizen count increased, but it seems that the distributions were almost perfectly comparable between the two models!
+
 
 <center>
 <img src="/media/bayes/plot_21.png" width="100%" height="100%" />
@@ -866,6 +964,13 @@ Using in-sample scaled MAE, the differences between our two negative-binomial mo
 From the above ELPD rankings, it also seems that the hierarchical model of eviction counts performed better than its non-hierarchical parallel. Next, we will compare how these 2 models' residuals are spatially distributed.
 
 <center>
+<img src="/media/bayes/residual_scatter_evictions.png" width="100%" height="100%" />
+</center>
+
+Our residuals look fantastic! There is a slight heteroskedastic trend in our predictions, but for the most part it seems our residuals on eviction count predictions for both models are normally distributed around 0. Once again, it seems that the residual distributions are largely comparable, however in our hierarchical model (red), we are tending to underpredict eviction counts slightly more in the extreme cases. This is largely expected given that the hierarchical model will naturally shrink predictions of extreme cases.
+
+
+<center>
 <img src="/media/bayes/plot_22.png" width="100%" height="100%" />
 </center>
 
@@ -882,11 +987,117 @@ Our residuals are randomly distributed across all neighborhoods indicating that 
 
 It seems that hierarchical model of rental prices has the lowest WAIC, but only by .03 units. But given the hierarchical model’s residual patterning, ELPD metric, in-sample residual patterns, and WAIC we select the hierarchical model of eviction counts.
 
+# Model Evaluation
+
+Our previous section consistently demonstrated that our hierarchical models performed better than our non-hierarchical models, with respect to absolute error metrics, residual distributions, expected-log predictive densities, and WAICs. In this section, we detail our findings using the hierarchical models.
+
+## Model 4: Immigrant/Non-Citizen Count
+
+
+| term                                     | estimate    | std.error | conf.low    | conf.high    |
+| ---------------------------------------- | ----------- | --------- | ----------- | ------------ |
+| (Intercept)                              | 655.1704959 | 0.4859082 | 355.3384761 | 1259.5178318 |
+| transportation\_desert\_4catLimited      | 23.8215261  | 0.0871758 | 10.9223819  | 39.3037996   |
+| transportation\_desert\_4catSatisfactory | 28.7781449  | 0.1154065 | 11.0213880  | 48.5799874   |
+| transportation\_desert\_4catExcellent    | 31.4830994  | 0.0989881 | 15.4929332  | 49.2745095   |
+| total\_pop                               | 0.0025815   | 0.0000017 | 0.0023574   | 0.0027864    |
+| mean\_income                             | \-0.0801747 | 0.0002335 | \-0.1097123 | \-0.0498783  |
+| mean\_rent                               | 6.5520771   | 0.0166215 | 4.1387631   | 8.9194434    |
+| black\_perc                              | 5.2653616   | 0.0170943 | 3.1311412   | 7.5478209    |
+| latinx\_perc                             | 12.5891526  | 0.0224721 | 9.4244537   | 15.8286429   |
+| asian\_perc                              | 19.9003911  | 0.0262381 | 15.9533952  | 23.8771062   |
+
+- **Limited Subway Access**: When controlling for all other predictors, a neighborhood with limited transit access is expected to have approximately 21.82% more non-citizens than a neighborhood with poor transit access. There's an 80% probability that this increase could lie anywhere between (7.48%, 38.27%) non citizen residents, indicating that neighborhoods with limited transit access almost certainly have more non citizen residents than neighborhoods with poor access.
+
+- **Satisfactory Subway Access**: When controlling for all other predictors, a neighborhood with satisfactory transit access is expected to have approximately 30.22% more non-citizens than a neighborhood with poor transit access. There's an 80% probability that this increase could lie anywhere between (13.99%, 49.09%) non citizen residents, indicating that neighborhoods with satisfactory transit access almost certainly have more non citizen residents than neighborhoods with poor access.
+
+- **Excellent Subway Access**: When controlling for all other predictors, a neighborhood with excellent transit access is expected to have approximately 29.84% more non-citizens than a neighborhood with poor transit access. There's an 80% probability that this increase could lie anywhere between (13.34%, 48.51%) non citizen residents, indicating that neighborhoods with excellent transit access almost certainly have more non citizen residents than neighborhoods with poor access.
+
+- **Mean Income**: When controlling for all other predictors, a 100 dollar increase in mean neighborhood income is associated with approximately a 0.0793% decrease in non citizen count. However, there is a 80% chance that the decrease in non citizen count may be any value between (0.1102, 0.0476), indicating that there is almost certainly a negative relationship between mean income and non citizen count, but its magnitude may vary.
+  
+- **Mean Rent**: When controlling for all other predictors, a 100 dollar increase in mean neighborhood rent is associated with approximately a 6.29% increase in non citizen counts. However, there is an 80% chance that the increase in non citizen count may be any value between (3.96%, 8.68%), indicating that there is almost certainly a positive relationship between mean rent and non citizen count, but its magnitude may vary.
+  
+- **Black Percentage**: When controlling for all other predictors, a 10% increase in the Black population in a neighborhood is associated with approximately a 5.20% increase in non citizen counts. However, there is an 80% chance that the increase in non citizen count may be any value between (2.99%, 7.45%), indicating that there is almost certainly a positive relationship between Black resident percentage and non citizen count, but its magnitude may vary.
+
+- **Latinx Percentage**: When controlling for all other predictors, a 10% increase in the Latinx population in a neighborhood is associated with approximately a 13.46% increase in non citizen count. However, there is an 80% chance that the increase in non citizen count may be any value between (10.08%, 17.07%), indicating that there is almost certainly a positive relationship between Latinx resident percentage and non citizen count, but its magnitude may vary.
+
+- **Asian Percentage**: When controlling for all other predictors, a 10% increase in the Asian population in a neighborhood is associated with approximately a 19.63% increase in non citizen count. However, there is an 80% chance that the increase in non citizen count may be any value between (15.75%, 23.69%), indicating that there is almost certainly a positive relationship between Asian resident percentage and non citizen count, but its magnitude may vary.
+
+
+## Model 5: Mean Neighborhood Rental Prices
+
+```{r}
+tidy(hi_rent_model, effects = "fixed", conf.int = TRUE, conf.level = 0.8)%>% 
+  filter(conf.low	> 0 & conf.high > 0 | conf.low	< 0 & conf.high < 0) %>%
+  kable(align = "c", caption = "Hierarchical Rent Model - Summary") %>% 
+  kable_styling()
+```
+
+| term          | estimate    | std.error | conf.low    | conf.high   |
+| ------------- | ----------- | --------- | ----------- | ----------- |
+| (Intercept)   | 7.5780558   | 2.0393369 | 5.0030700   | 10.1066203  |
+| mean\_income  | 0.0122831   | 0.0007915 | 0.0112633   | 0.0132664   |
+| asian\_perc   | 0.2416356   | 0.1144681 | 0.0976769   | 0.3856322   |
+| school\_count | \-0.0398565 | 0.0267881 | \-0.0739144 | \-0.0056472 |
+
+For rent model:
+
+- **Mean Income**: When controlling for all other predictors, a *100 dollar* increase in mean neighborhood income is associated with approximately a $.012 increase in average rental prices. However, there is a 80% chance that the increase associated with rental price increases may be any value between (1.126, 1.326) dollars, indicating that there is almost certainly a positive relationship between mean income and mean rental prices, but its magnitude may vary slightly.
+  
+- **Asian Percentage**: When controlling for all other predictors, a *10%* increase in the Asian population in a neighborhood is associated with approximately a $0.241 increase in average rental prices. However, there is an 80% chance that the *increase* associated with rent may be any value between (0.0976, 0.385), indicating that there is almost certainly a positive relationship between Asian resident percentage and rent, but its magnitude may vary.
+
+- **School Count**: When controlling for all other predictors, for every school in a neighborhood there is an associated $0.0398 decrease in average rental prices. However, there is an 80% chance that the increase associated with rent may be any value between (-0.00564, -0.0739), indicating that there is almost certainly a positive relationship between Asian resident percentage and rent, but its magnitude may vary slightly.
+
+
+## Model 6: Eviction Count
+
+```{r}
+tidy(hi_eviction_model, effects = "fixed", conf.int = TRUE, conf.level = 0.8)%>% 
+  
+  mutate(estimate= ifelse(term == "(Intercept)", exp(estimate), (exp(estimate)-1)*100), 
+         conf.low= ifelse(term == "(Intercept)", exp(conf.low), (exp(conf.low)-1)*100), 
+         conf.high = ifelse(term == "(Intercept)", exp(conf.high), (exp(conf.high)-1)*100))%>%
+  filter(conf.low	> 0 & conf.high > 0 | conf.low	< 0 & conf.high < 0) %>%
+  kable(align = "c", caption = "Eviction Model - Summary") %>% 
+  kable_styling()
+```
+
+| (Intercept)                              | 13.8092973   | 0.6874845 | 5.6333236   | 33.3451782    |
+| ---------------------------------------- | ------------ | --------- | ----------- | ------------- |
+| transportation\_desert\_4catLimited      | 40.7106141   | 0.1040043 | 23.8780090  | 62.4039496    |
+| transportation\_desert\_4catSatisfactory | 43.2081471   | 0.1274771 | 20.8712188  | 69.7214014    |
+| transportation\_desert\_4catExcellent    | 41.6204049   | 0.1220271 | 21.8224202  | 64.8944937    |
+| total\_pop                               | 0.0022122    | 0.0000018 | 0.0019792   | 0.0024542     |
+| gini\_neighborhood                       | 1754.6596346 | 1.3691202 | 230.8933884 | 10463.7578459 |
+| mean\_income                             | \-0.1278395  | 0.0003281 | \-0.1689573 | \-0.0867512   |
+| mean\_rent                               | 4.5296754    | 0.0192151 | 1.9621581   | 7.1989234     |
+| black\_perc                              | 18.3931979   | 0.0196683 | 15.4720498  | 21.3857255    |
+| latinx\_perc                             | 8.6003316    | 0.0315746 | 4.1163943   | 13.0608650    |
+| asian\_perc                              | \-4.0231070  | 0.0305908 | \-7.6692201 | \-0.0645505   |
+
+
+After removing predictors whose 80% credible intervals included the possibility of non-effect when controlling for other covariates, we found that there were 10 remaining predictors of an arbitrary neighborhood's eviction counts. 
+
+Next, we interpret each predictor:
+
+- **Limited Subway Access**: When controlling for all other predictors, a neighborhood with limited access to the subway is expected to have approximately 39.81% more eviction counts than a neighborhood with poor subway access. However, there is an 80% chance that the relationship may be any value between (21.10%, 61.52%), indicating that there is almost certainly an increase in white population counts between these two neighborhoods, but its explicit magnitude may vary.
+- **Satisfactory Subway Access**: When controlling for all other predictors, a neighborhood with satisfactory access to the subway is expected to have approximately 41.25% more eviction counts than a neighborhood with poor subway access. However, there is an 80% chance that the relationship may be any value between (21.89%, 64.39%), indicating that there is almost certainly an increase in white population counts between these two neighborhoods, but its explicit magnitude may vary.
+- **Excellent Subway Access**: When controlling for all other predictors, a neighborhood with excellent access to the subway is expected to have approximately 40.58% more eviction counts than a neighborhood with poor subway access. However, there is an 80% chance that the relationship may be any value between (20.67%, 63.63%), indicating that there is almost certainly an increase in white population counts between these two neighborhoods, but its explicit magnitude may vary.
+- **Gini Index**: When controlling for all other predictors, 1 increases in income inequality are associated with approximately 658.52% increases in the number of evictions. However, there is a 80% chance that the relationship may be any value between (73.738%, 3243.93%), indicating that there is almost certainly a strong, positive, relationship between these two variables, but its magnitude may vary.
+- **Mean Income**: When controlling for all other predictors, 100 dollar increases in mean neighborhood income are associated with approximately 0.1182% decreases in the number of evictions. However, there is a 80% chance that the relationship may be any value between (-0.0799%, -0.1553%), indicating that there is almost certainly a weak, negative, relationship between these two variables, but its magnitude may vary slightly.
+- **Mean Rent**: When controlling for all other predictors, 100 dollar increases in mean neighborhood rental prices are associated with approximately 4.55% increases in the number of evictions. However, there is a 80% chance that the relationship may be any value between (1.94%, 7.13%), indicating that there is almost certainly a positive relationship between these two variables, but its magnitude may vary slightly.
+- **Black Percent**: When controlling for all other predictors, 10% increases in the proportion of Black residents in a neighborhood are associated with approximately 17.77% increases in the number of evictions. Further, there is a 80% chance that the relationship may be any value between (15.03%, 20.67%), indicating that there is almost certainly a strong, positive, relationship between these two variables, but its magnitude may vary slightly. 
+- **Latinx Percent**: When controlling for all other predictors, 10% increases in the proportion of Latinx residents in a neighborhood are associated with approximately 6.60% increases in the number of evictions. Further, there is a 80% chance that the relationship may be any value between (2.73%, 10.69%), indicating that there is almost certainly a weak, positive, relationship between these two variables, but its magnitude may vary.
+- **Asian Percent**: When controlling for all other predictors, 10% increases in the proportion of Asian residents in a neighborhood are associated with approximately 4.21% decreases in the number of evictions. Further, there is a 80% chance that the relationship may be any value between (-.2344%, -7.88%), indicating that there is almost certainly a weak, negative, relationship between these two variables, but its magnitude may vary slightly.
+
+
 
 
 # Discussion \& Extensions
 
-We’ve confirmed that even after adjusting for income, rental prices, income inequality, and borough differences, neighborhoods in NYC with a substantial proportion of Black and Latinx residents are experiencing dramatic increased risks of eviction. Interestingly, when accounting for economic and demographic predictors, the relationships with transportation we expected to see were reversed. That is, increased transportation access was associated with more evictions. This could be related to the increased population sizes in areas with the best access to transportation (e.g. Manhattan) or it could be because the disparities that transportation inaccess reflects (e.g. racial and class-based tensions) have been accounted for.
+We've confirmed that even after adjusting for income, rental prices, income inequality, and borough differences, neighborhoods in NYC with a substantial proportion of Black and Latinx residents are experiencing dramatic increased risks of eviction. Interestingly, when accounting for economic and demographic predictors, the relationships with transportation we expected to see were reversed. That is, increased transportation access was associated with more evictions. This could be related to the increased population sizes in areas with the best access to transportation (e.g. Manhattan) or it could be because the disparities that transportation inaccess reflects (e.g. racial and class-based tensions) have been accounted for.
+
+Although a lot of work went into designing models with causal blocking and confounding in mind, our models remain imperfect. Some major limitations involved the encoding of transportation deserts and the presence of unmeasured confounders.Because we may not have not accounted for all structural predictors in housing equity such as a neighborhood’s rent control policies nor have we adjusted for the reasons behind eviction, we cannot be entirely confident about our models' conclusions.
 
 Importantly, we found that there was statistically significant spatial clustering of both eviction counts and mean rental prices using Moran's I from the `spdep` package. 
 
@@ -920,9 +1131,6 @@ rbind(rent_moran, evict_moran) %>%
 
 </center>
 
+Our results are then likely biased by the spatial relationships between neighborhoods. As such, we could extend this work to the spatial domain using methods from the `CARBayes` or `INLA` packages. Following work by [Katie Jolly and Raven McKnight](https://www.ravenmcknight.com/post/carbayes-tutorial/), we have outlined a spatial workflow for both the eviction and rental price models using `CARBayes` in the [appendix](file:///Users/freddy/Documents/GitHub/454/checkpoint/CH5.html#Appendix). However, because spatial models were beyond the scope of this project and class, we'd like to emphasize that in a more detailed analysis the models we outline in the appendix would likely be adjusted in `STAN` or `CARBayes` to use different likelihoods, spatial effect priors (e.g. BYM, Intrinsic CAR, etc), and different priors for the predictors' coefficients. Further, in a more detailed analysis, we would explicitly describe the mathematical construction of the models.
 
-Our results are then likely biased by the spatial relationships between neighborhoods. As such, we could extend this work to the spatial domain using methods from the `CARBayes` or `INLA` packages. Following work by [Katie Jolly and Raven McKnight](https://www.ravenmcknight.com/post/carbayes-tutorial/), we have outlined a spatial workflow for both the eviction and rental price models using `CARBayes` in the appendix. However, because spatial models were beyond the scope of this project and class, we'd like to emphasize that in a more detailed analysis the models we outline in the appendix would likely be adjusted in `STAN` or `CARBayes` to use different likelihoods, spatial effect priors (e.g. BYM, Intrinsic CAR, etc), and different priors for the predictors' coefficients. Further, in a more detailed analysis, we would explicitly describe the mathematical construction of the models.
-
-Although a lot of work went into designing models with causal blocking and confounding in mind, our models remain imperfect. Some major limitations involved the encoding of transportation deserts and the presence of unmeasured confounders.Because we may not have not accounted for all structural predictors in housing equity such as a neighborhood’s rent control policies nor have we adjusted for the reasons behind eviction, we cannot be entirely confident about our models' conclusions.
-
-Across our models, it becomes clear that many of the structural housing and demographic issues present in NYC need to be more rigorously addressed by both policy-makers and its citizens, regardless of these particular models' performance. Health begins at home. And if NYC's Black and Latinx residents are being crushed under the fist of inequity and consequently experiencing increased risks of eviction or tenuous rental prices, then it becomes a health imperative to critically and revolutionarily address NYC's housing system. 
+Across our models— and regardless of spatial autocorrelation or quality— it is clear that many of the structural housing and demographic issues present in NYC need to be more rigorously addressed by both policy-makers and its citizens. Health begins at home. And if NYC's Black and Latinx residents are being crushed under the fist of inequity and consequently experiencing increased risks of eviction or tenuous rental prices, then it becomes a health imperative to critically and revolutionarily address NYC's housing system. 
