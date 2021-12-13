@@ -36,7 +36,7 @@ date: 2021-12-06T14:47:00-05:00
 
 # Motivation
 
-In collaboration with Juthi Dewan, Sam Ding, and Vichy Meas, we designed this project for our Bayesian Statistics course taught by [Dr. Alicia Johnson](https://ajohns24.github.io/portfolio/). We'd like to extend our thanks to Alicia for guiding us through Bayes and the capstone experience!
+In collaboration with [Juthi Dewan](https://juthidewan-portfolio.netlify.app), Sam Ding, and Vichy Meas, we designed this project for our Bayesian Statistics course taught by [Dr. Alicia Johnson](https://ajohns24.github.io/portfolio/). We'd like to extend our thanks to Alicia for guiding us through Bayes and the capstone experience!
 
 A reproducible version of this blog post with all code can be found [here](https://freddybarragan.netlify.app/media/bayes/CH5.html).
 
