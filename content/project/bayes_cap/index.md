@@ -325,11 +325,6 @@ Transportation access is a pervasive structural issue. However, previous researc
 
 This next section aims to connect transportation access to housing-inequities that we know also have racial and class dimensions. In particular, we wanted to assess transportation access’s relationship with immigrant community size, rental prices, and eviction counts by neighborhood. 
 
-```{r, fig.height=8*2, fig.width=8*2}
-ggarrange(desert_map, rent_map, evict, noncit,
-          ncol=2, nrow=2)
-```
-
 <center>
 <img src="/media/bayes/plot_5.png" width="100%" height="100%" />
 </center>
