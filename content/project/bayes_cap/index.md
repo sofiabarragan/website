@@ -15,9 +15,9 @@ image:
 
 links:
 - name: ""
-  url: https://twitter.com/freddybarragan_
-  icon_pack: fab
-  icon: twitter
+  url: https://freddybarragan.netlify.app/media/bayes/bayes_final.html
+  icon_pack: fas
+  icon: external-link-alt
 
 date: 2021-12-15T14:47:00-05:00
 ---
