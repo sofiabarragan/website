@@ -8,7 +8,7 @@ tags:
 - Art
 - Data Science
 categories: []
-date: 2021-19-02T14:47:00-05:00
+date: 2021-10-25T14:47:00-05:00
 
 # Optional external URL for project (replaces project detail page).
 external_link: ""
