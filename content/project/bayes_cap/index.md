@@ -38,13 +38,13 @@ date: 2021-12-06T14:47:00-05:00
 
 In collaboration with [Juthi Dewan](https://juthidewan-portfolio.netlify.app), [Sam Ding](https://sdingx.github.io/portfolio/), and Vichy Meas, we designed this project for our Bayesian Statistics course taught by [Dr. Alicia Johnson](https://ajohns24.github.io/portfolio/). We would like to thank Alicia for guiding us through Bayes and the capstone experience!
 
-A reproducible version of this blog post with all code can be found [here](https://freddybarragan.netlify.app/media/bayes_final.html).
+A reproducible version of this blog post with all code can be found [here](https://freddybarragan.netlify.app/media/bayes/bayes_final.html).
 
 We were initially interested in characterizing New York City's internal racial dynamics using demography, geographic mobility, community health, and economic outcomes. As this project developed, we found ourselves thinking about the relationships between transportation (in)access and housing inequity. There are two main sections in our project: **Subway Accessibility** and **Transportation and Structural Inequity**. 
 
 In **Subway Accessibility**, we explore transportation deserts, and the significant determinants of subway access in New York City are using two Bayesian classification models. If you have questions or thoughts about this section in particular, please feel free to reach out to [Sam](https://sdingx.github.io/portfolio/) or Vichy by email!
 
-While in **Transportation and Structural Inequity**, we extend our discussion of transportation access to study its relationship to rental prices and evictions using both simple and hierarchical Bayesian multivariate regression. In the [extended document](https://freddybarragan.netlify.app/media/bayes_final.html), we also fit non-hierarchical spatial models to control for the underlying spatial relationships between neighborhoods. However, we omit major discussion of these models in this blog post as Bayesian spatial regression was beyond the scope of this course. If you have questions about these models, please reach out to either [Juthi](https://juthidewan-portfolio.netlify.app) or me by email!
+While in **Transportation and Structural Inequity**, we extend our discussion of transportation access to study its relationship to rental prices and evictions using both simple and hierarchical Bayesian multivariate regression. In the [extended document](https://freddybarragan.netlify.app/media/bayes/bayes_final.html), we also fit non-hierarchical spatial models to control for the underlying spatial relationships between neighborhoods. However, we omit major discussion of these models in this blog post as Bayesian spatial regression was beyond the scope of this course. If you have questions about these models, please reach out to either [Juthi](https://juthidewan-portfolio.netlify.app) or me by email!
 
 First, however, let us do a data introduction:
 
@@ -105,7 +105,7 @@ The process involved grouping geotagged locations by the defined neighborhood bo
 
 # Data Summaries 
 
-We present a [numeric summary](https://freddybarragan.netlify.app/media/ch4.html#Data_Summaries) on our data with 224 observations of 38 variables. However, note that we use percent equivalents for most demographic count variables.
+We present a [numeric summary](https://freddybarragan.netlify.app/media/bayes/bayes_final.html#Data_Summaries) on our data with 224 observations of 38 variables. However, note that we use percent equivalents for most demographic count variables.
 
 We found that Manhattan had the highest population counts, highest mean rental prices, highest mean income, highest income inequality (e.g., Gini value), the most neighborhoods with excellent subway access, and the largest proportion of white citizens. 
 
@@ -228,7 +228,14 @@ Naive Bayes's assumption of normality within categories does not hold, unfortuna
 
 ## Ordinal Model
 
-An ordinal or ordered logistic regression model predicts the outcome of an ordinal variable, a categorical variable whose classes exist on an arbitrary scale where only the relative ordering between different values is significant. In this case, our subway desert category is an ordinal variable with categories ranging from the least covered to the most covered (e.g. `$[1,2,3]$`) by NYC's subway stops. Once again, we defined these categories by splitting the percentage covered using two cut-points, `$\zeta_1$` and `$\zeta_2$`, to create three ordered categories— Poor, Typical, and Satisfactory. Our `$\ zeta$'s are listed below.
+An ordinal or ordered logistic regression model predicts the outcome of an ordinal variable, a categorical variable whose classes exist on an arbitrary scale where only the relative ordering between different values is significant. In this case, our subway desert category is an ordinal variable with categories ranging from the least covered to the most covered (e.g. `$[1,2,3]$`) by NYC's subway stops. Once again, we defined these categories by splitting the percentage covered using two cut-points, `$\zeta_1$` and `$\zeta_2$`, to create three ordered categories— Poor, Typical, and Satisfactory. Our `$\ zeta$` are listed below.
+
+`$$
+\begin{align*}
+\zeta_1 = 0.25 \\
+\zeta_2 = 0.75 \\
+\end{align*}
+$$`
 
 Next, we introduce a latent variable `$y^*$`, as the linear combination of the `$k$` predictor variables. Here, we selected mean neighborhood income (`$X_1$`), percentage below the poverty line in a neighborhood (`$X_2$`), the number of grocery stores and food vendors in a neighborhood (`$X_3$`), and three dummy variables for the borough of our neighborhood (`$X_4, X_5, X_6$`) as our predictors.
 Then we predict the transportation desert status `$Y$` for the `$i$`th neighborhood with the following model:
@@ -258,11 +265,11 @@ Where
 \beta_k \sim N(m_{k}, s_{k}^{2}) \\
 $$`
 
-It is important to note that there is no intercept in $y_i^*$, which is an omission by the construction of `stan_polr`'s model and the multi-class outcomes for this ordinal model. 
+It is important to note that there is no intercept in `$y_i^*$`, which is an omission by the construction of `stan_polr`'s model and the multi-class outcomes for this ordinal model. 
 
-Since we do not have prior information about the relationship between observed transportation access and these specific predictors, we will be using the default prior in `stan_polr`. Specifically, we establish a prior for the location of the proportion of the outcome variance that is attributable to the predictors. This proportion is more commonly known as the $R^2$ metric used in frequentist linear regressions and could be located at any value between (0,1). It is also worth noting that we could specify uniform Dirichlet count priors (e.g., $\text{Dirichlet}(1,1,1)$ on the categories of transportation access in `stan_polr`. 
+Since we do not have prior information about the relationship between observed transportation access and these specific predictors, we will be using the default prior in `stan_polr`. Specifically, we establish a prior for the location of the proportion of the outcome variance that is attributable to the predictors. This proportion is more commonly known as the `$R^2$` metric used in frequentist linear regressions and could be located at any value between (0,1). It is also worth noting that we could specify uniform Dirichlet count priors (e.g., `$\text{Dirichlet}(1,1,1)$`) on the categories of transportation access in `stan_polr`. 
 
-Since we are using a uniform prior on the location of $R^2$, we say the ratio of our $ R^2$'s proportion is around 0.5 or that a perfect explanation of variance and non-explanation of variance in our outcome categories is equally plausible. So, we expect that 50% of the variability in transportation access cannot be explained by the mean neighborhood income, percentage below the poverty line in a neighborhood, the number of grocery stores and food vendors in a neighborhood, and the borough. Visit the $R^2$ section in `rstanarm` 's documentation [here](https://rdrr.io/cran/rstanarm/man/priors.html) for a more technical overview. 
+Since we are using a uniform prior on the location of `$R^2$`, we say the ratio of our `$R^2$`'s proportion is around 0.5 or that a perfect explanation of variance and non-explanation of variance in our outcome categories is equally plausible. So, we expect that 50% of the variability in transportation access cannot be explained by the mean neighborhood income, percentage below the poverty line in a neighborhood, the number of grocery stores and food vendors in a neighborhood, and the borough. Visit the $R^2$ section in `rstanarm` 's documentation [here](https://rdrr.io/cran/rstanarm/man/priors.html) for a more technical overview. 
 
 One technical limitation is the paucity of cross-validated error metrics for `stan_polr` 's ordinal regression model. To test the model's fitness on new data, we used a manual train-test split where our training data would include 70% of the original observations, while our test data would include the remaining 30%.
 
@@ -276,15 +283,15 @@ ordinal_model <- stan_polr(transportation_desert_4num ~ mean_income + below_pove
 Here is an interpretation of the coefficients in the tidy table:
 
 
-**Mean Income**: When controlling all other factors, for each additional dollar a given neighborhood's mean income has, the model estimates that the latent variable $y^*$ increases by 0.0000197. However, there is an 80% chance that the increase in the latent variable $y^*$ may be any value between (0.0000010, 0.0000383), indicating that there is almost certainly a positive relationship between mean income and $y^*$, but its magnitude may vary.
+**Mean Income**: When controlling all other factors, for each additional dollar a given neighborhood's mean income has, the model estimates that the latent variable `$y^*$` increases by 0.0000197. However, there is an 80% chance that the increase in the latent variable $y^*$ may be any value between (0.0000010, 0.0000383), indicating that there is almost certainly a positive relationship between mean income and $y^*$, but its magnitude may vary.
 
 **Percent Living Below the Poverty Line**: When controlling all other factors, for each additional % people below poverty a given neighborhood has, the model estimates that the latent variable $y^*$ increases by 0.0977415. However, there is an 80% chance that the increase in the latent variable $y^*$ may be any value between (0.0422522, 0.1576466), indicating that there is almost certainly a positive relationship between below poverty percentage and $y^*$, but its magnitude may vary.
 
-`Grocery Store Count`: When controlling all other factors, for each additional food and grocery store a given neighborhood has, the model estimates that the latent variable $y^*$ increases by 0.0224638. However, there is an 80% chance that the increase in the latent variable $y^*$ may be any value between (0.0138214, 0.0316698), indicating that there is almost certainly a positive relationship between the number of stores and $y^*$, but its magnitude may vary.
+`Grocery Store Count`: When controlling all other factors, for each additional food and grocery store a given neighborhood has, the model estimates that the latent variable `$y^*$` increases by 0.0224638. However, there is an 80% chance that the increase in the latent variable $y^*$ may be any value between (0.0138214, 0.0316698), indicating that there is almost certainly a positive relationship between the number of stores and $y^*$, but its magnitude may vary.
 
-`Brooklyn`: When controlling all other factors, if a neighborhood is in Brooklyn, the model estimates that the latent variable $y^*$ increases by 0.1084268 compared to that neighborhood in the Bronx. However, there is an 80% chance that the increase in the latent variable $y^*$ may be any value between (-0.6968746, 0.8669477), indicating the relationship between a neighborhood being in Brooklyn and $y^*$ could be insignificant.
+`Brooklyn`: When controlling all other factors, if a neighborhood is in Brooklyn, the model estimates that the latent variable `$y^*$` increases by 0.1084268 compared to that neighborhood in the Bronx. However, there is an 80% chance that the increase in the latent variable $y^*$ may be any value between (-0.6968746, 0.8669477), indicating the relationship between a neighborhood being in Brooklyn and $y^*$ could be insignificant.
 
-`Manhattan`: When controlling all other factors, if a neighborhood is in Manhattan, the model estimates that the latent variable $y^*$ increases by 2.5965602 compared to that neighborhood in the Bronx. However, there is an 80% chance that the increase in the latent variable $y^*$ may be any value between (1.2840073, 4.3013850), indicating that we are confident that the relationship between a neighborhood being in Manhattan and $y^*$ exists, but its magnitude may vary.
+`Manhattan`: When controlling all other factors, if a neighborhood is in Manhattan, the model estimates that the latent variable `$y^*$` increases by 2.5965602 compared to that neighborhood in the Bronx. However, there is an 80% chance that the increase in the latent variable $y^*$ may be any value between (1.2840073, 4.3013850), indicating that we are confident that the relationship between a neighborhood being in Manhattan and $y^*$ exists, but its magnitude may vary.
 
 `Queens`: When controlling all other factors, if a neighborhood is in Queens, the model estimates that the latent variable $y^*$ increases by -0.4148264 compared to that neighborhood in the Bronx. However, there is an 80% chance that the increase in the latent variable $y^*$ may be any value between (-1.1315662, 0.3349786), indicating that we are not confident with the relationship between a neighborhood being in Queens and $y^*$.
 
@@ -452,7 +459,7 @@ We list our non-hierarchical models and their predictors below:
 
 Because there are four levels of both `transportation_desert_3cat` and `borough`, `stan_glm` defines  `$x_1, \dots, x_3$` and `$x_5, \dots, x_7$` as dummy variables of each respective predictor's categories, with one common reference category for our intercept.
   
-Across all models, we specified weakly-informative normal priors for the `$\beta_{k} $'s associated with each predictor `$X_{k}$`. However, there are differences in terms of model specifications that we outline below:
+Across all models, we specified weakly-informative normal priors for the `$\beta_{k} $`'s associated with each predictor `$X_{k}$`. However, there are differences in terms of model specifications that we outline below:
 
 For 1 and 3, we used weakly informative normal priors on all predictors and the intercept, then allowed `stan_glm` to estimate initial priors. This decision was ultimately due to our unfamiliarity with NYC's history of evictions, non-citizen population, and their respective relationships to our predictors.
 
@@ -532,7 +539,7 @@ It seems that our simulations (light green) of non-citizen count distributions w
 \end{split}
 $$`
 
-`$\text{and where}$`
+where
 
 `$$
 \begin{align}
@@ -797,7 +804,7 @@ r &\sim \text{Exp}(1)\\
 \end{split}
 $$`
 
-`$\text{and where}$`
+where
 
 `$$
 \begin{align}
@@ -1000,11 +1007,13 @@ Our residuals are randomly distributed across all neighborhoods, indicating that
 
 It seems that the hierarchical model of eviction counts has the lowest WAIC, but only by .03 units. However, we select the hierarchical model of eviction counts from the hierarchical model's improved residual patterning, ELPD metric, in-sample error metrics, and WAIC.
 
-# Model Evaluation
+# Results \& Discussion
 
-Our previous section consistently demonstrated that all 3 of our hierarchical models performed better than our non-hierarchical models with respect to absolute error metrics, residual distributions, expected-log predictive densities, and WAICs. In this section, we detail our findings using the hierarchical models. In this section, we emphasize the broader conclusions of our models and only report the nature of the associations between our outcomes and predictors (e.g., positive or negative). For individualized interpretations of each predictor for each model, please see the "Full Interpretations" section in the Appendix!
+## Results
 
-## Model 4: Immigrant/Non-Citizen Count
+Our previous section consistently demonstrated that all 3 of our hierarchical models performed better than our non-hierarchical models with respect to absolute error metrics, residual distributions, expected-log predictive densities, and WAICs. In this section, we detail our findings using the hierarchical models. In this section, we emphasize the broader conclusions of our models and only report the nature of the associations between our outcomes and predictors (e.g., positive or negative). For individualized interpretations of each predictor for each model, please see the ["Full Interpretations" section in the Appendix](https://freddybarragan.netlify.app/media/bayes/bayes_final.html#Appendix)!
+
+### Model 4: Immigrant/Non-Citizen Count
 
 After removing predictors whose 80% credible intervals included the possibility of non-effect when controlling for other covariates, there were seven significant predictors of an arbitrary neighborhood's non-citizen counts. When considering the random-effects of borough and controlling for relevant covariates, non-citizen counts were positively associated with better subway access (Typical and Excellent), total population counts, mean rental prices, and the percentages of Black, Latinx, \& Asian people. At the same time, mean neighborhood income was negatively associated with non-citizen counts. The following table lists the specific $\beta$ values (labeled as "estimate") for each predictor, ordered by their association.
 
@@ -1026,9 +1035,9 @@ Ultimately, this model demonstrates that immigrant hot-spots in New York City te
 
 
 
-## Model 5: Mean Neighborhood Rental Prices
+### Model 5: Mean Neighborhood Rental Prices
 
-We observed that when considering the random-effects of borough and controlling for relevant covariates, mean rental prices were associated with five predictors. Specifically, we observed meaningful increases in mean rental prices when comparing neighborhoods with excellent subway access to neighborhoods with poor subway access. We also saw that neighborhood rental prices were positively associated with mean neighborhood income and the proportion of Asian residents in a neighborhood. Additionally, we found that mean rental prices were negatively associated with the proportion of a neighborhood's Black community and the number of schools. The following table details the specific $\beta$ values (labeled as estimate) for each predictor, ordered by their association.
+We observed that when considering the random-effects of borough and controlling for relevant covariates, mean rental prices were associated with five predictors. Specifically, we observed meaningful increases in mean rental prices when comparing neighborhoods with excellent subway access to neighborhoods with poor subway access. We also saw that neighborhood rental prices were positively associated with mean neighborhood income and the proportion of Asian residents in a neighborhood. Additionally, we found that mean rental prices were negatively associated with the proportion of a neighborhood's Black community and the number of schools. The following table details the specific `$\beta$` values (labeled as estimate) for each predictor, ordered by their association.
 
 
 ```{r}
@@ -1053,7 +1062,7 @@ Lastly, we found that mean rental prices were negatively associated with the num
 
 
 
-## Model 6: Eviction Count
+### Model 6: Eviction Count
 
 We determined that many racial inequities associated with rental prices were replicated in the number of eviction counts by neighborhood. 
 
@@ -1094,7 +1103,7 @@ Interestingly, when accounting for the above economic and demographic predictors
 
 
 
-# Discussion \& Extensions
+## Discussion
 
 Across our models, it becomes clear that many of the structural housing and demographic issues present in NYC need to be more rigorously addressed by both policy-makers and its citizens, regardless of these particular models' performance. Health begins at home. Moreover, if NYC's Black and Latinx residents are being crushed under the fist of inequity and consequently experiencing increased risks of eviction or tenuous rental prices, then it becomes a health imperative to critically and revolutionarily address NYC's housing system. 
 
