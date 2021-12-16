@@ -19,7 +19,7 @@ links:
   icon_pack: fab
   icon: twitter
 
-date: 2019-11-02T14:47:00-05:00
+date: 2021-10-18T14:47:00-05:00
 ---
 
 This is a poster presentation on survival disparities by race/ethnicity in pediatric blood cancers for the 2021 Annual Meeting of the American Society for Human Genetics. 

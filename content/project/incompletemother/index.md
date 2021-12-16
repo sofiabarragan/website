@@ -7,7 +7,7 @@ authors: []
 tags: 
 - Art
 categories: []
-date: 2021-8-11T14:47:00-05:00
+date: 2021-08-11T14:47:00-05:00
 
 # Optional external URL for project (replaces project detail page).
 external_link: ""

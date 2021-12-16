@@ -19,7 +19,7 @@ links:
   icon_pack: fab
   icon: twitter
 
-date: 2019-11-02T14:47:00-05:00
+date: 2021-08-19T14:47:00-05:00
 ---
 
 Fake news has disastrous effects. In the U.S., it has resulted in dangerous [anti-mask misinformation]("https://www.boomlive.in/world/anti-mask-posts-use-fake-who-document-to-spread-misinformation-9424") and an increased risk of COVID-19 transmission; [unfounded, child-trafficking allegations on the 2016 democratic ballot]("https://www.politifact.com/article/2016/dec/05/how-pizzagate-went-fake-news-real-problem-dc-busin/"); and [smear campaigns on antifascist organizers, during the George Floyd protests]("https://www.reuters.com/article/uk-factcheck-antifa-twitter-fake/fact-check-antifa-twitter-account-that-called-for-violence-was-fake-idUSKBN23B2TY"). And given its omnipresence in digital space, it's critical that we are able to identify, remove, and prevent fake news as stringently as possible.
