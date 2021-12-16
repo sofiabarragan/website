@@ -136,7 +136,7 @@ In the graph, buffer zones are in light pink with overlapping boundaries dissolv
 Upon observation, we categorized the areas served by the subway network into four ordinal categories: Poor, Typical, and Excellent. We defined these categories as 0-25\%, 25-75\%, and 75-100\% of the area within walking distance to some subway stop, respectively. We defined these cutoffs using the distribution of subway coverage percentages, plotted below. 
 
 <center>
-<img src="/media/bayes/ordinal_cuts.png" width="50%" height="50%" />
+<img src="/media/bayes/ordinal_cuts.png" width="100%" height="100%" />
 </center>
 
 
