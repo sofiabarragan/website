@@ -19,7 +19,7 @@ links:
   icon_pack: fab
   icon: twitter
 
-date: 2021-12-06T14:47:00-05:00
+date: 2021-12-15T14:47:00-05:00
 ---
 
 <script src="//yihui.org/js/math-code.js" defer></script>
