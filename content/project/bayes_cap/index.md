@@ -363,7 +363,7 @@ We list our hierarchical models and their predictors below:
   + Predictors: `transportation_desert_4cat`, `gini_neighborhood`, `mean_income`, `black_perc`, `latinx_perc`, `asian_perc`, `bus_count`,`school_count`,`store_count`, `noncitizen_perc`
   + Grouping: `borough`
 
-- Eviction CountHierarchical Model (6)
+- Eviction Count: Hierarchical Model (6)
   + Predictors: `transportation_desert_4cat`, `total_pop`, `gini_neighborhood`, `mean_income`, `mean_rent`, `black_perc`, `latinx_perc`, `asian_perc`,
   `bus_count`,`store_count`,`unemployment_perc`, `uninsured_perc`
   + Grouping: `borough`
