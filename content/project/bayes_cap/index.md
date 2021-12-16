@@ -38,13 +38,13 @@ date: 2021-12-06T14:47:00-05:00
 
 In collaboration with [Juthi Dewan](https://juthidewan-portfolio.netlify.app), [Sam Ding](https://sdingx.github.io/portfolio/), and Vichy Meas, we designed this project for our Bayesian Statistics course taught by [Dr. Alicia Johnson](https://ajohns24.github.io/portfolio/). We would like to thank Alicia for guiding us through Bayes and the capstone experience!
 
-A reproducible version of this blog post with all code can be found [here](https://freddybarragan.netlify.app/media/bayes/bayes_final.html).
+Our project cumulatively included 97 pages of double-spaced text and code! So, for this blog post we are exclusively reporting our findings and printing only the most essential code chunks. A detailed and reproducible version of this blog post with **all** code included can be found [here](https://freddybarragan.netlify.app/media/bayes/bayes_final.html).
 
 We were initially interested in characterizing New York City's internal racial dynamics using demography, geographic mobility, community health, and economic outcomes. As this project developed, we found ourselves thinking about the relationships between transportation (in)access and housing inequity. There are two main sections in our project: **Subway Accessibility** and **Transportation and Structural Inequity**. 
 
 In **Subway Accessibility**, we explore transportation deserts, and the significant determinants of subway access in New York City are using two Bayesian classification models. If you have questions or thoughts about this section in particular, please feel free to reach out to [Sam](https://sdingx.github.io/portfolio/) or Vichy by email!
 
-While in **Transportation and Structural Inequity**, we extend our discussion of transportation access to study its relationship to rental prices and evictions using both simple and hierarchical Bayesian multivariate regression. In the [extended document](https://freddybarragan.netlify.app/media/bayes/bayes_final.html), we also fit non-hierarchical spatial models to control for the underlying spatial relationships between neighborhoods. However, we omit major discussion of these models in this blog post as Bayesian spatial regression was beyond the scope of this course. If you have questions about these models, please reach out to either [Juthi](https://juthidewan-portfolio.netlify.app) or me by email!
+While in **Transportation and Structural Inequity**, we extend our discussion of transportation access to study its relationship to rental prices and evictions using hierarchical Bayesian multivariate regression. In the [extended document](https://freddybarragan.netlify.app/media/bayes/bayes_final.html), we also fit non-hierarchical spatial models to control for the underlying spatial relationships between neighborhoods. However, we omit major discussion of these models in this blog post as Bayesian spatial regression was beyond the scope of this course. If you have questions about these models, please reach out to either [Juthi](https://juthidewan-portfolio.netlify.app) or me by email!
 
 First, however, let us do a data introduction:
 
@@ -269,60 +269,7 @@ ordinal_model <- stan_polr(transportation_desert_4num ~ mean_income + below_pove
 
 After removing predictors whose 80\% credible intervals included the possibility of non-effect when controlling for other covariates, there were 4 significant predictors of an arbitrary neighborhood's latent `$y^*$` function that denotes the ordinal increase between categories. When controlling for relevant covariates, `$y^*$` was positively associated with increased mean income, the proportion of people living below the poverty line, food and grocery store counts. Further, it also seems that there was an increase in `$y^*$` when comparing Manhattan to the Bronx, meaning that these predictors were associated with increased transportation access. For more specified interpretations please see our [extended document](https://freddybarragan.netlify.app/media/bayes/bayes_final.html#Ordinal_Model).
 
-Then, adapting a function written by [Connie Zhang](https://connie-zhang.github.io/pet-adoption/modelling.html) into a tidy format, we compute the accuracy of the ordinal model below. Specifically, we take the most common category predicted across all of our model's simulations, then use that modal category as our final prediction. 
-
-```{r}
-tidy_ordinal_accuracy <- function(testing_data, predictions){
-  
-  # write mode function since it does not exist in R
-  mode <- function(x) {
-                t <- table(x)
-                names(t)[which.max(t)]
-  }
-  
-  #write mode function since it does not exist in R
-  mydata <- testing_data  %>%
-    dplyr::select(`transportation_desert_3num`) %>% 
-    rownames_to_column("observation") 
-  
-  # extract predictions
-  # transpose so each row is a case from the training data, 
-  # then compute rowwise modes of classifications to find the most common prediction
-  raw_table <- predictions%>%
-    t() %>%
-    as_tibble()%>% 
-    mutate_if(is.character, as.numeric) %>%
-    rownames_to_column("observation") %>% 
-    rowwise(id="observation") %>%
-    mutate_if(is.numeric, as.factor) %>%
-    summarize(modal_prediction = mode(c_across(where(is.factor))))  %>%
-    right_join(mydata, ., by = "observation")
-
-  # compute transportation category accuracies
-  group_specific <- raw_table %>%
-    mutate(Accurate = ifelse(modal_prediction == transportation_desert_3num, 1,0))%>%
-    group_by(transportation_desert_3num) %>%
-    summarise(Accuracy = mean(Accurate)) %>%
-    mutate(transportation_desert_3num = case_when(
-    transportation_desert_3num == 1 ~ "Poor",
-    transportation_desert_3num == 2 ~ "Typical",
-    TRUE ~ "Excellent"))  
- 
-   # compute overall accuracy
-  overall <- raw_table %>%
-    mutate(Accurate = ifelse(modal_prediction ==transportation_desert_3num, 1,0))%>%
-    summarise(Accuracy = mean(Accurate)) %>%
-    mutate(transportation_desert_3num = "Overall", .before=1)
-  
-  # bind into table
-  rbind(group_specific, overall) %>%
-    dplyr::rename("Access Level" = transportation_desert_3num) %>%
-    kable(align = "c", caption = "Ordinal Model - Accuracy") %>% 
-    kable_styling()
-  
-}
-```
-
+Then, adapting a function written by [Connie Zhang](https://connie-zhang.github.io/pet-adoption/modelling.html) into a tidy function, `tidy_ordinal_accuracy`, we compute the accuracy of the ordinal model below. Specifically, we take the most common category predicted across all of our model's simulations, then use that modal category as our final prediction. 
 
 ```{r}
 set.seed(86437)
@@ -374,9 +321,6 @@ Transportation access is typically worst in areas with the highest densities of 
 
 Unfortunately, rent, transportation access, and eviction counts may also be associated with the respective density of nonwhite communities.
 
-```{r, fig.height=16, fig.width=16+4}
-ggarrange(desert_map, white, black, latinx, asian, ncol=3, nrow=2)
-```
 
 <center>
 <img src="/media/bayes/plot_6.png" width="100%" height="100%" />
@@ -405,9 +349,9 @@ Our next section details the statistical models we used to better characterize t
 
 ## Hierarchical Models
 
-In order to understand the respective distributions of immigrant population size, evictions, and mean rental prices in NYC, we fit three simple Bayesian regression models and three hierarchical Bayesian regression models with each variable as an outcome. In the latter set of models, we wanted to account for the potential differences in demographic characteristics, housing trends, and transportation by borough and the clear hierarchy from borough to the neighborhood, so we let borough be a grouping variable in our data.
+In order to understand the respective distributions of immigrant population size, evictions, and mean rental prices in NYC, we fit three simple Bayesian regression models and three hierarchical Bayesian regression models with each variable as an outcome. In the latter set of hierarchical models, we wanted to account for the correlation in demographic characteristics, housing trends, and transportation within boroughs, so we let borough be a grouping variable in our hierarchical models.
 
-In the extended document, we used 4 evaluation metrics: absolute error metrics, residual distributions, expected-log predictive densities, and the Watanabe–Akaike information criterion (WAIC); to select our final models for analysis. Our evaluations consistently demonstrated that all three of our hierarchical models performed better than our non-hierarchical models with respect to these four metrics. As such, this blog post will only detail the construction document the results of our hierarchical models. However, if you're interested in our full list of comparisons, please see the [extended document](https://freddybarragan.netlify.app/media/bayes/bayes_final.html#Appendix)!
+In the extended document, we used 4 evaluation metrics: absolute error metrics, residual distributions, expected-log predictive densities, and the Watanabe–Akaike information criterion (WAIC); to select between our hierarchical and simple models for this analysis. Our evaluations consistently demonstrated that all three of our hierarchical models performed better than our non-hierarchical models with respect to these four metrics. As such, this blog post will only detail the construction document the results of our hierarchical models. However, if you're interested in our full list of comparisons, please see the [extended document](https://freddybarragan.netlify.app/media/bayes/bayes_final.html#Model_Comparisons)!
 
 We list our hierarchical models and their predictors below:
 
@@ -645,13 +589,6 @@ Ultimately, this model demonstrates that immigrant hot-spots in New York City te
 We observed that when considering the random-effects of borough and controlling for relevant covariates, mean rental prices were associated with five predictors. Specifically, we observed meaningful increases in mean rental prices when comparing neighborhoods with excellent subway access to neighborhoods with poor subway access. We also saw that neighborhood rental prices were positively associated with mean neighborhood income and the proportion of Asian residents in a neighborhood. Additionally, we found that mean rental prices were negatively associated with the proportion of a neighborhood's Black community and the number of schools. The following table details the specific `$\beta$` values (labeled as estimate) for each predictor, ordered by their association.
 
 
-```{r}
-tidy(hi_rent_model, effects = "fixed", conf.int = TRUE, conf.level = 0.8)%>% 
-  filter(conf.low	> 0 & conf.high > 0 | conf.low	< 0 & conf.high < 0) %>%
-  kable(align = "c", caption = "Hierarchical Rent Model - Summary") %>% 
-  kable_styling()
-```
-
 | term                                  | estimate    | std.error | conf.low    | conf.high   |
 | ------------------------------------- | ----------- | --------- | ----------- | ----------- |
 | (Intercept)                           | 7.9479617   | 1.9588988 | 5.4139670   | 10.3884810  |
@@ -675,18 +612,6 @@ We determined that many racial inequities associated with rental prices were rep
 
 Specifically, we found that even when considering the random-effects of borough and controlling for our covariates, neighborhood eviction counts were positively associated with income inequality, better subway access (Typical and Excellent), the percentages of Black \& Latinx residents, mean rental prices, and total neighborhood population count. In contrast, our models suggest that eviction counts were negatively associated with mean income and the percent of Asian residents.
 
-
-
-```{r}
-tidy(hi_eviction_model, effects = "fixed", conf.int = TRUE, conf.level = 0.8)%>% 
-  
-  mutate(estimate= ifelse(term == "(Intercept)", exp(estimate), (exp(estimate)-1)*100), 
-         conf.low= ifelse(term == "(Intercept)", exp(conf.low), (exp(conf.low)-1)*100), 
-         conf.high = ifelse(term == "(Intercept)", exp(conf.high), (exp(conf.high)-1)*100))%>%
-  filter(conf.low	> 0 & conf.high > 0 | conf.low	< 0 & conf.high < 0) %>%
-  kable(align = "c", caption = "Eviction Model - Summary") %>% 
-  kable_styling()
-```
 
 | term                                  | estimate    | std.error | conf.low    | conf.high   |
 | ------------------------------------- | ----------- | --------- | ----------- | ----------- |
@@ -718,29 +643,6 @@ Although much work went into designing models with causal blocking and confoundi
 
 Importantly, we found statistically significant spatial clustering of non-citizen counts, eviction counts, and mean rental prices using Moran's I from the `spdep` package, which indicates that the spatial relationships between neighborhoods may have also occurred biased our results. 
 
-
-
-```{r}
-library(spdep)
-modeling_data <- modeling_data %>%
-  st_as_sf()
-
-col_sp <- as(modeling_data, "Spatial")
-col_nb <- poly2nb(col_sp) # queen neighborhood
-col_listw <- nb2listw(col_nb, style = "B") # listw version of the neighborhood
-W <- nb2mat(col_nb, style = "B") # binary structure
-
-evict_moran <- tidy(moran.mc(col_sp$eviction_count, listw = col_listw, nsim = 999, alternative = "greater")) %>%
-  mutate(variable = "Eviction", .before=1)   
-
-rent_moran <- tidy(moran.mc(col_sp$mean_rent, listw = col_listw, nsim = 999, alternative = "greater")) %>%
-  mutate(variable = "Mean Rent", .before=1)   
-  
-rbind(rent_moran, evict_moran) %>%
-  kable() %>%
-  kable_styling()
-  
-```
 <center>
 
 | Term        | statistic | p.value | parameter | method                            | alternative |
