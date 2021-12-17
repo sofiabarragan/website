@@ -353,13 +353,13 @@ In order to understand the respective distributions of immigrant population size
 
 In the extended document, we used 4 evaluation metrics: absolute error metrics, residual distributions, expected-log predictive densities, and the Watanabe–Akaike information criterion (WAIC); to select between our hierarchical and simple models for this analysis. Our evaluations demonstrated that our hierarchical models for mean rental prices and non-citizen counts performed better than our non-hierarchical models with respect to these four metrics, while the reverse was true for eviction counts. As such, this blog post will only detail the construction document the results of two hierarchical models and one simple model. If you're interested in our full list of comparisons, please see the [extended document](https://freddybarragan.netlify.app/media/bayes/bayes_final.html#Model_Comparisons)!
 
-We list our hierarchical models and their predictors below:
+We list our statistical models and their predictors below:
 
-- Non-Citizen Count Hierarchical Model (4)		
+- Non-Citizen Count Hierarchical Model (1)		
   + Predictors: `transportation_desert_4cat`, `total_pop`, `gini_neighborhood`, `mean_income`, `mean_rent`, `unemployment_perc`, `black_perc`, `latinx_perc`, `asian_perc`
   + Grouping: `borough`
 
-- Average Rental Price Hierarchical Model (5)
+- Average Rental Price Hierarchical Model (2)
   + Predictors: `transportation_desert_4cat`, `gini_neighborhood`, `mean_income`, `black_perc`, `latinx_perc`, `asian_perc`, `bus_count`,`school_count`,`store_count`, `noncitizen_perc`
   + Grouping: `borough`
 
@@ -370,14 +370,14 @@ We list our hierarchical models and their predictors below:
 
 Across all models, we specified weakly-informative normal priors for the `$\beta_{k} $`'s associated with each predictor `$X_{k}$`. However, there are differences in terms of model specifications that we outline below:
 
-For 4 and 3, we used weakly informative normal priors on all predictors and the intercept, then allowed `stan_glm` and `stan_glmer` to estimate initial priors. This decision was ultimately due to our unfamiliarity with NYC's history of evictions, non-citizen population, and their respective relationships to our predictors.
+For 1 and 3, we used weakly informative normal priors on all predictors and the intercept, then allowed `stan_glm` and `stan_glmer` to estimate initial priors. This decision was ultimately due to our unfamiliarity with NYC's history of evictions, non-citizen population, and their respective relationships to our predictors.
 
-We fit parallels of 4 and 3 that both had a Poisson likelihood instead of a Negative Binomial likelihood in previous iterations of this report. However, we observed an inconsistent spread of variance and increased 0 counts in both the eviction and immigrant count data. Because `stan_glm` does not have a zero-inflated Poisson distribution, we ultimately performed two Negative-Binomial regressions. We removed further discussions of our Poisson regressions from this project.
+We fit parallels of 1 and 3 that both had a Poisson likelihood instead of a Negative Binomial likelihood in previous iterations of this report. However, we observed an inconsistent spread of variance and increased 0 counts in both the eviction and immigrant count data. Because `stan_glm` does not have a zero-inflated Poisson distribution, we ultimately performed two Negative-Binomial regressions. We removed further discussions of our Poisson regressions from this project.
 
 For 2, we also used weakly informative normal priors on all predictors. However, we specified a normal prior with `$\mu = 600$` and `$\sigma = 20$` for the scaled intercept of mean rental prices. 
 
 
-### Model 4: Immigrant/Non-Citizen Count
+### Model 1: Immigrant/Non-Citizen Count
 
 
 
@@ -436,7 +436,7 @@ Next, we check its distributional fit to our data.
 It seems that our simulations (light green) of non-citizen count distributions were broadly consistent across our iterations. However, our simulations were strongly biased from the observed non-citizen counts, where we would typically predict smaller non-citizen counts more frequently. Additionally, it seemed that variance between simulations increased as non-citizen counts increased. Acknowledging these simulation trends, our negative-binomial model seems to be a pretty good distributional fit but could undoubtedly be improved upon! 
 
 
-### Model 5: Mean Neighborhood Rental Prices
+### Model 2: Mean Neighborhood Rental Prices
 
 
 `$$
@@ -564,7 +564,7 @@ In the following sections, we go through each model's outcome and what they tell
 
 In this section, we detail our findings using the hierarchical models. In this section, we emphasize the broader conclusions of our models and only report the nature of the associations between our outcomes and predictors (e.g., positive or negative). For individualized interpretations of each predictor for each model, please see the ["Full Interpretations" section in the appendix](https://freddybarragan.netlify.app/media/bayes/bayes_final.html#Appendix)!
 
-### Model 4: Immigrant/Non-Citizen Count
+### Model 1: Immigrant/Non-Citizen Count
 
 After removing predictors whose 80\% credible intervals included the possibility of non-effect when controlling for other covariates, there were seven significant predictors of an arbitrary neighborhood's non-citizen counts. When considering the random-effects of borough and controlling for relevant covariates, non-citizen counts were positively associated with better subway access (Typical and Excellent), total population counts, mean rental prices, and the percentages of Black, Latinx, \& Asian people. At the same time, mean neighborhood income was negatively associated with non-citizen counts. The following table lists the specific `$\beta$` values (labeled as "estimate") for each predictor, ordered by their association.
 
@@ -585,7 +585,7 @@ Ultimately, this model demonstrates that immigrant hot-spots in New York City te
 
 
 
-### Model 5: Mean Neighborhood Rental Prices
+### Model 2: Mean Neighborhood Rental Prices
 
 We observed that when considering the random-effects of borough and controlling for relevant covariates, mean rental prices were associated with five predictors. Specifically, we observed meaningful increases in mean rental prices when comparing neighborhoods with excellent subway access to neighborhoods with poor subway access. We also saw that neighborhood rental prices were positively associated with mean neighborhood income and the proportion of Asian residents in a neighborhood. Additionally, we found that mean rental prices were negatively associated with the proportion of a neighborhood's Black community and the number of schools. The following table details the specific `$\beta$` values (labeled as estimate) for each predictor, ordered by their association.
 
