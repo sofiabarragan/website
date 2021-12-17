@@ -187,7 +187,7 @@ naive_model <- naiveBayes(transportation_desert_4cat ~
 </center>
 
 
-Under 10-fold cross-validation, our Naive Bayes model had an overall cross-validated accuracy of 71.42\%. However, our predictions were most accurate when predicting Poor transportation access (84.21\%) and Excellent transportation access (77.36\%). The following plot describes the cross-validated accuracy breakdown by each observed transportation access category.
+Under 10-fold cross-validation, our Naive Bayes model had an overall cross-validated accuracy of 67.03\%. However, our predictions were most accurate when predicting Poor transportation access (84.21\%) and Excellent transportation access (77.36\%). The following plot describes the cross-validated accuracy breakdown by each observed transportation access category.
 
 
 <center>
@@ -351,7 +351,7 @@ Our next section details the statistical models we used to better characterize t
 
 In order to understand the respective distributions of immigrant population size, evictions, and mean rental prices in NYC, we fit three simple Bayesian regression models and three hierarchical Bayesian regression models with each variable as an outcome. In the latter set of hierarchical models, we wanted to account for the correlation in demographic characteristics, housing trends, and transportation within boroughs, so we let borough be a grouping variable in our hierarchical models.
 
-In the extended document, we used 4 evaluation metrics: absolute error metrics, residual distributions, expected-log predictive densities, and the Watanabe–Akaike information criterion (WAIC); to select between our hierarchical and simple models for this analysis. Our evaluations consistently demonstrated that all three of our hierarchical models performed better than our non-hierarchical models with respect to these four metrics. As such, this blog post will only detail the construction document the results of our hierarchical models. However, if you're interested in our full list of comparisons, please see the [extended document](https://freddybarragan.netlify.app/media/bayes/bayes_final.html#Model_Comparisons)!
+In the extended document, we used 4 evaluation metrics: absolute error metrics, residual distributions, expected-log predictive densities, and the Watanabe–Akaike information criterion (WAIC); to select between our hierarchical and simple models for this analysis. Our evaluations consistently demonstrated that our hierarchical models for mean rental prices and non-citizen counts performed better than our non-hierarchical models with respect to these four metrics. As such, this blog post will only detail the construction document the results of two hierarchical models and one simple model. However, if you're interested in our full list of comparisons, please see the [extended document](https://freddybarragan.netlify.app/media/bayes/bayes_final.html#Model_Comparisons)!
 
 We list our hierarchical models and their predictors below:
 
@@ -363,10 +363,10 @@ We list our hierarchical models and their predictors below:
   + Predictors: `transportation_desert_4cat`, `gini_neighborhood`, `mean_income`, `black_perc`, `latinx_perc`, `asian_perc`, `bus_count`,`school_count`,`store_count`, `noncitizen_perc`
   + Grouping: `borough`
 
-- Eviction Count: Hierarchical Model (6)
-  + Predictors: `transportation_desert_4cat`, `total_pop`, `gini_neighborhood`, `mean_income`, `mean_rent`, `black_perc`, `latinx_perc`, `asian_perc`,
-  `bus_count`,`store_count`,`unemployment_perc`, `uninsured_perc`
-  + Grouping: `borough`
+- Eviction Count: Hierarchical Model (3)
+  + Predictors: `transportation_desert_3cat`, `borough`, `total_pop`,
+  `below_poverty_line_perc`, `gini_neighborhood`, `mean_income`, `mean_rent`, 
+  `black_perc`, `latinx_perc`, `asian_perc`
 
 Across all models, we specified weakly-informative normal priors for the `$\beta_{k} $`'s associated with each predictor `$X_{k}$`. However, there are differences in terms of model specifications that we outline below:
 
@@ -498,15 +498,13 @@ Next, we check its distributional fit to our data.
 Our simulations are relatively consistent. However, these simulated distributions are much more variable than the simulated distributions we saw in our non-citizen rent model. Importantly, it also seems our simulated normal posterior distributions had higher variance than the observed data. That is likely because the mean rental prices themselves are not perfectly normally distributed. Theoretically, we could change our likelihood model to adjust for the skew, but for now, this is good!
 
 
-### Model 6: Eviction Count
+### Model 3: Eviction Count
 
 `$$
 \begin{split}
-\text{Eviction Count}_{ij} \mid  \beta_{0}, \beta_1, ..., \beta_k, r & \sim \text{NegBin}(\mu_{ij}, r) \; \; \; \text{where } \log(\mu_{ij}) = \beta_{0j} + \sum^{11}_{k=1} \beta_{k}X_{ijk} \\
-\beta_{0j}\mid \beta_{0}, \sigma_0 & \stackrel{ind}{\sim} N(\beta_0, \sigma_0^2)\\	
-\beta_{0c} &\sim N(0, 2.5^2) \\
+\text{Eviction Count}_{i} \mid  \beta_{0c}, \beta_1, ..., \beta_k, r & \sim \text{NegBin}(\mu_i, r) \; \; \; \text{where } \log(\mu_i) = \beta_{0c} + \sum^{14}_{k=1} \beta_{k}X_{ik} \\
+\beta_{0c} &\sim N(0,2.5^2)\\	
 r &\sim \text{Exp}(1)\\
-\sigma_0 &\sim \text{Exp}(1)\\
 \beta_{k} &\sim N(0,s_k^2) 
 \end{split}
 $$`
@@ -519,26 +517,29 @@ s_k \in \{
 &5.5004,				
 7.9328,				
 4.9972,				
-0.0001,				
-25.1032,	56.9002,		\\			
-&	0.0074,				
+5.4697,				
+6.443,				
+5.3347,				
+.0001, \\			
+&25.1032,				
+56.9002,				
+0.0074,				
 0.5699,				
-0.9930,				
-1.1420,
+0.993,				
+1.142,				
 1.6003
 \}
 \end{align}
 $$`
 
-We fit our model using `stan_glmer` below.
+We fit our model in `stan_glm` below.
 
 ```{r}
-hi_eviction_model <- stan_glmer(
+eviction_model <- stan_glm(
   eviction_count  ~ 
-    transportation_desert_4cat +
-    total_pop + below_poverty_line_perc+
-    gini_neighborhood + mean_income +  mean_rent + 
-    black_perc + latinx_perc + asian_perc + (1|borough),
+    transportation_desert_3cat + borough + total_pop +
+    below_poverty_line_perc + gini_neighborhood + mean_income + mean_rent+ 
+    black_perc + latinx_perc + asian_perc,
   data = modeling_data, 
   family = neg_binomial_2,
   chains = 4, iter = 1000*2, seed = 84735, refresh = 0
@@ -548,7 +549,7 @@ hi_eviction_model <- stan_glmer(
 Next, we check its distributional fit to our data.
 
 <center>
-<img src="/media/bayes/plot_17.png" width="100%" height="100%" />
+<img src="/media/bayes/plot_11.png" width="100%" height="100%" />
 </center>
 
 
@@ -606,28 +607,28 @@ Lastly, we found that mean rental prices were negatively associated with the num
 
 
 
-### Model 6: Eviction Count
+### Model 3: Eviction Count
 
 We determined that many racial inequities associated with rental prices were replicated in the number of eviction counts by neighborhood. 
 
-Specifically, we found that even when considering the random-effects of borough and controlling for our covariates, neighborhood eviction counts were positively associated with income inequality, better subway access (Typical and Excellent), the percentages of Black \& Latinx residents, mean rental prices, and total neighborhood population count. In contrast, our models suggest that eviction counts were negatively associated with mean income and the percent of Asian residents.
+Specifically, we found that even when controlling for our covariates, neighborhood eviction counts were positively associated with income inequality, better subway access (Typical and Excellent), the percentages of Black \& Latinx residents, mean rental prices, and total neighborhood population count. In contrast, our models suggest that eviction counts were negatively associated with mean income and the percent of Asian residents.
 
 
 | term                                  | estimate    | std.error | conf.low    | conf.high   |
 | ------------------------------------- | ----------- | --------- | ----------- | ----------- |
-| (Intercept)                           | 15.1407070  | 0.6539981 | 6.2967347   | 35.7879258  |
-| gini\_neighborhood                    | 83.5010741  | 0.2694239 | 30.2316429  | 159.9060906 |
-| transportation\_desert\_3catTypical   | 40.1288822  | 0.1054474 | 22.1765790  | 60.4047629  |
-| transportation\_desert\_3catExcellent | 36.7692227  | 0.1099691 | 19.3116424  | 57.9248350  |
-| black\_perc                           | 17.2855585  | 0.0183071 | 14.5045313  | 20.0980437  |
-| latinx\_perc                          | 7.9332243   | 0.0296328 | 3.8622878   | 12.2246197  |
-| mean\_rent                            | 4.2372572   | 0.0195513 | 1.6549502   | 6.8219357   |
-| total\_pop                            | 0.0022082   | 0.0000018 | 0.0019810   | 0.0024507   |
-| mean\_income                          | \-0.1267496 | 0.0003074 | \-0.1662797 | \-0.0865892 |
-| asian\_perc                           | \-5.6627244 | 0.0306494 | \-9.2184891 | \-1.9218274 |
+| (Intercept)                           | 22.8139773  | 0.6798254 | 9.5267594   | 54.2678342  |
+| gini\_neighborhood                    | 80.3379372  | 0.2774821 | 26.4161912  | 159.2654468 |
+| transportation\_desert\_3catTypical   | 40.0730585  | 0.1001190 | 22.7591920  | 60.1444803  |
+| transportation\_desert\_3catExcellent | 38.4077067  | 0.1037129 | 21.0164324  | 57.8949116  |
+| black\_perc                           | 17.0793046  | 0.0180324 | 14.4424911  | 19.8864906  |
+| latinx\_perc                          | 7.0259485   | 0.0293631 | 3.0643410   | 11.2254638  |
+| mean\_rent                            | 4.2501958   | 0.0194063 | 1.7510847   | 6.8718171   |
+| total\_pop                            | 0.0022296   | 0.0000017 | 0.0020005   | 0.0024700   |
+| mean\_income                          | \-0.1289959 | 0.0003143 | \-0.1701592 | \-0.0881682 |
+| asian\_perc                           | \-5.6959800 | 0.0293369 | \-9.2950278 | \-1.8953634 |
 
 
-We have confirmed that even after adjusting for the putative factors of economic instability and evictions (e.g., income, rental prices, and population size), neighborhoods with a substantial proportion of Black and Latinx residents in NYC are experiencing higher counts of eviction, despite tending to live in cheaper neighborhoods. Specifically, 10\% increases in the percent of Black and Latinx residents are associated with approximately 17\% and 8\% increases from the typical eviction count across NYC. Once again, given the enforced precarity and exploitation of Black and Latinx communities in the United States, it is no surprise that eviction counts are associated with a neighborhood's racial composition.
+We have confirmed that even after adjusting for the putative factors of economic instability and evictions (e.g., income, rental prices, and population size), neighborhoods with a substantial proportion of Black and Latinx residents in NYC are experiencing higher counts of eviction, despite tending to live in cheaper neighborhoods. Specifically, 10\% increases in the percent of Black and Latinx residents are associated with approximately 17\% and 7\% increases from the typical eviction count across NYC, respectively. Once again, given the enforced precarity and exploitation of Black and Latinx communities in the United States, it is no surprise that eviction counts are associated with a neighborhood's racial composition.
 
 We were also surprised to find that the proportion of Asian residents in a neighborhood was negatively associated with eviction counts. This trend may be another byproduct of the economic stability and developed housing markets in specific Asian ethnic communities. Our results also affirm that within-neighborhood income inequalities can be critical factors in defining eviction counts, suggesting that racist housing policies alone do not sufficiently explain the housing inequities observed in NYC.
 
