@@ -562,7 +562,7 @@ In the following sections, we go through each model's outcome and what they tell
 
 ## Results
 
-In this section, we detail our findings using the hierarchical models. In this section, we emphasize the broader conclusions of our models and only report the nature of the associations between our outcomes and predictors (e.g., positive or negative). For individualized interpretations of each predictor for each model, please see the ["Full Interpretations" section in the appendix](https://freddybarragan.netlify.app/media/bayes/bayes_final.html#Appendix)!
+In this section, we detail our findings from our statistical models. In this section, we emphasize the broader conclusions of our models and only report the nature of the associations between our outcomes and predictors (e.g., positive or negative). For individualized interpretations of each predictor for each model, please see the ["Full Interpretations" section in the appendix](https://freddybarragan.netlify.app/media/bayes/bayes_final.html#Appendix)!
 
 ### Model 1: Immigrant/Non-Citizen Count
 
