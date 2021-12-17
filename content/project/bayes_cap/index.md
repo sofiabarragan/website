@@ -471,7 +471,7 @@ s_k \in \{
 $$`
 
 
-Once again, note that we are specifying the parameters of our scaled intercept prior, `$\beta_{0c}$`, so that the typical mean neighborhood rental price `$\sim $N(1600,20^2)$`. In contrast, our priors for the `$\beta_k$` are weakly-informed negative priors. We chose our prior intercept specifications of the mean rental price (`$\beta_{0c}$`) using Juthi's experience renting in NYC and a group conversation about typical rental prices we would elect to pay in NYC, Los Angeles, and other major cities. However, we decided to continue using weakly-informative normal priors for the predictors because we were unsure about their relationship— if any— to rental prices.
+Once again, note that we are specifying the parameters of our scaled intercept prior, `$\beta_{0c}$`, so that the typical mean neighborhood rental price `$\sim N(1600,20^2)$`. In contrast, our priors for the `$\beta_k$` are weakly-informed negative priors. We chose our prior intercept specifications of the mean rental price (`$\beta_{0c}$`) using Juthi's experience renting in NYC and a group conversation about typical rental prices we would elect to pay in NYC, Los Angeles, and other major cities. However, we decided to continue using weakly-informative normal priors for the predictors because we were unsure about their relationship— if any— to rental prices.
 
 We fit our model using `stan_glmer` below.
 
