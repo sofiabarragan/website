@@ -347,11 +347,11 @@ Increases in White-resident proportions were uniformly associated with increases
 
 Our next section details the statistical models we used to better characterize the precise relationships between housing inequities, urban racism, and transportation access.
 
-## Hierarchical Models
+## Statistical Models
 
 In order to understand the respective distributions of immigrant population size, evictions, and mean rental prices in NYC, we fit three simple Bayesian regression models and three hierarchical Bayesian regression models with each variable as an outcome. In the latter set of hierarchical models, we wanted to account for the correlation in demographic characteristics, housing trends, and transportation within boroughs, so we let borough be a grouping variable in our hierarchical models.
 
-In the extended document, we used 4 evaluation metrics: absolute error metrics, residual distributions, expected-log predictive densities, and the Watanabe–Akaike information criterion (WAIC); to select between our hierarchical and simple models for this analysis. Our evaluations consistently demonstrated that our hierarchical models for mean rental prices and non-citizen counts performed better than our non-hierarchical models with respect to these four metrics. As such, this blog post will only detail the construction document the results of two hierarchical models and one simple model. However, if you're interested in our full list of comparisons, please see the [extended document](https://freddybarragan.netlify.app/media/bayes/bayes_final.html#Model_Comparisons)!
+In the extended document, we used 4 evaluation metrics: absolute error metrics, residual distributions, expected-log predictive densities, and the Watanabe–Akaike information criterion (WAIC); to select between our hierarchical and simple models for this analysis. Our evaluations demonstrated that our hierarchical models for mean rental prices and non-citizen counts performed better than our non-hierarchical models with respect to these four metrics, while the reverse was true for eviction counts. As such, this blog post will only detail the construction document the results of two hierarchical models and one simple model. If you're interested in our full list of comparisons, please see the [extended document](https://freddybarragan.netlify.app/media/bayes/bayes_final.html#Model_Comparisons)!
 
 We list our hierarchical models and their predictors below:
 
@@ -363,16 +363,16 @@ We list our hierarchical models and their predictors below:
   + Predictors: `transportation_desert_4cat`, `gini_neighborhood`, `mean_income`, `black_perc`, `latinx_perc`, `asian_perc`, `bus_count`,`school_count`,`store_count`, `noncitizen_perc`
   + Grouping: `borough`
 
-- Eviction Count: Hierarchical Model (3)
+- Eviction Count: Simple Model (3)
   + Predictors: `transportation_desert_3cat`, `borough`, `total_pop`,
   `below_poverty_line_perc`, `gini_neighborhood`, `mean_income`, `mean_rent`, 
   `black_perc`, `latinx_perc`, `asian_perc`
 
 Across all models, we specified weakly-informative normal priors for the `$\beta_{k} $`'s associated with each predictor `$X_{k}$`. However, there are differences in terms of model specifications that we outline below:
 
-For 4 and 6, we used weakly informative normal priors on all predictors and the intercept, then allowed `stan_glm` to estimate initial priors. This decision was ultimately due to our unfamiliarity with NYC's history of evictions, non-citizen population, and their respective relationships to our predictors.
+For 4 and 3, we used weakly informative normal priors on all predictors and the intercept, then allowed `stan_glm` and `stan_glmer` to estimate initial priors. This decision was ultimately due to our unfamiliarity with NYC's history of evictions, non-citizen population, and their respective relationships to our predictors.
 
-We fit parallels of 4 and 6 that both had a Poisson likelihood instead of a Negative Binomial likelihood in previous iterations of this report. However, we observed an inconsistent spread of variance and increased 0 counts in both the eviction and immigrant count data. Because `stan_glm` does not have a zero-inflated Poisson distribution, we ultimately performed two Negative-Binomial regressions. We removed further discussions of our Poisson regressions from this project.
+We fit parallels of 4 and 3 that both had a Poisson likelihood instead of a Negative Binomial likelihood in previous iterations of this report. However, we observed an inconsistent spread of variance and increased 0 counts in both the eviction and immigrant count data. Because `stan_glm` does not have a zero-inflated Poisson distribution, we ultimately performed two Negative-Binomial regressions. We removed further discussions of our Poisson regressions from this project.
 
 For 2, we also used weakly informative normal priors on all predictors. However, we specified a normal prior with `$\mu = 600$` and `$\sigma = 20$` for the scaled intercept of mean rental prices. 
 
