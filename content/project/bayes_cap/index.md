@@ -1,6 +1,6 @@
 ---
 title: "Neighborhood Deserts: Transportation Access & Housing Disparities in NYC"
-author: "Freddy Barragan, Juthi Dewan, Sam Ding, Vichy Meas"
+author: "Freddy Barragan, Juthi Dewan, Sam Ding, Vichearith Meas"
 
 summary: "A capstone project studying the relationship between transportation access and housing inequities in NYC using Bayesian models. "
 
@@ -36,7 +36,7 @@ date: 2021-12-15T14:47:00-05:00
 
 # Motivation
 
-In collaboration with [Juthi Dewan](https://juthidewan-portfolio.netlify.app), [Sam Ding](https://sdingx.github.io/portfolio/), and Vichy Meas, we designed this project for our Bayesian Statistics course taught by [Dr. Alicia Johnson](https://ajohns24.github.io/portfolio/). We would like to thank Alicia for guiding us through Bayes and the capstone experience!
+In collaboration with [Juthi Dewan](https://juthidewan-portfolio.netlify.app), [Sam Ding](https://sdingx.github.io/portfolio/), and [Vichearith Meas](vmeas.com), we designed this project for our Bayesian Statistics course taught by [Dr. Alicia Johnson](https://ajohns24.github.io/portfolio/). We would like to thank Alicia for guiding us through Bayes and the capstone experience!
 
 Our project cumulatively included 97 pages of double-spaced text and code! So, for this blog post we are exclusively reporting our findings and printing only the most essential code chunks. A detailed and reproducible version of this blog post with **all** code included can be found [here](https://freddybarragan.netlify.app/media/bayes/bayes_final.html).
 
