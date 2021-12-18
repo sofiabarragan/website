@@ -22,7 +22,12 @@ day_night = false
 #   Guide to font sets: https://wowchemy.com/docs/customization/#fonts
 #   Browse the latest built-in font sets at https://github.com/wowchemy/wowchemy-hugo-modules/tree/master/wowchemy/data/fonts
 #   Browse user installed font sets in `data/fonts/`
-font = "Classic"
+#font = "Classic"
+
+heading_font = "Lato"
+body_font = "Lato"
+nav_font = "Lato"
+mono_font = "Roboto Mono"
 
 # Choose a font size.
 # Sizes: XS (extra small), S (small), M (medium), L (large - DEFAULT), XL (extra large)
