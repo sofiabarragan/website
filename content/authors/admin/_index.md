@@ -75,4 +75,4 @@ highlight_name: false
 
 I'm a senior Statistics major and Community & Global Health concentrator at Macalester College. Currently, I'm researching survival disparities & genetic trends in pediatric cancers for the University of Minnesota's Division of Epidemiology and Clinical Research.
 
-In the longterm, I want to study geographic health disparities and culturual trends for low-income, minoritized, LGBTQ+ communities using rigorous Bayesian methods. Outside of research, I love making digital art, drinking monster, and making spotify playlists!
+In the longterm, I want to study geographic and urban health disparities for low-income, minoritized, LGBTQ+ communities using rigorous Bayesian methods. Outside of research, I love making digital art, drinking monster, and making spotify playlists!
