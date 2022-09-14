@@ -23,8 +23,10 @@ bio: My research interests include minority health, pediatric cancer, and bayesi
 # Interests to show in About widget
 interests:
 - Bayesian Biostatistics
-- Racial Disparities
+- Health Disparities
 - Transgender Health
+- Spatiotemporal Modeling
+
 
 # Education to show in About widget
 education:
