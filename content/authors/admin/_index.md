@@ -6,12 +6,12 @@ title: Freddy Barragan
 superuser: true
 
 # Role/position/tagline
-role: Undergraduate Researcher
+role: Biostatistics PhD Student
 
 # Organizations/Affiliations to show in About widget
 organizations:
-- name: Macalester College
-  url: https://www.macalester.edu/
+- name: University of Washington
+  url: https://www.biostat.washington.edu
 
 # Short bio (displayed in user profile at end of posts)
 bio: My research interests include minority health, pediatric cancer, and bayesian biostatistics
@@ -19,16 +19,18 @@ bio: My research interests include minority health, pediatric cancer, and bayesi
 # Interests to show in About widget
 interests:
 - Bayesian Biostatistics
-- Statistical Demography
-- Minority Health
-- Computational Art
+- Racial Disparities
+- Transgender Health
 
 # Education to show in About widget
 education:
   courses:
-  - course: BA in Statistics
-    institution: Bayesian Statistics, Mathematical Statistics, Causal Inference, Statistical Machine Learning, Probability, Environmental Public Health, International Public Health
-    year: 2022
+    - course: PhD, Biostatistics
+    institution: University of Washington
+    year: 2022-Present
+  - course: BA, Statistics
+    institution: Macalester College
+    year: 2018-2022
 
 
 # Social/Academic Networking
@@ -38,7 +40,7 @@ education:
 social:
 - icon: envelope
   icon_pack: fas
-  link: "mailto:fabarraga@gmail.com"
+  link: "mailto:freddyb@uw.edu"
 - display:
     header: true
     icon: cv
@@ -57,7 +59,7 @@ social:
 - icon: spotify
   icon_pack: fab
   label: Listen!
-  link: https://open.spotify.com/playlist/2KHUZFehne4xmSD8X65fY3?si=ce12557c54364475
+  link: https://open.spotify.com/playlist/7GOuOi5AZINZcmBltIZ4qy?si=7bd9bd87bfc0402a
 
 # Link to a PDF of your resume/CV.
 # To use: copy your resume to `static/media/resume.pdf`, enable `ai` icons in `params.toml`, 
@@ -73,6 +75,32 @@ email: ""
 highlight_name: false
 ---
 
-I'm a senior Statistics major and Community & Global Health concentrator at Macalester College. Currently, I'm researching survival disparities & genetic trends in pediatric cancers for the University of Minnesota's Division of Epidemiology and Clinical Research.
+Hello!! I'm a first-year PhD student at the University of Washington's Department of Biostatistics. Currently, I'm working on machine learning methods aimed to minimize racial disparities in suicide risk modeling under [Yates Coley](https://www.biostat.washington.edu/people/r-coley). Previously, I was a Statistics major at Macalester College in Saint Paul, MN where I received my BA in May 2022.
 
-In the longterm, I want to study geographic and urban health disparities for low-income, minoritized, LGBTQ+ communities using rigorous Bayesian methods. Outside of research, I love making digital art, drinking monster, and making spotify playlists!
+While at Macalester, I had the pleasure of working with the University of Minnesota's fabulous Division of Epidemiology and Clinical Research on multiple projects concerning the epidemiology of pediatric cancer. Broadly, I worked on the application of admixture mapping, gene expression analysis, and survival modeling to study and identify racial and sex-based disparities in pediatric cancer incidence and outcome.
+
+In the longterm, I will be studying and developing Bayesian statistical methods to address missing data and sample size limitations in the context of urban health studies on transgender, HIV+, and nonwhite communities. Outside of research, I love making digital art, drinking monster, organizing spotify playlists, and reading critical/revolutionary theory. My greatest passion, however, is being silly and having fun :)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
