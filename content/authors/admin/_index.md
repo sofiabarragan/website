@@ -2,6 +2,10 @@
 # Display name
 title: Freddy Barragan
 
+# Username (this should match the folder name)
+authors:
+- admin
+
 # Is this the primary user of the site?
 superuser: true
 
@@ -11,7 +15,7 @@ role: Biostatistics PhD Student
 # Organizations/Affiliations to show in About widget
 organizations:
 - name: University of Washington
-  url: https://www.biostat.washington.edu
+  url: https://www.biostat.washington.edu/
 
 # Short bio (displayed in user profile at end of posts)
 bio: My research interests include minority health, pediatric cancer, and bayesian biostatistics
@@ -25,13 +29,12 @@ interests:
 # Education to show in About widget
 education:
   courses:
- - course: PhD, Biostatistics
+  - course: PhD, Biostatistics
     institution: University of Washington
-    year: Present
-  - course: BA, Statistics
+    year: 2022-Present
+  - course: BA, Applied Mathematics and Statistics
     institution: Macalester College
-    year: May 2022
-
+    year: 2018-2022
 
 # Social/Academic Networking
 # For available icons, see: https://sourcethemes.com/academic/docs/page-builder/#icons
@@ -75,15 +78,9 @@ email: ""
 highlight_name: false
 ---
 
-Hello!! I'm a first-year PhD student at the University of Washington's Department of Biostatistics. Currently, I'm working on machine learning methods aimed to minimize racial disparities in suicide risk modeling under Yates Coley. Previously, I was a Statistics major at Macalester College in Saint Paul, MN where I received my BA in May 2022.
+Hello!! I'm a first-year PhD student at the University of Washington's Department of Biostatistics. Currently, I'm working on machine learning methods aimed to minimize racial disparities in suicide risk modeling under Yates Coley](https://www.biostat.washington.edu/people/r-coley). Previously, I was a Statistics major at Macalester College in Saint Paul, MN where I received my BA in May 2022.
 
 While at Macalester, I had the pleasure of working with the University of Minnesota's fabulous Division of Epidemiology and Clinical Research on multiple projects concerning the epidemiology of pediatric cancer. Broadly, I worked on the application of admixture mapping, gene expression analysis, and survival modeling to study and identify racial and sex-based disparities in pediatric cancer incidence and outcome.
 
 In the longterm, I will be studying and developing Bayesian statistical methods to address missing data and sample size limitations in the context of urban health studies on transgender, HIV+, and nonwhite communities. Outside of research, I love making digital art, drinking monster, organizing spotify playlists, and reading critical/revolutionary theory. My greatest passion, however, is being silly and having fun :)
-
-
-
-
-
-
 
