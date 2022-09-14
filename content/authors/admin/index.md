@@ -25,12 +25,12 @@ interests:
 # Education to show in About widget
 education:
   courses:
-    - course: PhD, Biostatistics
+ - course: PhD, Biostatistics
     institution: University of Washington
-    year: 2022-Present
+    year: Present
   - course: BA, Statistics
     institution: Macalester College
-    year: 2018-2022
+    year: May 2022
 
 
 # Social/Academic Networking
