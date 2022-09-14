@@ -32,7 +32,7 @@ education:
   - course: PhD, Biostatistics
     institution: University of Washington
     year: 2022-Present
-  - course: BA, Applied Mathematics and Statistics
+  - course: BA, Statistics
     institution: Macalester College
     year: 2018-2022
 
@@ -78,9 +78,9 @@ email: ""
 highlight_name: false
 ---
 
-I'm a first-year PhD student at the University of Washington's Department of Biostatistics. Currently, I'm working on machine learning methods aimed to minimize racial disparities in suicide risk modeling under [Yates Coley](https://www.biostat.washington.edu/people/r-coley). Previously, I was a Statistics major at Macalester College in Saint Paul, MN where I received my BA in May 2022.
+I'm a first-year PhD student at the University of Washington's [Department of Biostatistics](https://www.biostat.washington.edu/). Currently, I'm working on machine learning methods aimed to minimize racial disparities in suicide risk modeling under [Yates Coley](https://www.biostat.washington.edu/people/r-coley). Previously, I was a Statistics major at Macalester College in Saint Paul, MN where I received my BA in May 2022.
 
 While at Macalester, I had the pleasure of working with the University of Minnesota's fabulous Division of Epidemiology and Clinical Research on multiple projects concerning the epidemiology of pediatric cancer. Broadly, I worked on the application of admixture mapping, gene expression analysis, and survival modeling to study and identify racial and sex-based disparities in pediatric cancer incidence and outcome.
 
-In the longterm, I will be studying and developing Bayesian statistical methods to address missing data and sample size limitations in the context of urban health studies on transgender, HIV+, and nonwhite communities. Outside of research, I love making digital art, drinking monster, organizing spotify playlists, and reading critical/revolutionary theory. My greatest passion, however, is being silly and having fun :)
+In the longterm, I will be studying Bayesian methods to address missing data and sample size limitations in the context of urban health studies on transgender, HIV+, and nonwhite communities. Outside of research, I love making digital art, drinking monster, organizing spotify playlists, and reading critical/revolutionary theory. My greatest passion, however, is being silly and having fun :)
 
