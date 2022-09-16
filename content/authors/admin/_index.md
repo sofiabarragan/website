@@ -80,7 +80,7 @@ email: ""
 highlight_name: false
 ---
 
-I'm a first-year PhD student at the University of Washington's [Department of Biostatistics](https://www.biostat.washington.edu/). This year I will be developing machine learning methods to minimize racial disparities in suicide risk modeling under [Yates Coley](https://www.biostat.washington.edu/people/r-coley). I received a BA in Statistics from [Macalester College](https://www.macalester.edu/) in May 2022.
+I'm a first-year PhD student at the University of Washington's [Department of Biostatistics](https://www.biostat.washington.edu/). This year I will be developing machine learning methods to minimize racial disparities in suicide risk modeling under [Dr. Coley](https://www.biostat.washington.edu/people/r-coley). I received a BA in Statistics from [Macalester College](https://www.macalester.edu/) in May 2022.
 
 While at Macalester, I had the pleasure of working with the University of Minnesota's fabulous Division of Epidemiology and Clinical Research on multiple projects concerning the epidemiology of pediatric cancer. Broadly, I worked on the application of admixture mapping, gene expression analysis, and survival modeling to study racial and sex-based disparities in pediatric cancer incidence and outcome.
 
