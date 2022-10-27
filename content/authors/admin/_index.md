@@ -64,7 +64,7 @@ social:
 - icon: spotify
   icon_pack: fab
   label: Listen!
-  link: https://open.spotify.com/playlist/7GOuOi5AZINZcmBltIZ4qy?si=7bd9bd87bfc0402a
+  link: https://open.spotify.com/playlist/7CSBbXXiPpMx8X2ngcVKy2?si=b24dc110132844d5&pt=0f4c20b7e64c4ea068302c3bd4b2b2eb
 
 # Link to a PDF of your resume/CV.
 # To use: copy your resume to `static/media/resume.pdf`, enable `ai` icons in `params.toml`, 
