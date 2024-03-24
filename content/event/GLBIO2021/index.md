@@ -9,13 +9,13 @@ links:
  - icon: twitter
    icon_pack: fab
    name: ""
-   url: https://twitter.com/freddybarragan_
+   url:
    url_video: ""
    
 # Schedule page publish date (NOT talk date).
 publishDate: "2021-05-07T00:00:00Z"
 
-authors: [Freddy Barragan]
+authors: [Sofia Barragan]
 tags: 
 - Data Science
 

@@ -25,10 +25,6 @@ image:
 #   Uncomment and edit lines below to show custom links.
 links:
 - name: ""
-  url: https://twitter.com/freddybarragan_
-  icon_pack: fab
-  icon: twitter
-- name: ""
   url: https://instagram.com/mossydraw
   icon_pack: fab
   icon: instagram

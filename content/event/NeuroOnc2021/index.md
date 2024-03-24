@@ -10,8 +10,7 @@ links:
  - icon: twitter
    icon_pack: fab
    name: ""
-   url: https://twitter.com/freddybarragan_
-   
+      
 url_code: ""
 url_pdf: "https://freddybarragan.netlify.app/media/barragan_neuroonc_poster.pdf"
 url_slides: ""
@@ -25,7 +24,7 @@ publishDate: "2021-05-13T00:00:00Z"
 #- Survival disparities by race/ethnicity and sex 
 
 
-authors: [Freddy Barragan]
+authors: [Sofia Barragan]
 tags: 
 - Public Health
 - Data Science

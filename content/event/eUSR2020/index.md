@@ -10,8 +10,8 @@ links:
  - icon: twitter
    icon_pack: fab
    name: ""
-   url: https://twitter.com/freddybarragan_
-   
+   url: 
+      
 url_video: "https://www.youtube.com/watch?time_continue=2&v=U3PG8zf-fFc&feature=emb_logo"
    
 # Schedule page publish date (NOT talk date).

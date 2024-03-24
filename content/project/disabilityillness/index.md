@@ -25,7 +25,7 @@ image:
 #   Uncomment and edit lines below to show custom links.
 links:
 - name: ""
-  url: https://twitter.com/freddybarragan_
+  url: 
   icon_pack: fab
   icon: twitter
 - name: ""

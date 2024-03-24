@@ -15,7 +15,6 @@ image:
 
 links:
 - name: ""
-  url: https://twitter.com/freddybarragan_
   icon_pack: fab
   icon: twitter
 
