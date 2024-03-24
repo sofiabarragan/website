@@ -3,7 +3,7 @@
 
 title: "Markov Chains & their Applications to Statistical Genetics"
 summary: "I wrote this bookdown on discrete Hidden Markov Models & their applications to local ancestry inference!"
-authors: [Freddy Barragan]
+authors: [Sofia Barragan]
 tags: 
 - Data Science
 categories: []

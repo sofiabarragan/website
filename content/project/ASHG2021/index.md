@@ -26,10 +26,10 @@ This is a poster presentation on survival disparities by race/ethnicity in pedia
 
 <center>
 
-<img style="border:1px solid black;" src="https://freddybarragan.netlify.app/media/2730_FreddyBarragan.png"  alt="Poster on B-cell Acute Lymphoblastic Leukemia" />
+<img style="border:1px solid black;" src="https://sofiabarragan.com/media/2730_FreddyBarragan.png"  alt="Poster on B-cell Acute Lymphoblastic Leukemia" />
 </center>
 
-You can see a full size copy of the poster [here](https://freddybarragan.netlify.app/media/2730_FreddyBarragan.pdf)! 
+You can see a full size copy of the poster [here](https://sofiabarragan.com/media/2730_FreddyBarragan.pdf)! 
 
 There are documented differences in clinical presentation and survival by race/ethnicity in children with B-cell acute lymphoblastic leukemia (B-ALL) in the United States: typically, African American (AA) children present with more aggressive cancers than their European American (EA) and Latinx (LAT) counterparts and have worse survival despite EA and LAT children being more frequently diagnosed with B-ALL. Prior work has indicated that racial/ethnic differences in B-ALL outcomes cannot be wholly explained by differences in socioeconomic status or access to care. 
 

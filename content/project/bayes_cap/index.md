@@ -1,6 +1,6 @@
 ---
 title: "Neighborhood Deserts: Transportation Access & Housing Disparities in NYC"
-author: "Freddy Barragan, Juthi Dewan, Sam Ding, Vichearith Meas"
+author: "Sofia Barragan, Juthi Dewan, Sam Ding, Vichearith Meas"
 
 summary: "A capstone project studying the relationship between transportation access and housing inequities in NYC using Bayesian models. "
 
@@ -15,7 +15,7 @@ image:
 
 links:
 - name: ""
-  url: https://freddybarragan.netlify.app/media/bayes/bayes_final.html
+  url: https://sofiabarragan.com/media/bayes/bayes_final.html
   icon_pack: fas
   icon: external-link-alt
 
@@ -38,13 +38,13 @@ date: 2021-12-15T14:47:00-05:00
 
 In collaboration with [Juthi Dewan](https://juthidewan-portfolio.netlify.app), [Sam Ding](https://sdingx.github.io/portfolio/), and [Vichearith Meas](https://www.vmeas.com), we designed this project for our Bayesian Statistics course taught by [Dr. Alicia Johnson](https://ajohns24.github.io/portfolio/). We want to thank Alicia for guiding us through Bayes and the capstone experience!
 
-Our project cumulatively included 97 pages of double-spaced text and code! So, for this blog post, we are exclusively reporting our findings and printing only the most essential code chunks. A detailed and reproducible version of this blog post with **all** code included can be found [here](https://freddybarragan.netlify.app/media/bayes/bayes_final.html).
+Our project cumulatively included 97 pages of double-spaced text and code! So, for this blog post, we are exclusively reporting our findings and printing only the most essential code chunks. A detailed and reproducible version of this blog post with **all** code included can be found [here](https://sofiabarragan.com/media/bayes/bayes_final.html).
 
 We were initially interested in characterizing New York City's internal racial dynamics using demography, geographic mobility, community health, and economic outcomes. As this project developed, we found ourselves thinking about the relationships between transportation (in)access and housing inequity. Our project has two main sections: **Subway Accessibility** and **Transportation and Structural Inequity**. 
 
 In **Subway Accessibility**, we explore transportation deserts and the significant determinants of subway access in New York City using two Bayesian classification models. If you have questions or thoughts about this section in particular, please feel free to reach out to [Sam](https://sdingx.github.io/portfolio/) or [Vichy](https://www.vmeas.com) by email!
 
-While in **Transportation and Structural Inequity**, we extend our discussion of transportation access to study its relationship to rental prices and evictions using hierarchical Bayesian multivariate regression. In the [extended document](https://freddybarragan.netlify.app/media/bayes/bayes_final.html), we also fit non-hierarchical spatial models to control for the underlying spatial relationships between neighborhoods. However, we omit a comprehensive discussion of these models in this blog post, as Bayesian spatial regression was beyond the scope of this course. If you have questions about these models, please get in touch with either [Juthi](https://juthidewan-portfolio.netlify.app) or me by email!
+While in **Transportation and Structural Inequity**, we extend our discussion of transportation access to study its relationship to rental prices and evictions using hierarchical Bayesian multivariate regression. In the [extended document](https://sofiabarragan.com/media/bayes/bayes_final.html), we also fit non-hierarchical spatial models to control for the underlying spatial relationships between neighborhoods. However, we omit a comprehensive discussion of these models in this blog post, as Bayesian spatial regression was beyond the scope of this course. If you have questions about these models, please get in touch with either [Juthi](https://juthidewan-portfolio.netlify.app) or me by email!
 
 First, however, let us do a data introduction:
 
@@ -104,7 +104,7 @@ The process involved grouping geotagged locations by the defined neighborhood bo
 
 # Data Summaries 
 
-Our extended document presents a [numeric summary](https://freddybarragan.netlify.app/media/bayes/bayes_final.html#Data_Summaries). However, note that we use percent equivalents for most demographic count variables.
+Our extended document presents a [numeric summary](https://sofiabarragan.com/media/bayes/bayes_final.html#Data_Summaries). However, note that we use percent equivalents for most demographic count variables.
 
 We found that Manhattan had the highest population counts, mean rental prices, highest mean income, highest income inequality (e.g., Gini value), the most neighborhoods with **Excellent** subway access, and the largest proportion of white citizens. 
 
@@ -264,7 +264,7 @@ ordinal_model <- stan_polr(transportation_desert_4num ~ mean_income + below_pove
 | Poor | Typical       | 2.7512963   | 1.7302249 | 0.5351128   | 5.0207404 |
 | Typical | Excellent  | 4.3697139   | 1.8114385 | 2.0579639   | 6.7107747 |
 
-After removing predictors whose 80\% credible intervals included the possibility of non-effect when controlling for other covariates, four significant predictors of an arbitrary neighborhood's latent `$y^*$` function— the ordinal increase between categories— remain. When controlling for relevant covariates, `$y^*$` was positively associated with increased mean income, the proportion of people living below the poverty line, and food and grocery store counts. Further, it also seems that there was an increase in `$y^*$` when comparing Manhattan to the Bronx, meaning that these predictors were associated with increased transportation access. For more specified interpretations, please see our [extended document](https://freddybarragan.netlify.app/media/bayes/bayes_final.html#Ordinal_Model).
+After removing predictors whose 80\% credible intervals included the possibility of non-effect when controlling for other covariates, four significant predictors of an arbitrary neighborhood's latent `$y^*$` function— the ordinal increase between categories— remain. When controlling for relevant covariates, `$y^*$` was positively associated with increased mean income, the proportion of people living below the poverty line, and food and grocery store counts. Further, it also seems that there was an increase in `$y^*$` when comparing Manhattan to the Bronx, meaning that these predictors were associated with increased transportation access. For more specified interpretations, please see our [extended document](https://sofiabarragan.com/media/bayes/bayes_final.html#Ordinal_Model).
 
 Then, adapting a function written by [Connie Zhang](https://connie-zhang.github.io/pet-adoption/modelling.html) into a tidy function, `tidy_ordinal_accuracy`, we compute the accuracy of the ordinal model below. Specifically, we take the most common category predicted across all of our model's simulations, then use that modal category as our final prediction. 
 
@@ -346,7 +346,7 @@ Our next section details the statistical models we used to better characterize t
 
 To understand the distributions of immigrant population size, evictions, and mean rental prices in NYC, we fit three simple Bayesian regression models and three hierarchical Bayesian regression models with each variable as an outcome. In the latter set of hierarchical models, we wanted to account for the correlation in demographic characteristics, housing trends, and transportation within boroughs, so we let borough be a grouping variable in our hierarchical models.
 
-In the extended document, we used four evaluation metrics: absolute error metrics, residual distributions, expected-log predictive densities, and the Watanabe–Akaike information criterion (WAIC); to select between our hierarchical and simple models for this analysis. Model evaluation results suggested that hierarchical models of average rental prices and non-citizen counts outperformed their non-hierarchical counterparts, while a simple model was better suited to model eviction counts. As such, this blog post will only describe the construction, implementation, and evaluation of two hierarchical models and one non-hierarchical model. If you're interested in the complete set of comparisons, please see the [extended document](https://freddybarragan.netlify.app/media/bayes/bayes_final.html#Model_Comparisons)!
+In the extended document, we used four evaluation metrics: absolute error metrics, residual distributions, expected-log predictive densities, and the Watanabe–Akaike information criterion (WAIC); to select between our hierarchical and simple models for this analysis. Model evaluation results suggested that hierarchical models of average rental prices and non-citizen counts outperformed their non-hierarchical counterparts, while a simple model was better suited to model eviction counts. As such, this blog post will only describe the construction, implementation, and evaluation of two hierarchical models and one non-hierarchical model. If you're interested in the complete set of comparisons, please see the [extended document](https://sofiabarragan.com/media/bayes/bayes_final.html#Model_Comparisons)!
 
 We list our statistical models and their predictors below:
 
@@ -554,7 +554,7 @@ In the following sections, we review each model's outcome and what they tell us 
 
 ## Results
 
-In this section, we detail our findings from our statistical models. In this section, we emphasize the broader conclusions of our models and only report the nature of the associations between our outcomes and predictors (e.g., positive or negative). For individualized interpretations of each predictor for each model, please see the ["Full Interpretations" section in the appendix](https://freddybarragan.netlify.app/media/bayes/bayes_final.html#Appendix)!
+In this section, we detail our findings from our statistical models. In this section, we emphasize the broader conclusions of our models and only report the nature of the associations between our outcomes and predictors (e.g., positive or negative). For individualized interpretations of each predictor for each model, please see the ["Full Interpretations" section in the appendix](https://sofiabarragan.com/media/bayes/bayes_final.html#Appendix)!
 
 ### Model 1: Immigrant/Non-Citizen Count
 

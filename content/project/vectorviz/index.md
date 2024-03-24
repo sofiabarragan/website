@@ -53,5 +53,5 @@ I made a [buzzfeed-style quiz](https://docs.google.com/forms/d/1BiegzgnQxC45Fruf
 
 ![Sample Quiz Results 2](/media/vectorviz2.png)
 
-The github link to my repro & edits can be found [here](https://github.com/freddy-barragan/website/blob/master/content/project/vectorviz/vector_field_barragan.Rmd).
+The github link to my repro & edits can be found [here](https://github.com/sofiabarragan/website/blob/master/content/project/vectorviz/vector_field_barragan.Rmd).
 

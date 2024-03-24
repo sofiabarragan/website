@@ -1,6 +1,6 @@
 ---
 # Display name
-title: Freddy Barragan
+title: Sofia Barragan
 
 # Username (this should match the folder name)
 authors:
@@ -25,7 +25,7 @@ interests:
 - Bayesian Biostatistics
 - Health Disparities
 - Transgender Health
-- Spatiotemporal Modeling
+- Hierarchical Modeling
 
 
 # Education to show in About widget
@@ -45,7 +45,7 @@ education:
 social:
 - icon: envelope
   icon_pack: fas
-  link: "mailto:freddyb@uw.edu"
+  link: "mailto:sofb@uw.edu"
 - display:
     header: true
     icon: cv
@@ -53,10 +53,10 @@ social:
     link: media/resume.pdf
 - icon: github
   icon_pack: fab
-  link: https://github.com/freddy-barragan
+  link: https://github.com/sofiabarragan
 - icon: linkedin
   icon_pack: fab
-  link: https://www.linkedin.com/in/freddybarragan
+  link: https://www.linkedin.com/in/sofibarragan
 - icon: instagram
   icon_pack: fab
   label: Follow my Art
