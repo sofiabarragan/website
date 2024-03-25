@@ -25,7 +25,7 @@ interests:
 - Bayesian Biostatistics
 - Health Disparities
 - Transgender Health
-- Hierarchical Modeling
+- Frailty Modeling
 
 
 # Education to show in About widget
@@ -80,9 +80,11 @@ email: ""
 highlight_name: false
 ---
 
-I'm a first-year PhD student at the University of Washington's [Department of Biostatistics](https://www.biostat.washington.edu/). This year I will be developing intersectionally-fair machine learning methods to minimize racial disparities in suicide risk modeling under [Dr. Coley](https://www.biostat.washington.edu/people/r-coley). I received a BA in Statistics from [Macalester College](https://www.macalester.edu/) in May 2022.
+I'm a PhD student at the University of Washington's [Department of Biostatistics](https://www.biostat.washington.edu/). Broadly, my research aims to integrate rigorous Bayesian statistical methods with anti-racist theoretic frameworks to study the health of nonwhite, transgender, and HIV+ populations in the United States. I received a BA in Statistics from [Macalester College](https://www.macalester.edu/) in May 2022.
+
+Currently, I am researching and developing machine learning (ML) techniques that maximize model fairness and minimize differential misclassification by race in suicide risk prediction models under [Dr. Yates Coley](https://www.biostat.washington.edu/people/r-coley) and in collaboration with the Kaiser Permanente Washington Health Research Institute’s Biostatistics Division. Thus far, my work has primarily centered on developing, applying, and testing gradient-boosted machine learning models with re-sampling procedures to address model limitations caused by outcome imbalance. 
 
 While at Macalester, I had the pleasure of working with the University of Minnesota's fabulous Division of Epidemiology and Clinical Research on multiple projects concerning the epidemiology of pediatric cancer. Broadly, I worked on the application of admixture mapping, gene expression analysis, and survival modeling to study racial and sex-based disparities in pediatric cancer incidence and outcome.
 
-In the longterm, I will be studying Bayesian methods to address missing data and sample size limitations in the context of urban health studies on transgender, HIV+, and nonwhite communities. Outside of research, I love making digital art, drinking monster, making spotify playlists, and reading critical theory. My greatest passion, however, is being silly and having fun :)
+Outside of research, I love making digital art, drinking monster, making spotify playlists, and reading critical theory. My greatest passion, however, is being silly and having fun :)
 
