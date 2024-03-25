@@ -17,7 +17,7 @@ url_video: "https://www.youtube.com/watch?time_continue=2&v=U3PG8zf-fFc&feature=
 # Schedule page publish date (NOT talk date).
 publishDate: "2020-11-06T00:00:00Z"
 
-authors: [Freddy Barragan]
+authors: [Sofia Barragan]
 tags: 
 - Public Health
 - Data Science
