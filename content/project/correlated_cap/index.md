@@ -160,14 +160,14 @@ We aimed to model narcotic arrest counts throughout Seattle, King County, Washin
 <img src="/media/correlated/plot_3.png" width="100%" height="100%" />
 </center>
 
-<center>
+
 | Year 	| Observed Incidence Rate 	|
-|:----:	|:-----------------------:	|
+|:----:	|:-----------------------:|
 | 2010 	|         18.32843        	|
 | 2011 	|         12.86119        	|
 | 2012 	|         12.46315        	|
 | 2013 	|         10.42816        	|
-</center>
+
 
 Yearly citywide IR estimates suggest that the incidence rate of narcotic arrests was highest in 2010 and lowest in 2013. However, the census tract counts narcotic arrests captured in the above figure demonstrate considerable spatial clustering of narcotic arrests between the I-5 and Duwamish Waterway in Seattle. Importantly, arrests were highly concentrated in Seattle's Industrial and Downtown districts with the highest observed incidence rates occurring in one census tract (GEOID: 53033008100) encompassing Seattle's Downtown district and Pioneer Square. Unlike the citywide estimates, these observed incidence rate estimates suggest that between 2010 and 2011, for every group of 1000 people, there would would be `$\approx$` 358 narcotic-related arrests— a dramatic difference from the citywide estimate. Additionally, incidence rates in these metropolitan areas sharply increased in 2012 and 2013, with IR estimates of 592 in 2012 and 496 in 2013.
 
@@ -313,26 +313,23 @@ Using our SAR model with `$\alpha=0.05$` and when controlling for other covariat
 | majorTRUE 	|  94.85268 	| 0.2363774 	| 2.822070 	| 0.0047715 	|
 |   black   	| 216.64634 	| 0.4527111 	| 2.546028 	| 0.0108956 	|
 | immigrant 	| 134.38144 	| 0.3977942 	| 2.141257 	| 0.0322533 	|
-</center>
 
 
-<center>
+
 |    term   	|  estimate 	| std.error 	|  z.value 	|  p.value  	|
 |:---------:	|:---------:	|:---------:	|:--------:	|:---------:	|
 | majorTRUE 	|  114.2626 	| 0.2619126 	| 2.909489 	| 0.0036202 	|
 |   white   	| 4800.3169 	| 1.7940684 	| 2.169307 	| 0.0300594 	|
 |   black   	|  263.6595 	| 0.4627853 	| 2.789734 	| 0.0052751 	|
 | immigrant 	|  210.1960 	| 0.4537137 	| 2.495041 	| 0.0125943 	|
-</center>
 
-<center>
+
 |    term   	| estimate 	| std.error 	|  z.value 	|  p.value  	|
 |:---------:	|:--------:	|:---------:	|:--------:	|:---------:	|
 | majorTRUE 	| 153.9560 	| 0.2796861 	| 3.332274 	| 0.0008614 	|
 |   latinx  	| 244.0459 	| 0.4765524 	| 2.592799 	| 0.0095198 	|
-</center>
 
-<center>
+
 |    term    	|   estimate  	| std.error 	|  z.value  	|  p.value  	|
 |:----------:	|:-----------:	|:---------:	|:---------:	|:---------:	|
 | excessTRUE 	|  920.40565  	| 1.0810157 	|  2.148706 	| 0.0316577 	|
@@ -340,7 +337,7 @@ Using our SAR model with `$\alpha=0.05$` and when controlling for other covariat
 |    white   	| 18694.91763 	| 1.7932750 	|  2.919893 	| 0.0035015 	|
 | med_income 	| -99.18991   	| 1.3696090 	| -3.516174 	| 0.0004378 	|
 | immigrant  	| 374.84528   	| 0.4590921 	| 3.393260  	| 0.0006907 	|
-</center>
+
 
 From the tables it's clear that there were meaningful temporal trends in the significance and effects of predictors on narcotic arrests. For example, in 2010 5\% increases in Black and Immigrant residents were associated with 216\% and 134\% increases in the risk of narcotics arrest, but neither were significant predictors of arrests in 2012. Likewise, 5\% increases in White residents were associated with *profoundly* elevated risks of arrest in 2011 and 2013 (2011: 4800\% and 18694\%). Surprisingly, a tract's median income was only statistically significantly related to risk of arrest in 2013— exhibiting a negative relationship with risk of arrest. Likewise, only in 2013 was our outlier census tract at elevated risk of arrest relative to all other census tracts, claiming a 920\% increase in the risk of arrest. 
 
