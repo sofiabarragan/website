@@ -160,6 +160,7 @@ We aimed to model narcotic arrest counts throughout Seattle, King County, Washin
 <img src="/media/correlated/plot_3.png" width="100%" height="100%" />
 </center>
 
+<center>
 
 | Year 	| Observed Incidence Rate 	|
 |:----:	|:-----------------------:|
@@ -168,6 +169,7 @@ We aimed to model narcotic arrest counts throughout Seattle, King County, Washin
 | 2012 	|         12.46315        	|
 | 2013 	|         10.42816        	|
 
+</center>
 
 Yearly citywide IR estimates suggest that the incidence rate of narcotic arrests was highest in 2010 and lowest in 2013. However, the census tract counts narcotic arrests captured in the above figure demonstrate considerable spatial clustering of narcotic arrests between the I-5 and Duwamish Waterway in Seattle. Importantly, arrests were highly concentrated in Seattle's Industrial and Downtown districts with the highest observed incidence rates occurring in one census tract (GEOID: 53033008100) encompassing Seattle's Downtown district and Pioneer Square. Unlike the citywide estimates, these observed incidence rate estimates suggest that between 2010 and 2011, for every group of 1000 people, there would would be `$\approx$` 358 narcotic-related arrests— a dramatic difference from the citywide estimate. Additionally, incidence rates in these metropolitan areas sharply increased in 2012 and 2013, with IR estimates of 592 in 2012 and 496 in 2013.
 
@@ -187,7 +189,9 @@ Using three candidate models stratified by year, we aimed to study narcotic arre
 
 
 <center>
-**Simple Negative Binomial (with and without outliers)**
+
+<strong>Simple Negative Binomial (with and without outliers)</strong>
+
 </center>
 
 <center>
@@ -197,7 +201,9 @@ Using three candidate models stratified by year, we aimed to study narcotic arre
 
 
 <center>
-**Simultaneous Autoregressive Model**
+
+<strong>Simultaneous Autoregressive Model</strong>
+
 </center>
 
 <center>
@@ -206,7 +212,9 @@ Using three candidate models stratified by year, we aimed to study narcotic arre
 
 
 <center>
+
 **Conditional Autoregressive Model**
+
 </center>
 
 <center>
@@ -216,12 +224,14 @@ Using three candidate models stratified by year, we aimed to study narcotic arre
 
 
 <center>
+
 | Year 	| Negative Binomial 	|    SAR    	|    CAR   	|
 |:----:	|:-----------------:	|:---------:	|:--------:	|
 | 2010 	|      11.43584     	| 15.553052 	| 14.99905 	|
 | 2011 	|      13.73855     	| 18.710910 	| 19.53239 	|
 | 2012 	|      45.55720     	|  9.956018 	| 14.71446 	|
 | 2013 	|     116.89098     	|  9.677963 	| 12.54004 	|
+
 </center>
 
 
@@ -245,12 +255,14 @@ Below is the Moran's I test output on our negative binomial residuals.
 
 
 <center>
+
 | Year 	|  p-value 	| Moran I statistic 	| Expectation 	|  Variance 	|
 |:-----:	|:--------:	|:-----------------:	|:-----------:	|:---------:	|
 |  2010 	| 0.00e+00 	|     0.3135200     	|  -0.0075758 	| 0.0026623 	|
 |  2011 	| 7.00e-07 	|     0.2481396     	|  -0.0075758 	| 0.0026553 	|
 |  2012 	| 8.40e-06 	|     0.2208913     	|  -0.0075758 	| 0.0026315 	|
 |  2013 	| 1.99e-05 	|     0.2093290     	|  -0.0075758 	| 0.0025846 	|
+
 </center>
 
 
