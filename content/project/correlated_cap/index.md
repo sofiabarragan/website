@@ -271,24 +271,28 @@ From the above table, we found statistically significant evidence of positive sp
 To account for the identified spatial clustering, we performed the same hypothesis test on our SAR and CAR model residuals and verify their utility for modeling narcotic arrests. Below, are our Moran's I test results for the SAR model.
 
 <center>
+
 | Year 	|  p-value  	| Moran I statistic 	| Expectation 	|  Variance 	|
 |:-----:	|:---------:	|:-----------------:	|:-----------:	|:---------:	|
 |  2010 	| 0.5213880 	|     0.0254418     	|  -0.0075758 	| 0.0026515 	|
 |  2011 	| 0.4052197 	|     0.0352947     	|  -0.0075758 	| 0.0026529 	|
 |  2012 	| 0.4737983 	|     0.0294463     	|  -0.0075758 	| 0.0026713 	|
 |  2013 	| 0.3782288 	|     0.0380083     	|  -0.0075758 	| 0.0026762 	|
+
 </center>
 
 
 Using a SAR model structure, we found insufficient evidence to reject the `$H_0$` and ultimately the absence of spatial correlation between observations across all years (p-value > 0.05). This is good! This means that our SAR model sufficiently accounted for the spatial autocorrelation between narcotic arrests and can then produce reliable hypothesis tests. 
 
 <center>
+
 | Year 	|  p-value  	| Moran I statistic 	| Expectation 	|  Variance 	|
 |:-----:	|:---------:	|:-----------------:	|:-----------:	|:---------:	|
 |  2010 	| 0.0143041 	|     -0.1339276    	|  -0.0075758 	| 0.0026607 	|
 |  2011 	| 0.1599391 	|     -0.0800319    	|  -0.0075758 	| 0.0026584 	|
 |  2012 	| 0.0167360 	|     -0.1312093    	|  -0.0075758 	| 0.0026704 	|
 |  2013 	| 0.1781474 	|     -0.0772408    	|  -0.0075758 	| 0.0026769 	|
+
 </center>
 
 From the above table, we found statistically significant evidence of positive spatial correlation (Moran I statistic	> 0) in our residual errors for 2010 (p-value = 0.014) and 2012 (p-value = 0.016). As such, we reject `$H_0$` and conclude that our CAR model could not sufficiently model narcotic arrests because arrests are spatially correlated.
@@ -302,12 +306,14 @@ The Bayesian Information Criterion (BIC) is a model selection technique that pen
 
 
 <center>
+
 | Year 	| Negative Binomial 	|    SAR   	|    CAR   	|
 |:----:	|:-----------------:	|:--------:	|:--------:	|
 | 2010 	| 1381.217          	| 459.2198 	| 474.4112 	|
 | 2011 	| 1292.076          	| 489.8557 	| 499.3556 	|
 | 2012 	| 1239.588          	| 502.6637 	| 509.9817 	|
 | 2013 	| 1177.707          	| 488.0485 	| 497.4415 	|
+
 </center>
 
 Across all three models, the SAR model consistently had the best BIC metrics for all years in our study. Although the negative binomial and SAR BICs were dramatically different, the differences between SAR and CAR models were marginal. For both spatial models, there was meaningful temporal variation in BIC estimates, with both spatial models performing best in 2010 and worst in 2012. While the negative binomial model never outperformed the SAR or CAR models, negative binomial BIC metrics were worst in 2010 and best in 2013. As indicated by our Moran's I test, there is some considerable variation in the spatial effects over time which may be reflected in the temporal shifts in these BIC metrics. 
@@ -319,6 +325,8 @@ Across all three models, the SAR model consistently had the best BIC metrics for
 Across all three categories and throughout time, our SAR model greatly outperformed the other candidate models. Specifically, due to small residual magnitudes, the absence of residual spatial clustering, and generally good BIC metrics, we will use our finalized SAR model to predict narcotic arrests in throughout Seattle. 
 
 Using our SAR model with `$\alpha=0.05$` and when controlling for other covariates, we found sufficient evidence to conclude that major metropolitan areas (i.e. total population above the 80th percentile) had statistically significant elevated risks of narcotic arrests relative to all other census tracts, regardless of the year. However, most other predictors had time-varyingly significant effects on the risk of narcotic arrests; for the sake of brevity, we exclusively list the significant predictors for each year-specific SAR model in the following tables.
+
+<center>
 
 |    term   	|  estimate 	| std.error 	|  z.value 	|  p.value  	|
 |:---------:	|:---------:	|:---------:	|:--------:	|:---------:	|
@@ -350,6 +358,7 @@ Using our SAR model with `$\alpha=0.05$` and when controlling for other covariat
 | med_income 	| -99.18991   	| 1.3696090 	| -3.516174 	| 0.0004378 	|
 | immigrant  	| 374.84528   	| 0.4590921 	| 3.393260  	| 0.0006907 	|
 
+</center>
 
 From the tables it's clear that there were meaningful temporal trends in the significance and effects of predictors on narcotic arrests. For example, in 2010 5\% increases in Black and Immigrant residents were associated with 216\% and 134\% increases in the risk of narcotics arrest, but neither were significant predictors of arrests in 2012. Likewise, 5\% increases in White residents were associated with *profoundly* elevated risks of arrest in 2011 and 2013 (2011: 4800\% and 18694\%). Surprisingly, a tract's median income was only statistically significantly related to risk of arrest in 2013— exhibiting a negative relationship with risk of arrest. Likewise, only in 2013 was our outlier census tract at elevated risk of arrest relative to all other census tracts, claiming a 920\% increase in the risk of arrest. 
 
