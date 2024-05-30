@@ -1,7 +1,7 @@
 ---
 title: "Intersectional Statistical Methods and Intimate Partner Violence: Characterizing IPV reporting delays in Los Angeles, CA (2010-2023)"
 
-summary: "My poster presentation on the roles of intersectionally-defined identities on reporting behaviors of intimate partner violence and a novel implementation of MAIHDA methods for survival data."
+summary: "A final project poster presentation on the roles of intersectional identities on IPV reporting behaviors and a novel implementation of MAIHDA methods for survival data."
 
 tags: 
 - Data Science
