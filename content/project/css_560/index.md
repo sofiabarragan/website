@@ -21,7 +21,7 @@ links:
 date: 2023-12-30T14:47:00-05:00
 ---
 
-This is a poster presentation on the roles of intersectional identities on reporting behaviors of intimate partner violence and a novel implementation of MAIHDA methods for survival data completed for my graduate class on hierarchical methods and as a preview to forthcoming work. 
+This is a poster presentation on the roles of intersectional identities on reporting behaviors of intimate partner violence and a novel implementation of MAIHDA methods for survival data completed for my graduate class on hierarchical methods with Dr. Tyler McCormick. 
 
 <center>
 
@@ -30,4 +30,4 @@ This is a poster presentation on the roles of intersectional identities on repor
 
 You can see a full size copy of the poster [here](https://sofiabarragan.com/media/barragan_ipv_report.pdf)! 
 
-The work presented is actually a subset of a project I'm actively working on. So, If you'd like to check my results out, stay tuned (until it's published)!
+The work presented is actually a subset of a project I'm currently working on. So, If you'd like to check my results out, stay tuned (until it's published)!
