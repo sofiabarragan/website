@@ -387,7 +387,6 @@ Our study is, however, not without limitations. First and foremost, we should no
 # References
 
 
-
 2018. To Acknowledge That the War on Drugs Has Been a Failed Policy in Achieving the Goal of Reducing Drug Use, and for the House of Representatives to Apologize to the Individuals and Communities That Were Victimized by This Policy. https://www.govinfo.gov/content/pkg/BILLS-115hres933ih/html/BILLS-115hres933ih.htm.
 
 Alcohol Institute, Addictions Drugs \&. 2022. “Opioid Trends Across Washington State.” Washington State Opioid Trends. University of Washington. https://adai.washington.edu/WAdata/opiate_home.htm.
