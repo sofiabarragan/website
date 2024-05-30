@@ -102,9 +102,9 @@ While many of these covariates are necessarily collinear (i.e. percent White and
 
 There are specific statistical considerations when working with count data. First, because standard OLS models assumes that outcome variables are continuous and potentially negative, OLS is inappropriate when modeling narcotic arrest counts since they are necessarily `$\geq$` 0. While the most well-known count regression model uses a Poisson likelihood distribution, Poisson regression imposes a very strict assumptions that the true mean and variance of count data is equal; in applied analyses, data very rarely fulfills this assumption, due to non-constant variance or 'over dispersion'. Further, the high frequency of zeros in our narcotic arrest data grossly inflates the dispersion of our data and presents other statistical challenges. The below figure plots our observed narcotic arrest counts across each year in the 2nd wave.
 
-<center>
+<div align="center">
 <img src="/media/correlated/plot_1.png" width="100%" height="100%" />
-</center>
+</div>
 
 From the observed distributions, the clear zero-inflation and non-constant decay as count increases indicate that a simple poisson regression may be inappropriate. Although multiple approaches that account for zero-inflation exist, we performed standard negative binomial regression with a log-link function to model narcotic arrest counts for each year; we implemented this model to account for non-constant variance, establish crude baselines for comparison, and to motivate the application of spatial regression models since this technique cannot account for spatial clustering. Our four year-specific models of the arrest count in census tract, `$i$`, are of the form 
 
@@ -125,9 +125,9 @@ Neighborhood network structures (NNS) are formal mathematical objects that descr
 
 Let `$W_{ij}$` be a `$137\times 137$` weighting matrix of the `$k$` census tracts in Seattle. If two census tracts, `$i$` and `$j$`, share any border, then the entry at the `$i$`th row and `$j$`th column, `$w_{ij}$`, is set to 1; if the tracts don't share a border, `$w_{ij}$` is set to 0. Then, we first impose weighting constraints to account for the potential geographic separation of tracts, due to large bodies of water and major highways. If `$i$` and `$j$` are neighbors, but a major highway or body of water lies between them, then `$w_{ij}$ `is set to zero. Next, we set all entries along the diagonal to zero, as a tract can't be its own neighbor. Finally, we weight the individual entries in a row, according to how many neighbors each census tract has, where every non-zero entry in a row are divided by the number of neighbors that census tract has, `$k_{i}$`. For example, if tract `$\ell$` has 4 neighbors, then we divide all entries in the `$\ell$`th row by 4, and so all weights are set to 0.25. Following this weighting process, three tracts were removed because they were completely isolated by rivers and lakes and thus had no valid neighbors, leaving us a `$134\times 134$` matrix. The below figure plots the observed Seattle census tracts  waterways, and highways beside the proposed NNS.
 
-<center>
+<div align="center">
 <img src="/media/correlated/plot_2.png" width="100%" height="100%" />
-</center>
+</div>
 
 The simultaneous autoregressive (SAR) model is a spatial regression technique that extends the standard regression frameworks to account for underlying spatial relationships between observations by weighting observations according to an underlying NNS (Whittle 1954; Hooten, Ver Hoef, and Hanks 2014; Wall 2004; Heggeseth 2022). The conditional autoregressive (CAR) model is another spatial regression technique that also adjusts for underlying spatial correlation between observations, but in a manner that is distinct from SAR models (Besag 1974; Wall 2004; Heggeseth 2022). Specifically, CAR models assume a Markov property or ‘memorylessness’ to the relationship between neighbors and thus impose weaker spatial correlation structures than SAR models (Wall 2004). The relative benefits of CAR and SAR models are highly contextual and specific to the data and problem at hand. Despite this difference, they do share the same general formula.
 
@@ -156,11 +156,11 @@ Outside of this analysis, we performed model selection between our models, using
 
 We aimed to model narcotic arrest counts throughout Seattle, King County, Washington using 3 separate candidate models. Prior to statistical analysis, we plot the observed incidence rates (IRs) for all 137 census tracts within the SPD patrol boundaries on the log scale.
 
-<center>
+<div align="center">
 <img src="/media/correlated/plot_3.png" width="100%" height="100%" />
-</center>
+</div>
 
-<center>
+<div align="center">
 
 | Year 	| Observed Incidence Rate 	|
 |:----:	|:-----------------------:|
@@ -169,15 +169,15 @@ We aimed to model narcotic arrest counts throughout Seattle, King County, Washin
 | 2012 	|         12.46315        	|
 | 2013 	|         10.42816        	|
 
-</center>
+</div>
 
 Yearly citywide IR estimates suggest that the incidence rate of narcotic arrests was highest in 2010 and lowest in 2013. However, the census tract counts narcotic arrests captured in the above figure demonstrate considerable spatial clustering of narcotic arrests between the I-5 and Duwamish Waterway in Seattle. Importantly, arrests were highly concentrated in Seattle's Industrial and Downtown districts with the highest observed incidence rates occurring in one census tract (GEOID: 53033008100) encompassing Seattle's Downtown district and Pioneer Square. Unlike the citywide estimates, these observed incidence rate estimates suggest that between 2010 and 2011, for every group of 1000 people, there would would be `$\approx$` 358 narcotic-related arrests— a dramatic difference from the citywide estimate. Additionally, incidence rates in these metropolitan areas sharply increased in 2012 and 2013, with IR estimates of 592 in 2012 and 496 in 2013.
 
 Next, we compare observed narcotic arrests IRs to the various demographic and economic variables we proposed to study: **White**, **Black**, **Latinx**, **Immigrant**, **Age**, and **Income**.
 
-<center>
+<div align="center">
 <img src="/media/correlated/plot_2.png" width="100%" height="100%" />
-</center>
+</div>
 
 Like narcotic arrests, many of our proposed predictors demonstrate clear spatial clustering behaviors. Namely, the percent of white residents was negatively spatially associated with arrest incidence rates across all year, while immigrant percent was positively associated. However, due to demographic transitions across Seattle many of these associations may differ by year. Covariate maps demonstrate some slight collinear trends between average age and income where the wealthiest census tracts also tended to be some of the oldest. While income was negatively associated with both Black, Immigrant, and Latinx percentages.
 
@@ -188,42 +188,42 @@ Like narcotic arrests, many of our proposed predictors demonstrate clear spatial
 Using three candidate models stratified by year, we aimed to study narcotic arrest counts by census tracts in Seattle, King County, Washington. This section outlines our model selection process, using residual mapping, Bayesian Information Criterion (BIC) metrics, and spatial Moran's I residual tests for each of the three model types across all four years.
 
 
-<center>
+<div align="center">
 
 <strong>Simple Negative Binomial (with and without outliers)</strong>
 
-</center>
+</div>
 
-<center>
+<div align="center">
 <img src="/media/correlated/plot_5.png" width="100%" height="100%" />
-</center>
+</div>
 
 
 
-<center>
+<div align="center">
 
 <strong>Simultaneous Autoregressive Model</strong>
 
-</center>
+</div>
 
-<center>
+<div align="center">
 <img src="/media/correlated/plot_6.png" width="100%" height="100%" />
-</center>
+</div>
 
 
-<center>
+<div align="center">
 
 **Conditional Autoregressive Model**
 
-</center>
+</div>
 
-<center>
+<div align="center">
 <img src="/media/correlated/plot_7.png" width="100%" height="100%" />
-</center>
+</div>
 
 
 
-<center>
+<div align="center">
 
 | Year 	| Negative Binomial 	|    SAR    	|    CAR   	|
 |:----:	|:-----------------:	|:---------:	|:--------:	|
@@ -232,7 +232,7 @@ Using three candidate models stratified by year, we aimed to study narcotic arre
 | 2012 	|      45.55720     	|  9.956018 	| 14.71446 	|
 | 2013 	|     116.89098     	|  9.677963 	| 12.54004 	|
 
-</center>
+</div>
 
 
 
@@ -254,7 +254,7 @@ The Moran's I Test is a statistical test used to identify the occurrence of spat
 Below is the Moran's I test output on our negative binomial residuals.
 
 
-<center>
+<div align="center">
 
 | Year 	|  p-value 	| Moran I statistic 	| Expectation 	|  Variance 	|
 |:-----:	|:--------:	|:-----------------:	|:-----------:	|:---------:	|
@@ -263,14 +263,14 @@ Below is the Moran's I test output on our negative binomial residuals.
 |  2012 	| 8.40e-06 	|     0.2208913     	|  -0.0075758 	| 0.0026315 	|
 |  2013 	| 1.99e-05 	|     0.2093290     	|  -0.0075758 	| 0.0025846 	|
 
-</center>
+</div>
 
 
 From the above table, we found statistically significant evidence of positive spatial correlation (Moran I statistic > 0) in our residual errors for every year in our study (p-value < 0.05), suggesting that nearby errors are correlated. As such, we reject `$H_0$` and conclude that our simple negative binomial model could not sufficiently model narcotic arrests because arrests are spatially correlated. Interestingly, the magnitude of spatial clustering (Moran I statistics) varied over time with 2010 seeing the highest clustering and 2012 seeing the lowest.
 
 To account for the identified spatial clustering, we performed the same hypothesis test on our SAR and CAR model residuals and verify their utility for modeling narcotic arrests. Below, are our Moran's I test results for the SAR model.
 
-<center>
+<div align="center">
 
 | Year 	|  p-value  	| Moran I statistic 	| Expectation 	|  Variance 	|
 |:-----:	|:---------:	|:-----------------:	|:-----------:	|:---------:	|
@@ -279,12 +279,12 @@ To account for the identified spatial clustering, we performed the same hypothes
 |  2012 	| 0.4737983 	|     0.0294463     	|  -0.0075758 	| 0.0026713 	|
 |  2013 	| 0.3782288 	|     0.0380083     	|  -0.0075758 	| 0.0026762 	|
 
-</center>
+</div>
 
 
 Using a SAR model structure, we found insufficient evidence to reject the `$H_0$` and ultimately the absence of spatial correlation between observations across all years (p-value > 0.05). This is good! This means that our SAR model sufficiently accounted for the spatial autocorrelation between narcotic arrests and can then produce reliable hypothesis tests. 
 
-<center>
+<div align="center">
 
 | Year 	|  p-value  	| Moran I statistic 	| Expectation 	|  Variance 	|
 |:-----:	|:---------:	|:-----------------:	|:-----------:	|:---------:	|
@@ -293,7 +293,7 @@ Using a SAR model structure, we found insufficient evidence to reject the `$H_0$
 |  2012 	| 0.0167360 	|     -0.1312093    	|  -0.0075758 	| 0.0026704 	|
 |  2013 	| 0.1781474 	|     -0.0772408    	|  -0.0075758 	| 0.0026769 	|
 
-</center>
+</div>
 
 From the above table, we found statistically significant evidence of positive spatial correlation (Moran I statistic	> 0) in our residual errors for 2010 (p-value = 0.014) and 2012 (p-value = 0.016). As such, we reject `$H_0$` and conclude that our CAR model could not sufficiently model narcotic arrests because arrests are spatially correlated.
 
@@ -305,7 +305,7 @@ From the above table, we found statistically significant evidence of positive sp
 The Bayesian Information Criterion (BIC) is a model selection technique that penalizes overfit models by implementing penalty terms for the number of parameters in a given model. Here, we use BIC computations to compare our three models and select the model with the lowest BIC metrics. The following table presents the BIC values for the negative binomial, SAR, and CAR models across our four year time period. 
 
 
-<center>
+<div align="center">
 
 | Year 	| Negative Binomial 	|    SAR   	|    CAR   	|
 |:----:	|:-----------------:	|:--------:	|:--------:	|
@@ -314,7 +314,7 @@ The Bayesian Information Criterion (BIC) is a model selection technique that pen
 | 2012 	| 1239.588          	| 502.6637 	| 509.9817 	|
 | 2013 	| 1177.707          	| 488.0485 	| 497.4415 	|
 
-</center>
+</div>
 
 Across all three models, the SAR model consistently had the best BIC metrics for all years in our study. Although the negative binomial and SAR BICs were dramatically different, the differences between SAR and CAR models were marginal. For both spatial models, there was meaningful temporal variation in BIC estimates, with both spatial models performing best in 2010 and worst in 2012. While the negative binomial model never outperformed the SAR or CAR models, negative binomial BIC metrics were worst in 2010 and best in 2013. As indicated by our Moran's I test, there is some considerable variation in the spatial effects over time which may be reflected in the temporal shifts in these BIC metrics. 
 
@@ -326,7 +326,7 @@ Across all three categories and throughout time, our SAR model greatly outperfor
 
 Using our SAR model with `$\alpha=0.05$` and when controlling for other covariates, we found sufficient evidence to conclude that major metropolitan areas (i.e. total population above the 80th percentile) had statistically significant elevated risks of narcotic arrests relative to all other census tracts, regardless of the year. However, most other predictors had time-varyingly significant effects on the risk of narcotic arrests; for the sake of brevity, we exclusively list the significant predictors for each year-specific SAR model in the following tables.
 
-<center>
+<div align="center">
 
 |    term   	|  estimate 	| std.error 	|  z.value 	|  p.value  	|
 |:---------:	|:---------:	|:---------:	|:--------:	|:---------:	|
@@ -334,7 +334,9 @@ Using our SAR model with `$\alpha=0.05$` and when controlling for other covariat
 |   black   	| 216.64634 	| 0.4527111 	| 2.546028 	| 0.0108956 	|
 | immigrant 	| 134.38144 	| 0.3977942 	| 2.141257 	| 0.0322533 	|
 
+</div>
 
+<div align="center">
 
 |    term   	|  estimate 	| std.error 	|  z.value 	|  p.value  	|
 |:---------:	|:---------:	|:---------:	|:--------:	|:---------:	|
@@ -343,12 +345,18 @@ Using our SAR model with `$\alpha=0.05$` and when controlling for other covariat
 |   black   	|  263.6595 	| 0.4627853 	| 2.789734 	| 0.0052751 	|
 | immigrant 	|  210.1960 	| 0.4537137 	| 2.495041 	| 0.0125943 	|
 
+</div>
+
+<div align="center">
 
 |    term   	| estimate 	| std.error 	|  z.value 	|  p.value  	|
 |:---------:	|:--------:	|:---------:	|:--------:	|:---------:	|
 | majorTRUE 	| 153.9560 	| 0.2796861 	| 3.332274 	| 0.0008614 	|
 |   latinx  	| 244.0459 	| 0.4765524 	| 2.592799 	| 0.0095198 	|
 
+</div>
+
+<div align="center">
 
 |    term    	|   estimate  	| std.error 	|  z.value  	|  p.value  	|
 |:----------:	|:-----------:	|:---------:	|:---------:	|:---------:	|
@@ -358,7 +366,7 @@ Using our SAR model with `$\alpha=0.05$` and when controlling for other covariat
 | med_income 	| -99.18991   	| 1.3696090 	| -3.516174 	| 0.0004378 	|
 | immigrant  	| 374.84528   	| 0.4590921 	| 3.393260  	| 0.0006907 	|
 
-</center>
+</div>
 
 From the tables it's clear that there were meaningful temporal trends in the significance and effects of predictors on narcotic arrests. For example, in 2010 5\% increases in Black and Immigrant residents were associated with 216\% and 134\% increases in the risk of narcotics arrest, but neither were significant predictors of arrests in 2012. Likewise, 5\% increases in White residents were associated with *profoundly* elevated risks of arrest in 2011 and 2013 (2011: 4800\% and 18694\%). Surprisingly, a tract's median income was only statistically significantly related to risk of arrest in 2013— exhibiting a negative relationship with risk of arrest. Likewise, only in 2013 was our outlier census tract at elevated risk of arrest relative to all other census tracts, claiming a 920\% increase in the risk of arrest. 
 
